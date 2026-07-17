@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field, HttpUrl
@@ -36,7 +36,19 @@ class Finding(BaseModel):
     detail: str
     severity: Severity = "info"
     files: list[str] = Field(default_factory=list)
+    confidence: float = Field(default=0.75, ge=0, le=1)
+    evidence: list["EvidenceLocation"] = Field(default_factory=list)
     recommendation: str | None = None
+
+
+class EvidenceLocation(BaseModel):
+    """A concrete source location supporting a finding."""
+
+    path: str
+    line_start: int | None = Field(default=None, ge=1)
+    line_end: int | None = Field(default=None, ge=1)
+    excerpt: str | None = None
+    reason: str | None = None
 
 
 class AgentReport(BaseModel):
@@ -73,19 +85,75 @@ class OrchestrationMeta(BaseModel):
     note: str | None = None
 
 
+class AnalysisMetrics(BaseModel):
+    files_analyzed: int = 0
+    sampled_files: int = 0
+    manifests_found: int = 0
+    tests_discovered: int = 0
+    commits_inspected: int = 0
+    findings_published: int = 0
+    artifacts_generated: int = 2
+    duration_ms: int = 0
+    partial_analysis: bool = False
+    discovered_files: int = 0
+    skipped_files: int = 0
+    content_truncated: bool = False
+
+
+class AnalysisScope(BaseModel):
+    """Explicit boundaries for a bounded repository analysis."""
+
+    status: Literal["complete", "partial"] = "complete"
+    discovered_files: int = 0
+    selected_files: int = 0
+    files_excluded_by_selection: int = 0
+    reasons: list[str] = Field(default_factory=list)
+
+
+class ArtifactValidation(BaseModel):
+    """What was mechanically checked before artifacts were presented."""
+
+    artifacts_validated: bool = False
+    validated_findings: int = 0
+    rejected_claims: int = 0
+    message: str | None = None
+
+
+class ReconciliationDecision(BaseModel):
+    disposition: Literal["accepted", "merged", "deferred"]
+    finding_ids: list[str] = Field(default_factory=list)
+    rationale: str
+
+
+class ReconciliationSummary(BaseModel):
+    accepted_count: int = 0
+    merged_count: int = 0
+    deferred_count: int = 0
+    decisions: list[ReconciliationDecision] = Field(default_factory=list)
+
+
 class AnalysisResult(BaseModel):
     repository: RepositoryInfo
     reports: list[AgentReport]
     agents_md: str
     repo_map: RepositoryMap
     orchestration: OrchestrationMeta
+    metrics: AnalysisMetrics = Field(default_factory=AnalysisMetrics)
+    reconciliation: ReconciliationSummary = Field(default_factory=ReconciliationSummary)
+    analysis_scope: AnalysisScope = Field(default_factory=AnalysisScope)
+    validation: ArtifactValidation = Field(default_factory=ArtifactValidation)
 
 
 class ProgressEvent(BaseModel):
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
     phase: str
     message: str
     role: AgentRole | None = None
+    action: str | None = None
+    current: int | None = Field(default=None, ge=0)
+    total: int | None = Field(default=None, ge=0)
+    percent: int | None = Field(default=None, ge=0, le=100)
+    metrics: dict[str, int] = Field(default_factory=dict)
 
 
 class AnalysisStatus(BaseModel):

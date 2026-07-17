@@ -14,6 +14,15 @@ import re
 
 from repository import RepositorySnapshot
 from schemas import AgentReport, Finding
+from workers._shared import (
+    WorkerObserver,
+    bounded_confidence,
+    contents_by_path,
+    evidence_paths,
+    file_evidence,
+    notify,
+    pattern_evidence,
+)
 
 
 _ENTRY_POINT_NAMES = {
@@ -63,10 +72,18 @@ _FRAMEWORK_SIGNALS: tuple[tuple[str, tuple[str, ...]], ...] = (
 _SOURCE_ROOT_NAMES = {"app", "apps", "cmd", "lib", "packages", "server", "src"}
 
 
-def analyze(snapshot: RepositorySnapshot) -> AgentReport:
+def analyze(snapshot: RepositorySnapshot, observer: WorkerObserver | None = None) -> AgentReport:
     """Summarize observable architectural evidence from a repository snapshot."""
     findings: list[Finding] = []
 
+    notify(
+        observer,
+        "Reading file inventory and detecting language/framework signals",
+        1,
+        4,
+        files_indexed=snapshot.file_count,
+        manifests_found=len(snapshot.config_files),
+    )
     language_finding = _language_finding(snapshot)
     if language_finding is not None:
         findings.append(language_finding)
@@ -75,27 +92,30 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
     if framework_finding is not None:
         findings.append(framework_finding)
 
+    notify(observer, "Finding conventional runtime entry points", 2, 4, files_indexed=snapshot.file_count)
     entry_point_finding = _entry_point_finding(snapshot)
     if entry_point_finding is not None:
         findings.append(entry_point_finding)
 
+    notify(observer, "Mapping top-level module boundaries", 3, 4, files_indexed=snapshot.file_count)
     boundary_finding = _boundary_finding(snapshot)
     if boundary_finding is not None:
         findings.append(boundary_finding)
 
+    notify(observer, "Reviewing build and repository configuration", 4, 4, manifests_found=len(snapshot.config_files))
     config_finding = _configuration_finding(snapshot)
     if config_finding is not None:
         findings.append(config_finding)
 
     summary = _summary(snapshot, findings)
-    evidence_paths = {path for finding in findings for path in finding.files}
+    finding_paths = {path for finding in findings for path in finding.files}
     return AgentReport(
         role="architecture",
         label="Architecture Mapper",
         summary=summary,
         findings=findings,
         confidence=_confidence(snapshot, findings),
-        evidence_count=len(evidence_paths),
+        evidence_count=len(finding_paths),
     )
 
 
@@ -105,19 +125,22 @@ def _language_finding(snapshot: RepositorySnapshot) -> Finding | None:
         return None
     detail = ", ".join(f"{language} ({count} file{'s' if count != 1 else ''})" for language, count in counts)
     evidence = [snapshot.language_examples[language] for language, _ in counts if language in snapshot.language_examples]
+    locations = file_evidence(evidence, "Representative source file for the observed language profile.")
     return Finding(
         id="architecture-language-profile",
         category="languages",
         title="Language profile from the file inventory",
         detail=f"Observed language files: {detail}.",
         severity="info",
-        files=_unique_paths(evidence),
+        files=evidence_paths(locations),
+        confidence=bounded_confidence(0.96),
+        evidence=locations,
         recommendation="Use the dominant language and its repository-local tooling when planning changes.",
     )
 
 
 def _framework_finding(snapshot: RepositorySnapshot) -> Finding | None:
-    content_by_path = {**snapshot.important_file_contents, **snapshot.sampled_contents}
+    content_by_path = contents_by_path(snapshot)
     matches: list[tuple[str, str]] = []
     for label, tokens in _FRAMEWORK_SIGNALS:
         source_paths = [
@@ -131,13 +154,26 @@ def _framework_finding(snapshot: RepositorySnapshot) -> Finding | None:
         return None
     unique_matches = matches[:6]
     signal_text = ", ".join(f"{label} ({path})" for label, path in unique_matches)
+    patterns = tuple(
+        re.compile(rf"(?<![a-z0-9_-]){re.escape(token)}(?![a-z0-9_-])", re.IGNORECASE)
+        for label, tokens in _FRAMEWORK_SIGNALS
+        if any(label == matched_label for matched_label, _ in unique_matches)
+        for token in tokens
+    )
+    locations = pattern_evidence(
+        content_by_path,
+        patterns,
+        "Matched a framework or build-tool dependency/import token.",
+    )
     return Finding(
         id="architecture-framework-signals",
         category="frameworks",
         title="Framework or build-tool signals found in captured content",
         detail=f"Dependency or import tokens indicate: {signal_text}.",
         severity="info",
-        files=_unique_paths(path for _, path in unique_matches),
+        files=evidence_paths(locations) or _unique_paths(path for _, path in unique_matches),
+        confidence=bounded_confidence(0.93),
+        evidence=locations,
         recommendation="Confirm framework conventions in the linked configuration before changing application boundaries.",
     )
 
@@ -147,6 +183,7 @@ def _entry_point_finding(snapshot: RepositorySnapshot) -> Finding | None:
     if not candidates:
         return None
     selected = sorted(candidates, key=_entry_point_sort_key)[:8]
+    locations = file_evidence(selected, "Matches a conventional application or executable entry-point name.")
     return Finding(
         id="architecture-entry-point-candidates",
         category="entry_points",
@@ -156,7 +193,9 @@ def _entry_point_finding(snapshot: RepositorySnapshot) -> Finding | None:
             f"{', '.join(selected)}. Validate the invoked command before treating a candidate as the runtime entry point."
         ),
         severity="info",
-        files=selected,
+        files=evidence_paths(locations),
+        confidence=bounded_confidence(0.82),
+        evidence=locations,
         recommendation="Trace startup commands from repository configuration before modifying initialization behavior.",
     )
 
@@ -176,6 +215,7 @@ def _boundary_finding(snapshot: RepositorySnapshot) -> Finding | None:
     ranked = sorted(boundaries.items(), key=lambda item: (-item[1], item[0].lower()))[:10]
     evidence = [examples[name] for name, _ in ranked]
     inventory = ", ".join(f"{name}/ ({count})" for name, count in ranked)
+    locations = file_evidence(evidence, "Representative file inside the observed top-level directory boundary.")
     return Finding(
         id="architecture-top-level-boundaries",
         category="module_boundaries",
@@ -185,7 +225,9 @@ def _boundary_finding(snapshot: RepositorySnapshot) -> Finding | None:
             f"{inventory}. Counts represent captured files, not ownership or runtime dependencies."
         ),
         severity="info",
-        files=_unique_paths(evidence),
+        files=evidence_paths(locations),
+        confidence=bounded_confidence(0.9),
+        evidence=locations,
         recommendation="Preserve these directory boundaries unless the linked startup and build configuration supports a broader refactor.",
     )
 
@@ -203,6 +245,7 @@ def _configuration_finding(snapshot: RepositorySnapshot) -> Finding | None:
         }
     )
     source_note = f" Source-root candidates: {', '.join(f'{root}/' for root in source_roots)}." if source_roots else ""
+    locations = file_evidence(selected, "Captured build or repository configuration file.")
     return Finding(
         id="architecture-configuration-inventory",
         category="configuration",
@@ -212,7 +255,9 @@ def _configuration_finding(snapshot: RepositorySnapshot) -> Finding | None:
             f"{', '.join(selected)}.{source_note}"
         ),
         severity="info",
-        files=selected,
+        files=evidence_paths(locations),
+        confidence=bounded_confidence(0.91),
+        evidence=locations,
         recommendation="Review the linked configuration files when choosing commands, entry points, or supported build workflows.",
     )
 

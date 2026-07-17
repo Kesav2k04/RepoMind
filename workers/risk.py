@@ -8,6 +8,15 @@ import re
 
 from repository import RepositorySnapshot
 from schemas import AgentReport, Finding
+from workers._shared import (
+    WorkerObserver,
+    bounded_confidence,
+    contents_by_path,
+    evidence_paths,
+    file_evidence,
+    notify,
+    pattern_evidence,
+)
 
 
 _DYNAMIC_CODE_PATTERNS = (
@@ -48,18 +57,29 @@ _PYTHON_LOCKFILES = {"poetry.lock", "uv.lock", "pdm.lock", "pipfile.lock", "requ
 _ENV_TEMPLATES = {".env.example", ".env.sample", ".env.template", "env.example"}
 
 
-def analyze(snapshot: RepositorySnapshot) -> AgentReport:
+def analyze(snapshot: RepositorySnapshot, observer: WorkerObserver | None = None) -> AgentReport:
     """Inspect bounded repository evidence for concrete, reviewable risk signals.
 
     This function intentionally reports potentially unsafe constructs rather than
     asserting exploitability. Every finding includes source or manifest paths from
     the supplied ``RepositorySnapshot``.
     """
-    contents = _contents_by_path(snapshot)
+    contents = contents_by_path(snapshot)
     findings: list[Finding] = []
 
-    dynamic_files = _matching_paths(contents, _DYNAMIC_CODE_PATTERNS)
-    if dynamic_files:
+    notify(
+        observer,
+        "Checking unsafe dynamic-code patterns",
+        1,
+        4,
+        sampled_files=len(contents),
+    )
+    dynamic_evidence = pattern_evidence(
+        contents,
+        _DYNAMIC_CODE_PATTERNS,
+        "Matched a dynamic code-execution pattern in the captured source excerpt.",
+    )
+    if dynamic_evidence:
         findings.append(
             Finding(
                 id="risk-dynamic-code-execution",
@@ -70,7 +90,9 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                     "Review each call to ensure no untrusted input can reach it."
                 ),
                 severity="high",
-                files=dynamic_files,
+                files=evidence_paths(dynamic_evidence),
+                confidence=bounded_confidence(0.96),
+                evidence=dynamic_evidence,
                 recommendation=(
                     "Replace dynamic evaluation with explicit parsing or a constrained allowlist; "
                     "validate any unavoidable input before execution."
@@ -78,8 +100,19 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
             )
         )
 
-    tls_files = _matching_paths(contents, _TLS_PATTERNS)
-    if tls_files:
+    notify(
+        observer,
+        "Reviewing TLS and deserialization safeguards",
+        2,
+        4,
+        sampled_files=len(contents),
+    )
+    tls_evidence = pattern_evidence(
+        contents,
+        _TLS_PATTERNS,
+        "Matched an insecure TLS configuration pattern in the captured source excerpt.",
+    )
+    if tls_evidence:
         findings.append(
             Finding(
                 id="risk-tls-verification-disabled",
@@ -90,7 +123,9 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                     "verify=False, CERT_NONE, rejectUnauthorized: false, or curl --insecure."
                 ),
                 severity="high",
-                files=tls_files,
+                files=evidence_paths(tls_evidence),
+                confidence=bounded_confidence(0.97),
+                evidence=tls_evidence,
                 recommendation=(
                     "Enable certificate and hostname verification in production; scope any local "
                     "development exception behind an explicit non-production configuration."
@@ -98,8 +133,12 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
             )
         )
 
-    pickle_files = _matching_paths(contents, _PICKLE_PATTERNS)
-    if pickle_files:
+    pickle_evidence = pattern_evidence(
+        contents,
+        _PICKLE_PATTERNS,
+        "Matched a pickle-style deserialization call in the captured source excerpt.",
+    )
+    if pickle_evidence:
         findings.append(
             Finding(
                 id="risk-unsafe-deserialization",
@@ -110,7 +149,9 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                     "formats can execute code when the serialized input is untrusted."
                 ),
                 severity="high",
-                files=pickle_files,
+                files=evidence_paths(pickle_evidence),
+                confidence=bounded_confidence(0.96),
+                evidence=pickle_evidence,
                 recommendation=(
                     "Only load artifacts from a trusted, integrity-checked source; prefer a data-only "
                     "format for inputs that can originate outside the trust boundary."
@@ -118,8 +159,12 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
             )
         )
 
-    marker_files = _matching_paths(contents, (_MAINTENANCE_MARKER,))
-    if marker_files:
+    marker_evidence = pattern_evidence(
+        contents,
+        (_MAINTENANCE_MARKER,),
+        "Matched a maintenance marker in the captured source excerpt.",
+    )
+    if marker_evidence:
         findings.append(
             Finding(
                 id="risk-maintenance-markers",
@@ -130,20 +175,36 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                     "maintenance signals, not confirmed defects."
                 ),
                 severity="low",
-                files=marker_files,
+                files=evidence_paths(marker_evidence),
+                confidence=bounded_confidence(0.92),
+                evidence=marker_evidence,
                 recommendation="Triage the markers, link actionable items to tracked work, and remove obsolete notes.",
             )
         )
 
+    notify(
+        observer,
+        "Auditing dependency manifests and lockfiles",
+        3,
+        4,
+        manifests_found=len(snapshot.config_files),
+    )
     lockfile_finding = _missing_lockfile_finding(snapshot)
     if lockfile_finding:
         findings.append(lockfile_finding)
 
+    notify(
+        observer,
+        "Checking environment-variable documentation",
+        4,
+        4,
+        sampled_files=len(contents),
+    )
     environment_finding = _missing_environment_template_finding(snapshot, contents)
     if environment_finding:
         findings.append(environment_finding)
 
-    evidence_paths = {path for finding in findings for path in finding.files}
+    finding_paths = {path for finding in findings for path in finding.files}
     summary = _summary(findings)
     return AgentReport(
         role="risk",
@@ -151,25 +212,8 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
         summary=summary,
         findings=findings,
         confidence=0.9 if findings else 0.78,
-        evidence_count=len(evidence_paths),
+        evidence_count=len(finding_paths),
     )
-
-
-def _contents_by_path(snapshot: RepositorySnapshot) -> dict[str, str]:
-    """Merge bounded excerpts, preferring the longer important-file excerpt."""
-    contents = dict(snapshot.sampled_contents)
-    for path, content in snapshot.important_file_contents.items():
-        if len(content) > len(contents.get(path, "")):
-            contents[path] = content
-    return contents
-
-
-def _matching_paths(contents: dict[str, str], patterns: Iterable[re.Pattern[str]]) -> list[str]:
-    return [
-        path
-        for path, content in sorted(contents.items())
-        if any(pattern.search(content) for pattern in patterns)
-    ][:8]
 
 
 def _missing_lockfile_finding(snapshot: RepositorySnapshot) -> Finding | None:
@@ -201,6 +245,10 @@ def _missing_lockfile_finding(snapshot: RepositorySnapshot) -> Finding | None:
     if not missing:
         return None
     ecosystems = ", ".join(missing)
+    locations = file_evidence(
+        sorted(set(evidence)),
+        "Dependency manifest was found, but no recognized companion lockfile is in the bounded inventory.",
+    )
     return Finding(
         id="risk-missing-dependency-lockfile",
         category="dependency_reproducibility",
@@ -210,7 +258,9 @@ def _missing_lockfile_finding(snapshot: RepositorySnapshot) -> Finding | None:
             "equivalent pinned requirements file in the repository inventory."
         ),
         severity="medium",
-        files=sorted(set(evidence))[:8],
+        files=evidence_paths(locations),
+        confidence=bounded_confidence(0.9),
+        evidence=locations,
         recommendation=(
             "Commit the ecosystem's lockfile (or fully pinned requirements file) and keep it "
             "synchronized in dependency update workflows."
@@ -227,7 +277,7 @@ def _has_python_lock(snapshot: RepositorySnapshot, names: set[str]) -> bool:
     ]
     if not requirement_paths:
         return False
-    contents = _contents_by_path(snapshot)
+    contents = contents_by_path(snapshot)
     return any(_requirements_are_pinned(contents.get(path, "")) for path in requirement_paths)
 
 
@@ -245,8 +295,12 @@ def _missing_environment_template_finding(
     names = {PurePosixPath(path).name.lower() for path in snapshot.files}
     if names.intersection(_ENV_TEMPLATES):
         return None
-    evidence = _matching_paths(contents, (_ENV_REFERENCE,))
-    if not evidence:
+    locations = pattern_evidence(
+        contents,
+        (_ENV_REFERENCE,),
+        "Matched environment-variable usage in the captured source excerpt.",
+    )
+    if not locations:
         return None
     return Finding(
         id="risk-missing-environment-template",
@@ -257,7 +311,9 @@ def _missing_environment_template_finding(
             "include a conventional .env example/template file."
         ),
         severity="low",
-        files=evidence,
+        files=evidence_paths(locations),
+        confidence=bounded_confidence(0.88),
+        evidence=locations,
         recommendation=(
             "Add a secret-free .env.example documenting required variables, safe placeholders, "
             "and local-development defaults."

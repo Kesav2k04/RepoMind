@@ -9,9 +9,19 @@ hand to the reconciliation agent.
 from __future__ import annotations
 
 from pathlib import PurePosixPath
+import re
 
 from repository import RepositorySnapshot
-from schemas import AgentReport, Finding
+from schemas import AgentReport, EvidenceLocation, Finding
+from workers._shared import (
+    WorkerObserver,
+    bounded_confidence,
+    contents_by_path,
+    evidence_paths,
+    file_evidence,
+    notify,
+    pattern_evidence,
+)
 
 
 _SOURCE_SUFFIXES = {
@@ -33,24 +43,33 @@ _FRAMEWORK_SIGNALS: tuple[tuple[str, tuple[str, ...]], ...] = (
 )
 
 
-def analyze(snapshot: RepositorySnapshot) -> AgentReport:
+def analyze(snapshot: RepositorySnapshot, observer: WorkerObserver | None = None) -> AgentReport:
     """Return bounded test-discovery and test-to-source triage findings.
 
     A source/test file count is deliberately labelled as triage rather than
     coverage: line and branch coverage require executing a repository's test
     suite, which this worker never does.
     """
+    notify(observer, "Discovering conventional test files", 1, 4, files_indexed=snapshot.file_count)
     test_files = [path for path in snapshot.files if _is_test_path(path)]
     source_files = [
         path
         for path in snapshot.files
         if _is_source_path(path) and not _is_test_path(path)
     ]
+    notify(
+        observer,
+        "Detecting test frameworks from captured evidence",
+        2,
+        4,
+        tests_discovered=len(test_files),
+    )
     framework_names = _frameworks(snapshot, test_files)
     evidence_files = _dedupe(test_files[:6] + _test_configuration_files(snapshot)[:4])
     findings: list[Finding] = []
 
     if test_files:
+        locations = file_evidence(test_files, "Conventional test-file path found in the bounded inventory.")
         findings.append(
             Finding(
                 id="testing-test-inventory",
@@ -61,11 +80,14 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                     f"bounded repository inventory."
                 ),
                 severity="info",
-                files=test_files[:8],
+                files=evidence_paths(locations),
+                confidence=bounded_confidence(0.96),
+                evidence=locations,
                 recommendation="Use the discovered tests as the first verification path when changing related code.",
             )
         )
     elif source_files:
+        locations = file_evidence(source_files, "Source file found while no conventional test path was discovered.")
         findings.append(
             Finding(
                 id="testing-no-conventional-tests",
@@ -76,12 +98,21 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                     "test locations or names in the bounded inventory."
                 ),
                 severity="medium",
-                files=source_files[:8],
+                files=evidence_paths(locations),
+                confidence=bounded_confidence(0.78),
+                evidence=locations,
                 recommendation="Add a focused test suite for the highest-impact entry points before broad refactoring.",
             )
         )
 
     if framework_names and evidence_files:
+        exact_framework_locations = _framework_evidence(snapshot, framework_names)
+        framework_locations = exact_framework_locations
+        if not exact_framework_locations:
+            framework_locations = file_evidence(
+                evidence_files,
+                "Test configuration or conventional test path supports the detected framework signal.",
+            )
         findings.append(
             Finding(
                 id="testing-framework-signals",
@@ -89,12 +120,28 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                 title="Test framework signals detected",
                 detail=f"Evidence indicates these test frameworks or runners: {', '.join(framework_names)}.",
                 severity="info",
-                files=evidence_files,
+                files=evidence_paths(framework_locations),
+                confidence=bounded_confidence(0.94 if exact_framework_locations else 0.84),
+                evidence=framework_locations,
                 recommendation="Prefer the existing test tooling and commands when adding coverage.",
             )
         )
 
+    notify(
+        observer,
+        "Resolving configured test command candidates",
+        3,
+        4,
+        tests_discovered=len(test_files),
+    )
     if snapshot.test_commands and evidence_files:
+        exact_command_locations = _command_evidence(snapshot)
+        command_locations = exact_command_locations
+        if not exact_command_locations:
+            command_locations = file_evidence(
+                evidence_files,
+                "Repository configuration or test inventory supports this test command candidate.",
+            )
         findings.append(
             Finding(
                 id="testing-discovered-commands",
@@ -102,11 +149,17 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                 title="Repository test command candidates are available",
                 detail="Configured or convention-derived test commands: " + ", ".join(snapshot.test_commands) + ".",
                 severity="info",
-                files=evidence_files,
+                files=evidence_paths(command_locations),
+                confidence=bounded_confidence(0.94 if exact_command_locations else 0.84),
+                evidence=command_locations,
                 recommendation="Run the applicable command before and after modifying tested behavior.",
             )
         )
     elif test_files:
+        locations = file_evidence(
+            _dedupe(test_files[:6] + _test_configuration_files(snapshot)[:2]),
+            "Test path or project configuration was found without a detected project-level command.",
+        )
         findings.append(
             Finding(
                 id="testing-no-command-candidate",
@@ -117,16 +170,30 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                     "did not yield a runnable project-level test command."
                 ),
                 severity="low",
-                files=_dedupe(test_files[:6] + _test_configuration_files(snapshot)[:2]),
+                files=evidence_paths(locations),
+                confidence=bounded_confidence(0.85),
+                evidence=locations,
                 recommendation="Document a single project-level test command in the relevant manifest or contributor guide.",
             )
         )
 
+    notify(
+        observer,
+        "Comparing source and test inventory for coverage triage",
+        4,
+        4,
+        tests_discovered=len(test_files),
+        source_files=len(source_files),
+    )
     if source_files and test_files:
         source_count = len(source_files)
         test_count = len(test_files)
         ratio = test_count / source_count
         if source_count >= 8 and ratio < 0.15:
+            locations = file_evidence(
+                _dedupe(test_files[:4] + source_files[:4]),
+                "Included in the bounded source-to-test inventory comparison.",
+            )
             findings.append(
                 Finding(
                     id="testing-low-test-to-source-triage",
@@ -137,7 +204,9 @@ def analyze(snapshot: RepositorySnapshot) -> AgentReport:
                         f"file(s) ({ratio:.0%} by file count). This is not measured line or branch coverage."
                     ),
                     severity="low",
-                    files=_dedupe(test_files[:4] + source_files[:4]),
+                    files=evidence_paths(locations),
+                    confidence=bounded_confidence(0.86),
+                    evidence=locations,
                     recommendation="Prioritize tests for public entry points and change-prone source modules, then measure coverage in CI.",
                 )
             )
@@ -201,6 +270,37 @@ def _frameworks(snapshot: RepositorySnapshot, test_files: list[str]) -> list[str
         if "Go testing" not in discovered:
             discovered.append("Go testing")
     return discovered
+
+
+def _framework_evidence(
+    snapshot: RepositorySnapshot, framework_names: list[str]
+) -> list[EvidenceLocation]:
+    selected_signals = [
+        signal
+        for name, signals in _FRAMEWORK_SIGNALS
+        if name in framework_names
+        for signal in signals
+    ]
+    patterns = tuple(re.compile(re.escape(signal), re.IGNORECASE) for signal in selected_signals)
+    if not patterns:
+        return []
+    return pattern_evidence(
+        contents_by_path(snapshot),
+        patterns,
+        "Matched a configured test framework or runner token in the captured excerpt.",
+    )
+
+
+def _command_evidence(snapshot: RepositorySnapshot) -> list[EvidenceLocation]:
+    command_tokens = tuple(
+        re.compile(re.escape(token), re.IGNORECASE)
+        for token in ("test", "pytest", "vitest", "jest", "playwright", "cypress", "go test", "cargo test")
+    )
+    return pattern_evidence(
+        contents_by_path(snapshot),
+        command_tokens,
+        "Matched a test-command or test-runner token in the captured configuration excerpt.",
+    )
 
 
 def _confidence(

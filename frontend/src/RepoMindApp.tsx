@@ -199,6 +199,25 @@ function NativePriorities({ job }: { job: AnalysisJob }) {
   </aside>
 }
 
+function ReviewBrief({ job }: { job: AnalysisJob }) {
+  const severityRank: Record<FindingSeverity, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 }
+  const findings = job.reports.flatMap((report) => report.findings).filter(hasFindingEvidence)
+  const findingById = new Map(findings.map((finding) => [finding.id, finding]))
+  const modelPriority = job.mode === 'native_multi_agent'
+    ? job.priorityFindingIds.map((id) => findingById.get(id)).find((finding): finding is Finding => Boolean(finding))
+    : undefined
+  const finding = modelPriority ?? [...findings].sort((left, right) => severityRank[left.severity] - severityRank[right.severity] || (right.confidence ?? 0) - (left.confidence ?? 0))[0]
+  if (!finding) return null
+  const evidence = finding.evidence.find((item) => item.path.trim().length > 0)
+  const location = evidence ? `${evidence.path}${evidence.lineStart ? ` · line ${evidence.lineStart}` : ' · file-level evidence'}` : finding.files[0]
+  const confidence = finding.confidence === undefined ? undefined : Math.round(finding.confidence * 100)
+  return <aside className="review-brief" aria-label="Recommended first review signal">
+    <div className="review-brief__meta"><p className="eyebrow eyebrow--accent">Start here</p><span>{modelPriority ? 'GPT-5.6 presentation priority' : 'Highest deterministic severity'}</span></div>
+    <div className="review-brief__signal"><span className={severityClass(finding.severity)}>{finding.severity === 'info' ? 'signal' : finding.severity}</span><div><h3>{finding.title}</h3><p>{finding.recommendation || finding.detail}</p>{location && <code>Evidence · {location}{confidence !== undefined ? ` · ${confidence}% evidence confidence` : ''}</code>}</div></div>
+    <p className="review-brief__scope">A recommended review starting point, not a complete repository verdict. Inspect the linked evidence and the analysis scope before changing code.</p>
+  </aside>
+}
+
 function MapBranch({ node, depth, onSelect, selectedPath }: { node: RepositoryMapNode; depth: number; onSelect: (node: RepositoryMapNode) => void; selectedPath?: string }) {
   const [expanded, setExpanded] = useState(depth < 1)
   const hasChildren = node.children.length > 0
@@ -430,7 +449,7 @@ function RepoMindApp() {
     {job && failed && <FailureRecovery job={job} onRetry={retryAnalysis} retrying={isStarting} />}
     {job && <TrustPanel job={job} />}
     {job && <ReconciliationPanel job={job} />}
-    {job && (job.reports.length > 0 || complete) && <section className="reports-section"><div className="section-heading"><div><p className="eyebrow">Specialist evidence</p><h2>Every recommendation carries its proof.</h2></div><p className="section-aside">Severity, confidence, evidence path, line number, and reason travel together. Confidence reflects captured-evidence support—not a guarantee that unscanned code is safe.</p></div><div className="report-grid">{AGENTS.map((agent) => <ReportCard key={agent.role} agent={agent} report={reportFor(job, agent.role)} />)}</div></section>}
+    {job && (job.reports.length > 0 || complete) && <section className="reports-section"><div className="section-heading"><div><p className="eyebrow">Specialist evidence</p><h2>Every recommendation carries its proof.</h2></div><p className="section-aside">Severity, confidence, evidence path, line number, and reason travel together. Confidence reflects captured-evidence support—not a guarantee that unscanned code is safe.</p></div><ReviewBrief job={job} /><div className="report-grid">{AGENTS.map((agent) => <ReportCard key={agent.role} agent={agent} report={reportFor(job, agent.role)} />)}</div></section>}
     {job && (complete || mapMarkdown || agentsMarkdown) && <><CompletionSummary job={job} /><section className="artifacts-section"><div className="section-heading"><div><p className="eyebrow">Generated context</p><h2>Artifacts for the next person—or agent—to touch the code.</h2></div>{job.mode && <p className="mode-explainer">{job.mode === 'native_multi_agent' ? 'GPT-5.6 native synthesis is connected.' : 'Evidence Mode is using deterministic reconciliation.'}</p>}</div><div className="artifact-grid"><article className="artifact-card"><div className="artifact-card__top"><div><p className="eyebrow">Repository map</p><h3>Interactive risk topology</h3></div><span className="artifact-icon" aria-hidden="true">⌘</span></div><RepositoryMap nodes={job.artifacts.repoMapNodes} overview={job.artifacts.repoMapOverview} markdown={mapMarkdown} /><div className="legend"><span><i className="severity severity--critical" /> critical</span><span><i className="severity severity--high" /> high</span><span><i className="severity severity--medium" /> medium</span><span><i className="severity severity--info" /> safe</span></div><a className="download-link" href={artifactMap} download>Download repo-map.md <span aria-hidden="true">↓</span></a></article><article className="artifact-card artifact-card--agents"><div className="artifact-card__top"><div><p className="eyebrow">AGENTS.md</p><h3>Agent-ready operating context</h3></div><span className="artifact-icon" aria-hidden="true">✦</span></div><AgentsPreview markdown={agentsMarkdown} /><a className="download-link" href={artifactAgents} download>Download AGENTS.md <span aria-hidden="true">↓</span></a></article></div></section></>}
     <footer className="site-footer"><span>RepoMind / Evidence-first repository intelligence</span><span>Designed for context, not noise.</span></footer>
   </main>

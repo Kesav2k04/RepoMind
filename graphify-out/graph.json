@@ -994,10 +994,21 @@
       "norm_label": "nativepriorities()"
     },
     {
-      "label": "MapBranch()",
+      "label": "ReviewBrief()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
       "source_location": "L202",
+      "_origin": "ast",
+      "id": "frontend_src_repomindapp_reviewbrief",
+      "community": 0,
+      "community_name": "api.ts",
+      "norm_label": "reviewbrief()"
+    },
+    {
+      "label": "MapBranch()",
+      "file_type": "code",
+      "source_file": "frontend/src/RepoMindApp.tsx",
+      "source_location": "L221",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_mapbranch",
       "community": 0,
@@ -1008,7 +1019,7 @@
       "label": "RepositoryMap()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L215",
+      "source_location": "L234",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_repositorymap",
       "community": 0,
@@ -1019,7 +1030,7 @@
       "label": "AgentsSection",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L238",
+      "source_location": "L257",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_agentssection",
       "community": 0,
@@ -1030,7 +1041,7 @@
       "label": "parseAgentsSections()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L239",
+      "source_location": "L258",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_parseagentssections",
       "community": 0,
@@ -1041,7 +1052,7 @@
       "label": "plainMarkdown()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L256",
+      "source_location": "L275",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_plainmarkdown",
       "community": 0,
@@ -1052,7 +1063,7 @@
       "label": "AgentsSectionContent()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L264",
+      "source_location": "L283",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_agentssectioncontent",
       "community": 0,
@@ -1063,7 +1074,7 @@
       "label": "AgentsPreview()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L272",
+      "source_location": "L291",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_agentspreview",
       "community": 0,
@@ -1074,7 +1085,7 @@
       "label": "AgentActivity()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L292",
+      "source_location": "L311",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_agentactivity",
       "community": 0,
@@ -1085,7 +1096,7 @@
       "label": "ReconciliationPanel()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L312",
+      "source_location": "L331",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_reconciliationpanel",
       "community": 0,
@@ -1096,7 +1107,7 @@
       "label": "CompletionSummary()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L331",
+      "source_location": "L350",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_completionsummary",
       "community": 0,
@@ -1107,7 +1118,7 @@
       "label": "FailureRecovery()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L338",
+      "source_location": "L357",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_failurerecovery",
       "community": 0,
@@ -1118,7 +1129,7 @@
       "label": "RepoMindApp()",
       "file_type": "code",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L343",
+      "source_location": "L362",
       "_origin": "ast",
       "id": "frontend_src_repomindapp_repomindapp",
       "community": 0,
@@ -1187,8 +1198,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "frontend_src_api_endpoint",
-      "community": 17,
-      "community_name": "getAnalysis",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "endpoint()"
     },
     {
@@ -1198,8 +1209,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "frontend_src_api_record",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "record()"
     },
     {
@@ -1209,8 +1220,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "frontend_src_api_string",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "string()"
     },
     {
@@ -1220,8 +1231,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "frontend_src_api_array",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "array()"
     },
     {
@@ -1231,8 +1242,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "frontend_src_api_strings",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "strings()"
     },
     {
@@ -1242,8 +1253,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "frontend_src_api_number",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "number()"
     },
     {
@@ -1253,8 +1264,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "frontend_src_api_optionalnumber",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "optionalnumber()"
     },
     {
@@ -1264,8 +1275,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "frontend_src_api_boolean",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "boolean()"
     },
     {
@@ -1275,8 +1286,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "frontend_src_api_probability",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "probability()"
     },
     {
@@ -1286,8 +1297,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "frontend_src_api_linenumber",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "linenumber()"
     },
     {
@@ -1297,8 +1308,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "frontend_src_api_isrole",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "isrole()"
     },
     {
@@ -1308,8 +1319,8 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "frontend_src_api_readerror",
-      "community": 17,
-      "community_name": "getAnalysis",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "readerror()"
     },
     {
@@ -1319,8 +1330,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "frontend_src_api_normalizeseverity",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizeseverity()"
     },
     {
@@ -1330,8 +1341,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "frontend_src_api_normalizeevidence",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizeevidence()"
     },
     {
@@ -1341,8 +1352,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "frontend_src_api_normalizefinding",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizefinding()"
     },
     {
@@ -1352,8 +1363,8 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "frontend_src_api_normalizereport",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizereport()"
     },
     {
@@ -1363,8 +1374,8 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "frontend_src_api_normalizemetrics",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizemetrics()"
     },
     {
@@ -1374,8 +1385,8 @@
       "source_location": "L127",
       "_origin": "ast",
       "id": "frontend_src_api_normalizeanalysisscope",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizeanalysisscope()"
     },
     {
@@ -1385,8 +1396,8 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "frontend_src_api_normalizevalidation",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizevalidation()"
     },
     {
@@ -1396,8 +1407,8 @@
       "source_location": "L173",
       "_origin": "ast",
       "id": "frontend_src_api_normalizedecision",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizedecision()"
     },
     {
@@ -1407,8 +1418,8 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "frontend_src_api_normalizereconciliation",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizereconciliation()"
     },
     {
@@ -1418,8 +1429,8 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "frontend_src_api_normalizemapnode",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizemapnode()"
     },
     {
@@ -1429,8 +1440,8 @@
       "source_location": "L207",
       "_origin": "ast",
       "id": "frontend_src_api_normalizeprogressevent",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizeprogressevent()"
     },
     {
@@ -1440,8 +1451,8 @@
       "source_location": "L227",
       "_origin": "ast",
       "id": "frontend_src_api_extractartifacts",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "extractartifacts()"
     },
     {
@@ -1451,8 +1462,8 @@
       "source_location": "L238",
       "_origin": "ast",
       "id": "frontend_src_api_normalizejob",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "normalizejob()"
     },
     {
@@ -1462,8 +1473,8 @@
       "source_location": "L275",
       "_origin": "ast",
       "id": "frontend_src_api_createanalysis",
-      "community": 17,
-      "community_name": "getAnalysis",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "createanalysis()"
     },
     {
@@ -1473,8 +1484,8 @@
       "source_location": "L283",
       "_origin": "ast",
       "id": "frontend_src_api_getanalysis",
-      "community": 17,
-      "community_name": "getAnalysis",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "getanalysis()"
     },
     {
@@ -1484,8 +1495,8 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "frontend_src_api_getartifacturl",
-      "community": 17,
-      "community_name": "getAnalysis",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "getartifacturl()"
     },
     {
@@ -1495,8 +1506,8 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "frontend_src_api_fetchartifact",
-      "community": 17,
-      "community_name": "getAnalysis",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "fetchartifact()"
     },
     {
@@ -1517,8 +1528,8 @@
       "source_location": "L306",
       "_origin": "ast",
       "id": "frontend_src_api_openeventstream",
-      "community": 12,
-      "community_name": "normalizeJob",
+      "community": 11,
+      "community_name": "api.ts",
       "norm_label": "openeventstream()"
     },
     {
@@ -1528,7 +1539,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_components_agentglyph",
-      "community": 11,
+      "community": 0,
       "community_name": "api.ts",
       "norm_label": "agentglyph.tsx"
     },
@@ -1539,7 +1550,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "frontend_src_components_agentglyph_agentglyphprops",
-      "community": 11,
+      "community": 0,
       "community_name": "api.ts",
       "norm_label": "agentglyphprops"
     },
@@ -1550,7 +1561,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "frontend_src_components_agentglyph_agentglyph",
-      "community": 11,
+      "community": 0,
       "community_name": "api.ts",
       "norm_label": "agentglyph()"
     },
@@ -1605,7 +1616,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_types_agentrole",
-      "community": 11,
+      "community": 0,
       "community_name": "api.ts",
       "norm_label": "agentrole"
     },
@@ -3101,8 +3112,8 @@
       "source_location": "L173",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_metrics",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": ".metrics()"
     },
     {
@@ -3123,8 +3134,8 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "repository_validate_github_url",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "validate_github_url()"
     },
     {
@@ -3277,8 +3288,8 @@
       "source_location": "L413",
       "_origin": "ast",
       "id": "repository_clone_github_repository",
-      "community": 5,
-      "community_name": "repository.py",
+      "community": 2,
+      "community_name": "main.py",
       "norm_label": "clone_github_repository()"
     },
     {
@@ -3519,8 +3530,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "repository_rationale_174",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "return ui-ready, evidence-backed counts for this bounded snapshot."
     },
     {
@@ -3530,8 +3541,8 @@
       "source_location": "L203",
       "_origin": "ast",
       "id": "repository_rationale_203",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "validate a public github url and return a canonical clone url."
     },
     {
@@ -3607,8 +3618,8 @@
       "source_location": "L414",
       "_origin": "ast",
       "id": "repository_rationale_414",
-      "community": 5,
-      "community_name": "repository.py",
+      "community": 2,
+      "community_name": "main.py",
       "norm_label": "perform a bounded shallow checkout below the configured portable cache root."
     },
     {
@@ -3992,8 +4003,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "settings_settings",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "settings"
     },
     {
@@ -4256,8 +4267,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_orchestration",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "test_orchestration.py"
     },
     {
@@ -4267,8 +4278,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "tests_test_orchestration_collect_progress",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "_collect_progress()"
     },
     {
@@ -4278,8 +4289,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "tests_test_orchestration_collect_rich_progress",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "_collect_rich_progress()"
     },
     {
@@ -4289,8 +4300,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_orchestrate_analysis_uses_four_worker_evidence_fallback",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "test_orchestrate_analysis_uses_four_worker_evidence_fallback()"
     },
     {
@@ -4300,8 +4311,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_orchestration_streams_concrete_specialist_actions",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "test_orchestration_streams_concrete_specialist_actions()"
     },
     {
@@ -4322,8 +4333,8 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_root_output_tolerates_missing_optional_model_text",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "test_root_output_tolerates_missing_optional_model_text()"
     },
     {
@@ -4333,8 +4344,8 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_native_reconciliation_uses_configured_model_and_validates_root_output",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "test_native_reconciliation_uses_configured_model_and_validates_root_output()"
     },
     {
@@ -4344,8 +4355,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_orchestration_py_path",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "path"
     },
     {
@@ -4355,8 +4366,8 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_native_reconciliation_timeout_returns_fast_evidence_fallback",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "test_native_reconciliation_timeout_returns_fast_evidence_fallback()"
     },
     {
@@ -4366,8 +4377,8 @@
       "source_location": "L227",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_native_priority_payload_rejects_unknown_or_duplicate_evidence",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "test_native_priority_payload_rejects_unknown_or_duplicate_evidence()"
     },
     {
@@ -4388,8 +4399,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_orchestration_rationale_1",
-      "community": 14,
-      "community_name": "test_orchestration.py",
+      "community": 9,
+      "community_name": "test_repository.py",
       "norm_label": "tests for deterministic workers, artifacts, and mocked hosted reconciliation."
     },
     {
@@ -4399,8 +4410,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_repository",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_repository.py"
     },
     {
@@ -4410,8 +4421,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "tests_test_repository_test_validate_github_url_canonicalizes_supported_public_urls",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_validate_github_url_canonicalizes_supported_public_urls()"
     },
     {
@@ -4421,8 +4432,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "tests_test_repository_test_validate_github_url_rejects_non_cloneable_or_unsafe_urls",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_validate_github_url_rejects_non_cloneable_or_unsafe_urls()"
     },
     {
@@ -4432,8 +4443,8 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "tests_test_repository_test_snapshot_excludes_generated_and_dependency_directories",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_snapshot_excludes_generated_and_dependency_directories()"
     },
     {
@@ -4443,8 +4454,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_repository_py_path",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "path"
     },
     {
@@ -4454,8 +4465,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "tests_test_repository_test_snapshot_reports_bounded_live_evidence_progress",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_snapshot_reports_bounded_live_evidence_progress()"
     },
     {
@@ -4465,8 +4476,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "tests_test_repository_test_snapshot_discloses_inventory_truncation_in_summary_and_progress",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_snapshot_discloses_inventory_truncation_in_summary_and_progress()"
     },
     {
@@ -4476,8 +4487,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "monkeypatch",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "monkeypatch"
     },
     {
@@ -4487,8 +4498,8 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "tests_test_repository_test_snapshot_discloses_content_budget_truncation",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_snapshot_discloses_content_budget_truncation()"
     },
     {
@@ -4498,8 +4509,8 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "tests_test_repository_test_portable_cache_root_accepts_any_writable_configured_path",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_portable_cache_root_accepts_any_writable_configured_path()"
     },
     {
@@ -4509,8 +4520,8 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "tests_test_repository_test_cache_root_reports_an_actionable_error_for_a_file_destination",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_cache_root_reports_an_actionable_error_for_a_file_destination()"
     },
     {
@@ -4520,8 +4531,8 @@
       "source_location": "L180",
       "_origin": "ast",
       "id": "tests_test_repository_test_settings_falls_back_to_a_portable_temp_cache_without_d_drive",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_settings_falls_back_to_a_portable_temp_cache_without_d_drive()"
     },
     {
@@ -4531,8 +4542,8 @@
       "source_location": "L192",
       "_origin": "ast",
       "id": "tests_test_repository_test_settings_parse_optional_runtime_controls_safely",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_settings_parse_optional_runtime_controls_safely()"
     },
     {
@@ -4553,8 +4564,8 @@
       "source_location": "L230",
       "_origin": "ast",
       "id": "tests_test_repository_test_git_history_capture_decodes_repository_text_as_utf8",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "test_git_history_capture_decodes_repository_text_as_utf8()"
     },
     {
@@ -4564,8 +4575,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_repository_rationale_1",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 5,
+      "community_name": "repository.py",
       "norm_label": "tests for public-repository input validation and bounded evidence extraction."
     },
     {
@@ -7041,7 +7052,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L292",
+      "source_location": "L311",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7063,7 +7074,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L272",
+      "source_location": "L291",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7074,7 +7085,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L238",
+      "source_location": "L257",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7085,7 +7096,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L264",
+      "source_location": "L283",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7107,7 +7118,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L331",
+      "source_location": "L350",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7140,7 +7151,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L338",
+      "source_location": "L357",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7217,7 +7228,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L202",
+      "source_location": "L221",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7261,7 +7272,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L239",
+      "source_location": "L258",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7305,7 +7316,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L256",
+      "source_location": "L275",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7316,7 +7327,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L312",
+      "source_location": "L331",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7327,7 +7338,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L343",
+      "source_location": "L362",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
@@ -7371,11 +7382,22 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L215",
+      "source_location": "L234",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp",
       "target": "frontend_src_repomindapp_repositorymap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/RepoMindApp.tsx",
+      "source_location": "L202",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "frontend_src_repomindapp",
+      "target": "frontend_src_repomindapp_reviewbrief",
       "confidence_score": 1.0
     },
     {
@@ -7523,7 +7545,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L293",
+      "source_location": "L312",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_agentactivity",
@@ -7547,7 +7569,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L316",
+      "source_location": "L335",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_reconciliationpanel",
@@ -7559,7 +7581,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L433",
+      "source_location": "L452",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -7571,7 +7593,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L429",
+      "source_location": "L448",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -7595,7 +7617,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L209",
+      "source_location": "L228",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_mapbranch",
@@ -7619,7 +7641,19 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L332",
+      "source_location": "L216",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "frontend_src_repomindapp_reviewbrief",
+      "target": "frontend_src_repomindapp_severityclass",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/RepoMindApp.tsx",
+      "source_location": "L351",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_completionsummary",
@@ -7643,7 +7677,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L317",
+      "source_location": "L336",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_reconciliationpanel",
@@ -7655,7 +7689,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L350",
+      "source_location": "L369",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -7679,7 +7713,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L351",
+      "source_location": "L370",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -7703,6 +7737,18 @@
       "context": "argument",
       "confidence": "INFERRED",
       "source_file": "frontend/src/RepoMindApp.tsx",
+      "source_location": "L204",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "frontend_src_repomindapp_reviewbrief",
+      "target": "frontend_src_repomindapp_hasfindingevidence",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "source_file": "frontend/src/RepoMindApp.tsx",
       "source_location": "L144",
       "weight": 1.0,
       "_origin": "ast",
@@ -7715,7 +7761,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L294",
+      "source_location": "L313",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_agentactivity",
@@ -7751,7 +7797,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L295",
+      "source_location": "L314",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_agentactivity",
@@ -7775,7 +7821,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L335",
+      "source_location": "L354",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_completionsummary",
@@ -7787,7 +7833,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L423",
+      "source_location": "L442",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -7799,7 +7845,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L297",
+      "source_location": "L316",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_agentactivity",
@@ -7811,7 +7857,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L429",
+      "source_location": "L448",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -7823,7 +7869,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L273",
+      "source_location": "L292",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_agentspreview",
@@ -7835,7 +7881,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L268",
+      "source_location": "L287",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_agentssectioncontent",
@@ -7848,7 +7894,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L390",
+      "source_location": "L409",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -7860,7 +7906,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L360",
+      "source_location": "L379",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -7872,7 +7918,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L421",
+      "source_location": "L440",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -7884,7 +7930,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/RepoMindApp.tsx",
-      "source_location": "L373",
+      "source_location": "L392",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_repomindapp_repomindapp",
@@ -18867,5 +18913,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2c3db2ddd85dc4a86480047046e1dbc307f0ae6c"
+  "built_at_commit": "99945eba090bf3d49d5fcdc9d0b97f01758b29aa"
 }

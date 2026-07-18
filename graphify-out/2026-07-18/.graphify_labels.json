@@ -10,7 +10,11 @@
   "8": "RepoMind",
   "9": "test_repository.py",
   "10": "plugins",
+  "11": "api.ts",
+  "12": "normalizeJob",
   "13": "OpenAI Build Week Challenge Rules & Requirements",
+  "14": "test_orchestration.py",
   "15": "tsconfig.json",
-  "16": "vite.config.ts"
+  "16": "vite.config.ts",
+  "17": "getAnalysis"
 }

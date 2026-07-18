@@ -43,6 +43,7 @@ if FRONTEND_ASSETS_DIR.is_dir():
 class Job:
     job_id: str
     repository_url: str
+    task_description: str | None = None
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     status: str = "queued"
     completed_at: datetime | None = None
@@ -100,7 +101,11 @@ async def start_analysis(request: AnalyzeRequest) -> AnalysisStatus:
             status_code=429,
             detail="RepoMind is at demo capacity. Wait for a running analysis to finish, then try again.",
         )
-    job = Job(job_id=f"job_{uuid4().hex[:12]}", repository_url=canonical_url)
+    job = Job(
+        job_id=f"job_{uuid4().hex[:12]}",
+        repository_url=canonical_url,
+        task_description=_normalized_task_description(request.task_description),
+    )
     jobs[job.job_id] = job
     await publish(job, "queued", "Analysis queued. Preparing an isolated GitHub clone.")
     asyncio.create_task(run_analysis_task(job))
@@ -168,7 +173,7 @@ async def _run_analysis(job: Job) -> None:
                 metrics=details.get("metrics") if isinstance(details.get("metrics"), dict) else None,
             )
 
-        job.result = await orchestrate_analysis(snapshot, progress)
+        job.result = await orchestrate_analysis(snapshot, progress, job.task_description)
         elapsed_ms = _job_duration_ms(started)
         job.result.metrics.duration_ms = elapsed_ms
         job.result.orchestration.duration_ms = elapsed_ms
@@ -199,12 +204,21 @@ def serialize_job(job: Job) -> AnalysisStatus:
         job_id=job.job_id,
         status=job.status,  # type: ignore[arg-type]
         repository_url=job.repository_url,
+        task_description=job.task_description,
         created_at=job.created_at,
         completed_at=job.completed_at,
         events=job.events,
         result=job.result,
         error=job.error,
     )
+
+
+def _normalized_task_description(value: str | None) -> str | None:
+    """Keep optional task context compact and safe to display in live status."""
+    if not isinstance(value, str):
+        return None
+    normalized = " ".join(value.split())
+    return normalized[:2_000] or None
 
 
 @app.get("/api/analyze/{job_id}", response_model=AnalysisStatus)

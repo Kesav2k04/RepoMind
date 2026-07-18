@@ -13,10 +13,15 @@ JobState = Literal["queued", "running", "completed", "failed"]
 
 
 class AnalyzeRequest(BaseModel):
-    """A public GitHub repository to analyze."""
+    """A public GitHub repository and optional change context to analyze."""
 
     repo_url: HttpUrl = Field(
         description="Public GitHub HTTPS repository URL, for example https://github.com/openai/openai-python"
+    )
+    task_description: str | None = Field(
+        default=None,
+        max_length=2_000,
+        description="Optional description of the change the next coding agent is about to make.",
     )
 
 
@@ -84,6 +89,9 @@ class OrchestrationMeta(BaseModel):
     requested_subagents: int = 4
     completed_roles: list[AgentRole] = Field(default_factory=list)
     priority_finding_ids: list[str] = Field(default_factory=list)
+    model_tool_calls: int = 0
+    firewall_proposed_claims: int = 0
+    firewall_verified_claims: int = 0
     duration_ms: int = 0
     note: str | None = None
 
@@ -101,6 +109,8 @@ class AnalysisMetrics(BaseModel):
     discovered_files: int = 0
     skipped_files: int = 0
     content_truncated: bool = False
+    model_tool_calls: int = 0
+    model_workers_completed: int = 0
 
 
 class AnalysisScope(BaseModel):
@@ -117,9 +127,19 @@ class ArtifactValidation(BaseModel):
     """What was mechanically checked before artifacts were presented."""
 
     artifacts_validated: bool = False
+    proposed_claims: int = 0
     validated_findings: int = 0
     rejected_claims: int = 0
     message: str | None = None
+
+
+class TaskBrief(BaseModel):
+    """Evidence-derived handoff focused on an optional user-supplied change."""
+
+    task_description: str
+    priority_finding_ids: list[str] = Field(default_factory=list)
+    review_paths: list[str] = Field(default_factory=list)
+    verification_commands: list[str] = Field(default_factory=list)
 
 
 class ReconciliationDecision(BaseModel):
@@ -145,6 +165,7 @@ class AnalysisResult(BaseModel):
     reconciliation: ReconciliationSummary = Field(default_factory=ReconciliationSummary)
     analysis_scope: AnalysisScope = Field(default_factory=AnalysisScope)
     validation: ArtifactValidation = Field(default_factory=ArtifactValidation)
+    task_brief: TaskBrief | None = None
 
 
 class ProgressEvent(BaseModel):
@@ -163,6 +184,7 @@ class AnalysisStatus(BaseModel):
     job_id: str
     status: JobState
     repository_url: str
+    task_description: str | None = None
     created_at: datetime
     completed_at: datetime | None = None
     events: list[ProgressEvent] = Field(default_factory=list)

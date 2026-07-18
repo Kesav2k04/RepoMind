@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import PurePosixPath
 
 from repository import RepositorySnapshot
-from schemas import AgentReport, ArtifactValidation, Finding, RepoNode, RepositoryMap
+from schemas import AgentReport, ArtifactValidation, Finding, RepoNode, RepositoryMap, TaskBrief
 
 _RISK_ORDER = {"info": 0, "low": 1, "medium": 2, "high": 3, "critical": 4}
 _RISK_LEGEND = {
@@ -17,7 +17,12 @@ _RISK_LEGEND = {
 }
 
 
-def generate_agents_md(snapshot: RepositorySnapshot, reports: list[AgentReport]) -> str:
+def generate_agents_md(
+    snapshot: RepositorySnapshot,
+    reports: list[AgentReport],
+    *,
+    task_brief: TaskBrief | None = None,
+) -> str:
     """Create practical, evidence-first instructions for a future coding agent."""
     report_by_role = {report.role: report for report in reports}
     architecture = report_by_role["architecture"]
@@ -90,6 +95,25 @@ def generate_agents_md(snapshot: RepositorySnapshot, reports: list[AgentReport])
     for finding in testing.findings:
         if finding.severity in {"medium", "high", "critical"}:
             lines.append(f"- Address: {finding.title} - {finding.detail}")
+
+    if task_brief is not None:
+        lines += ["", "## Current Task Brief", ""]
+        lines.append("- **Temporary user task:** " + _safe_markdown_text(task_brief.task_description))
+        lines.append(
+            "- This is change-specific context, not a replacement for repository instructions or evidence."
+        )
+        if task_brief.review_paths:
+            lines.append(
+                "- Review these evidence-backed paths before editing: "
+                + ", ".join(f"`{path}`" for path in task_brief.review_paths)
+                + "."
+            )
+        if task_brief.verification_commands:
+            lines.append(
+                "- Task verification candidates: "
+                + ", ".join(f"`{command}`" for command in task_brief.verification_commands)
+                + "."
+            )
 
     lines += ["", "## Things Not to Touch", ""]
     protected = [finding for finding in material_risks if finding.severity in {"critical", "high"}]
@@ -226,6 +250,13 @@ def _short_reason(finding: Finding) -> str:
 def _short_text(value: str, limit: int = 220) -> str:
     normalized = " ".join((value or "").split())
     return normalized if len(normalized) <= limit else normalized[: limit - 1].rstrip() + "..."
+
+
+def _safe_markdown_text(value: str, limit: int = 600) -> str:
+    """Keep temporary task input readable without letting it reshape the guide."""
+    normalized = " ".join((value or "").split())
+    escaped = normalized.replace("`", "'").replace("<", "&lt;").replace(">", "&gt;")
+    return escaped[:limit].rstrip()
 
 
 def _unique_paths(paths: list[str]) -> list[str]:

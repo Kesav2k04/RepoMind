@@ -88,6 +88,12 @@ h2 { letter-spacing: -.055em; }
 .repo-form__controls { gap: .5rem; padding: .42rem; border-color: #bdc8d8; border-radius: .65rem; background: #fff; box-shadow: 0 .45rem 0 #d6deea, 0 1rem 2.5rem rgba(29, 47, 77, .09); }
 .repo-form__controls > span { color: #5474b4; }
 .repo-form input { padding: .82rem .25rem; font: .88rem/1.4 var(--mono); }
+.repo-form__task-label { display: flex !important; align-items: center; gap: .42rem; margin: 1.1rem 0 .45rem !important; }
+.repo-form__task-label span { color: #77879b; font-weight: 500; text-transform: none; }
+.repo-form__task { display: block; box-sizing: border-box; width: 100%; min-height: 5.35rem; resize: vertical; padding: .72rem .82rem; color: #1d2e46; border: 1px solid #bdc8d8; border-radius: .55rem; outline: 0; background: rgba(255,255,255,.78); font: .78rem/1.55 var(--mono); transition: border-color var(--motion-quick) var(--ease-command), box-shadow var(--motion-quick) var(--ease-command); }
+.repo-form__task:focus { border-color: #6385c7; box-shadow: 0 0 0 .2rem rgba(99,133,199,.14); }
+.repo-form__task::placeholder { color: #8392a6; }
+.repo-form__task:disabled { color: #718097; background: #eef2f6; cursor: not-allowed; }
 .repo-form button { border-radius: .42rem; background: #1e3150; color: #f7fbff; font-size: .82rem; }
 .repo-form button:hover:not(:disabled) { background: #314f84; }
 .form-hint { color: #5c6d82; font-size: .8rem; }
@@ -99,6 +105,8 @@ h2 { letter-spacing: -.055em; }
 
 .orchestration-zone { background: linear-gradient(180deg, rgba(17, 27, 42, .96), var(--forest)); }
 .repository-url { color: #91a1b8; font-size: .78rem; }
+.task-context { display: flex; gap: .55rem; max-width: 48rem; margin: .65rem 0 0; color: #c7d4e5; font-size: .82rem; line-height: 1.5; }
+.task-context span { flex: 0 0 auto; padding-top: .08rem; color: var(--acid); font: 600 .62rem/1.5 var(--mono); letter-spacing: .045em; text-transform: uppercase; }
 .status-chip, .mode-chip { min-height: 2rem; border-color: rgba(142, 164, 198, .28); background: rgba(15, 25, 40, .55); font-size: .68rem; }
 .status-chip--completed, .status-chip--complete { color: var(--acid); border-color: rgba(184, 249, 106, .52); }
 .mode-chip { color: #ffd299; }
@@ -208,6 +216,7 @@ h2 { letter-spacing: -.055em; }
 .artifact-card--agents { background: linear-gradient(145deg, #eaf0f6, #dce6ef); }
 .map-explorer { border-color: rgba(142, 164, 198, .22); border-radius: .5rem; }
 .map-overview, .map-detail p:last-child { font-size: .76rem; }
+.map-scope-note { margin: .75rem 0 0; color: #9caec5; font-size: .68rem; line-height: 1.5; }
 .map-tree__row { min-height: 2.2rem; }
 .map-tree__name { min-height: 2rem; color: #d8e4f2; font-size: .72rem; }
 .map-tree__name[aria-pressed='true'] { color: var(--acid); text-decoration: underline; text-underline-offset: .22rem; }

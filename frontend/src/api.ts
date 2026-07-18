@@ -12,6 +12,7 @@ import type {
   ReconciliationSummary,
   RepositoryMapNode,
   SpecialistReport,
+  TaskBrief,
   ValidationSummary,
 } from './types'
 
@@ -121,6 +122,8 @@ function normalizeMetrics(value: unknown): AnalysisMetrics {
     discoveredFiles: optionalNumber(source.discovered_files ?? source.discoveredFiles),
     skippedFiles: optionalNumber(source.skipped_files ?? source.skippedFiles),
     contentTruncated: boolean(source.content_truncated ?? source.contentTruncated),
+    modelToolCalls: optionalNumber(source.model_tool_calls ?? source.modelToolCalls),
+    modelWorkersCompleted: optionalNumber(source.model_workers_completed ?? source.modelWorkersCompleted),
   }
 }
 
@@ -164,9 +167,22 @@ function normalizeValidation(source: Record<string, unknown>, result: Record<str
   const status = string(validation.status)?.toLowerCase()
   return {
     artifactsValidated: boolean(validation.artifacts_validated ?? validation.artifactsValidated ?? validation.validated) ?? (status === 'validated' ? true : undefined),
+    proposedClaims: optionalNumber(validation.proposed_claims ?? validation.proposedClaims),
     validatedFindings: optionalNumber(validation.validated_findings ?? validation.validatedFindings ?? validation.findings_validated ?? validation.findingsValidated),
     rejectedClaims: optionalNumber(validation.rejected_claims ?? validation.rejectedClaims),
     message: string(validation.message) ?? string(validation.note),
+  }
+}
+
+function normalizeTaskBrief(value: unknown): TaskBrief | undefined {
+  const source = record(value)
+  const taskDescription = string(source.task_description ?? source.taskDescription)
+  if (!taskDescription) return undefined
+  return {
+    taskDescription,
+    priorityFindingIds: strings(source.priority_finding_ids ?? source.priorityFindingIds),
+    reviewPaths: strings(source.review_paths ?? source.reviewPaths),
+    verificationCommands: strings(source.verification_commands ?? source.verificationCommands),
   }
 }
 
@@ -249,6 +265,7 @@ export function normalizeJob(value: unknown): AnalysisJob {
     jobId: string(source.job_id) ?? string(source.jobId) ?? string(source.id) ?? '',
     status: string(source.status) ?? 'queued',
     repoUrl: string(source.repository_url) ?? string(source.repo_url) ?? string(source.repoUrl),
+    taskDescription: string(source.task_description) ?? string(source.taskDescription),
     repositoryName: string(repository.name) ?? string(source.repository_name) ?? string(source.repositoryName) ?? string(source.repo_name),
     repository: {
       name: string(repository.name),
@@ -267,13 +284,19 @@ export function normalizeJob(value: unknown): AnalysisJob {
     metrics,
     analysisScope: normalizeAnalysisScope(source, result, metrics),
     validation: normalizeValidation(source, result),
+    taskBrief: normalizeTaskBrief(result.task_brief ?? result.taskBrief ?? source.task_brief ?? source.taskBrief),
     reconciliation: normalizeReconciliation(result.reconciliation ?? source.reconciliation),
     artifacts: extractArtifacts(source, result),
   }
 }
 
-export async function createAnalysis(repoUrl: string): Promise<AnalysisJob> {
-  const response = await fetch(endpoint('/api/analyze'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ repo_url: repoUrl }) })
+export async function createAnalysis(repoUrl: string, taskDescription?: string): Promise<AnalysisJob> {
+  const normalizedTask = taskDescription?.trim()
+  const response = await fetch(endpoint('/api/analyze'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ repo_url: repoUrl, task_description: normalizedTask || undefined }),
+  })
   if (!response.ok) throw new ApiError(await readError(response), response.status)
   const normalized = normalizeJob(await response.json())
   if (!normalized.jobId) throw new ApiError('The repository service did not return an analysis ID.')

@@ -55,6 +55,8 @@ export interface AnalysisMetrics {
   discoveredFiles?: number
   skippedFiles?: number
   contentTruncated?: boolean
+  modelToolCalls?: number
+  modelWorkersCompleted?: number
 }
 
 export type AnalysisScopeStatus = 'complete' | 'partial' | 'unknown'
@@ -76,9 +78,17 @@ export interface AnalysisScope {
 /** Evidence/artifact validation metadata supplied by newer API versions. */
 export interface ValidationSummary {
   artifactsValidated?: boolean
+  proposedClaims?: number
   validatedFindings?: number
   rejectedClaims?: number
   message?: string
+}
+
+export interface TaskBrief {
+  taskDescription: string
+  priorityFindingIds: string[]
+  reviewPaths: string[]
+  verificationCommands: string[]
 }
 
 export interface ReconciliationDecision {
@@ -120,6 +130,7 @@ export interface AnalysisJob {
   jobId: string
   status: string
   repoUrl?: string
+  taskDescription?: string
   repositoryName?: string
   repository?: RepositoryInfo
   mode?: string
@@ -133,6 +144,7 @@ export interface AnalysisJob {
   metrics: AnalysisMetrics
   analysisScope: AnalysisScope
   validation: ValidationSummary
+  taskBrief?: TaskBrief
   reconciliation: ReconciliationSummary
   artifacts: ArtifactBundle
 }

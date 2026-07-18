@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import asyncio
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -44,6 +46,27 @@ def test_analyze_rejects_non_github_url_without_starting_a_job() -> None:
     assert response.status_code == 422
     assert "github.com" in response.json()["detail"]
     assert main.jobs == {}
+
+
+def test_analyze_keeps_normalized_optional_task_context(monkeypatch) -> None:
+    def discard_background(coroutine: object) -> None:
+        assert asyncio.iscoroutine(coroutine)
+        coroutine.close()
+
+    monkeypatch.setattr(main.asyncio, "create_task", discard_background)
+
+    with TestClient(main.app) as client:
+        response = client.post(
+            "/api/analyze",
+            json={
+                "repo_url": "https://github.com/acme/demo.git",
+                "task_description": "  Replace\n the dynamic parser safely.  ",
+            },
+        )
+
+    assert response.status_code == 202
+    assert response.json()["task_description"] == "Replace the dynamic parser safely."
+    assert next(iter(main.jobs.values())).task_description == "Replace the dynamic parser safely."
 
 
 def test_missing_job_and_artifact_return_not_found() -> None:

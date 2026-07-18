@@ -4,7 +4,15 @@
 
 ## Purpose
 
-RepoMind is a read-only change-preflight service for unfamiliar public GitHub repositories. It gives a coding agent or contributor a bounded evidence pack, specialist findings, a task brief, `AGENTS.md`, and a risk-annotated map before the first edit.
+RepoMind is a read-only change-preflight service for unfamiliar public GitHub repositories. It gives a coding agent or contributor a bounded evidence pack, specialist findings, a cited task brief, `AGENTS.md`, and a risk-annotated map before the first edit.
+
+## Monday-morning handoff
+
+1. State the requested behavior, constraint, and boundary before starting a preflight.
+2. Read the task brief first, then open its cited files before planning or editing.
+3. Treat the risk map as a review prompt, not a safety verdict. Run the observed verification checks after the change.
+
+Use this preflight for unfamiliar, cross-cutting, high-risk, or agent-assisted work. Skip it when the whole repository can be read in one pass.
 
 ## Read this first
 

@@ -1,21 +1,29 @@
 # Three-minute judge path
 
-RepoMind should make sense before a judge reads implementation details: it is a **verified change preflight for the next coding agent**, not a generic repository dashboard.
+RepoMind should make sense before a judge reads implementation details. It is a cited change preflight for the next coding agent, not another repository dashboard.
 
-1. Read the [README](../README.md) hero and **Monday-morning job**. The product exists to give a coding agent the correct files, risks, and tests before its first edit.
-2. Look at the [product loop](../README.md#the-product-loop). One bounded evidence pack fans out to four specialist lenses, passes through a citation firewall, and becomes an `AGENTS.md` plus a risk map.
-3. Inspect [recorded orchestration](images/02-orchestration.png) and [findings](images/03-findings.png). The product shows concrete specialist activity and attaches severity, confidence, source location, reason, and recommendation to retained findings.
-4. Read [what actually runs](../README.md#what-actually-runs). Native mode is four independent GPT-5.6 source specialists with function tools; the application, not a marketing prompt, launches them in parallel. A separate root only reconciles firewall-verified IDs.
-5. Read [the citation firewall](../README.md#citation-firewall). A native claim must prove a path, valid line range, exact quote, and same-worker read-only-tool provenance before it reaches an artifact.
-6. Try the [CLI or MCP handoff](../README.md#use-repomind). Both call the same `run_preflight()` pipeline as the dashboard, so agent-native delivery is not a mocked integration.
-7. Verify [CI](https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml). It runs backend tests plus frontend lint, tests, and build.
+## First 30 seconds: the product outcome
 
-## Authentic checked-in evidence
+1. Read the [README opening](../README.md#why-repomind-exists). The problem is the orientation tax: coding agents waste context locating files, conventions, risks, and checks before the first edit.
+2. Open the dashboard screenshot and notice the task input. RepoMind is designed for a concrete change, such as an auth fix or focused test, not broad codebase chat.
+3. Read the [task-first handoff](../README.md#why-repomind-exists): cited files to inspect, risk boundaries, observed validation, `AGENTS.md`, and an evidence-aware map.
 
-The screenshots and [Flask example](examples/flask/README.md) are authentic **Evidence Mode** runs. They demonstrate the UI, artifact structure, bounded scope disclosure, and deterministic fallback. They are not evidence of a hosted GPT-5.6 run.
+## Next 90 seconds: verify the technical claim
+
+4. View the [product loop](../README.md#the-product-loop). One bounded evidence pack fans out to Architecture, Risk, Testing, and History specialists, then passes through the citation firewall.
+5. Inspect [recorded orchestration](images/02-orchestration.png) and [findings](images/03-findings.png). Retained findings show source location, confidence, reason, and recommendation. Activity comes from recorded progress events, not timers.
+6. Read [Execution modes](../README.md#execution-modes). In Native mode, the application launches four independent GPT-5.6 source specialists with bounded function tools and a separate root that reconciles verified IDs only.
+7. Read [the citation firewall](../README.md#the-citation-firewall). A Native claim needs a real path, valid line range, exact quote, and same-worker read-only-tool provenance before it reaches an artifact.
+
+## Final minute: verify the handoff and the boundary
+
+8. Open the [Flask example](examples/flask/README.md), its generated [AGENTS.md](examples/flask/AGENTS.md), and [repository map](examples/flask/repository-map.md). These are authentic local Evidence Mode artifacts.
+9. Try the [CLI or MCP handoff](../README.md#use-repomind-in-the-coding-loop). Both call the same `run_preflight()` pipeline as the dashboard.
+10. Verify [CI](https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml). It runs backend tests plus frontend lint, tests, and production build.
 
 ## What not to infer
 
+- Evidence Mode is not Native GPT-5.6 output. The checked-in screenshots and Flask example demonstrate the UI, artifact shape, bounded scope disclosure, and deterministic fallback only.
 - An absent finding is not a full-repository safety verdict. Bounded or truncated analyses are marked **partial**.
-- Evidence Mode is not presented as Native GPT output.
-- A public video, live URL, Devpost URL, Codex `/feedback` ID, and timestamped Native-mode capture require final human-supplied links. Until then they remain intentionally absent rather than fabricated.
+- RepoMind prepares cited context. It does not write the fix, replace an IDE, or guarantee that a change is correct.
+- The public video, live URL, Codex `/feedback` ID, and timestamped Native-mode record remain creator-supplied proof until real links exist. See [SUBMISSION_HANDOFF.md](SUBMISSION_HANDOFF.md).

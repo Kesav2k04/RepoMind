@@ -1,28 +1,44 @@
-# OpenAI Build Week Challenge Rules & Requirements
+# OpenAI Build Week submission requirements
 
-## Key Information
-- **Submission Deadline:** Tuesday, July 21 at 5:00 PM PT.
-- **Track:** Developer Tools (Tools for developers, including testing, DevOps, agentic workflows, and security).
-- **Core Requirement:** Create a project using Codex with GPT 5.6.
+Source: [official OpenAI Build Week rules](https://openai.devpost.com/rules). Verify the live Devpost form and deadline before submitting because event details can change.
 
-## Submission Checklist
-- [ ] **A working project**: Build something with Codex using GPT-5.6.
-- [ ] **A category**: Developer Tools.
-- [ ] **A project description**: Tell what you created and how it works.
-- [ ] **A demo video**: <3-minute public YouTube video showing the project working, audio covering how Codex AND GPT-5.6 were used.
-- [ ] **Code Repository URL**: Public or private (shared with testing@devpost.com and build-week-event@openai.com).
-- [ ] **README**: Include setup instructions, sample data, clear guidance for running. *Make sure to highlight where Codex accelerated your workflow, where key decisions were made and how GPT-5.6 and Codex were used.*
-- [ ] **/feedback Codex Session ID**: Input the session ID where the majority of the core functionality was built.
-- [ ] **Dev Tool Specifics**: Include installation instructions, supported platforms, and a way for judges to test without rebuilding (e.g., demo instance).
+## Required submission material
 
-## Judging Criteria (Equally Weighted)
-1. **Technological Implementation**: How thoroughly and skillfully does the project use Codex? Non-trivial implementation.
-2. **Design**: Delivers a working/runnable project with a complete product experience, not just a technical POC.
-3. **Potential Impact**: Solves a real problem for a real audience.
-4. **Quality of the Idea**: Creative, novel, and differs from existing concepts.
+- A working project built using Codex and GPT-5.6.
+- A selected category. RepoMind belongs in **Developer Tools**.
+- A clear project description that explains the product and how it works.
+- A public YouTube video under three minutes. It must show the project working and include audio explaining how both Codex and GPT-5.6 were used.
+- A public code repository, or private access shared with `testing@devpost.com` and `build-week-event@openai.com`.
+- A README with setup, run, testing, and product guidance. It must disclose how Codex accelerated the work, key decisions, and how Codex and GPT-5.6 were used.
+- The Codex `/feedback` session ID where most core functionality was built.
+- For a developer tool, installation guidance, supported platforms, and a way for judges to test it without rebuilding.
 
-## GPT-5.6 Features to Leverage
-- **Programmatic Tool Calling**: Writes JavaScript to call eligible tools, pass results, and process intermediate outputs.
-- **Multi-agent (beta)**: Coordinate multiple subagents in parallel and synthesize results.
-- **Pro mode**: More model work for improved reliability on difficult tasks (`reasoning.mode: "pro"`).
-- **Persisted reasoning**: Reuse available reasoning items across turns (`reasoning.context: "all_turns"`).
+## Judging criteria
+
+The published criteria are equally weighted:
+
+1. **Technological Implementation:** skillful use of Codex and a working, non-trivial implementation.
+2. **Design:** a complete, coherent runnable product experience.
+3. **Potential Impact:** a credible solution for a real audience and problem.
+4. **Quality of the Idea:** creativity, novelty, and differentiation.
+
+## RepoMind readiness checklist
+
+| Requirement | Current repository evidence | Creator action still required |
+| --- | --- | --- |
+| Working project | Backend tests, frontend lint, frontend tests, and production build run in [CI](https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml). | Keep CI green through submission. |
+| Developer Tools category | The product is a cited preflight for coding agents and contributors. | Select Developer Tools in Devpost. |
+| Repository access | [GitHub repository](https://github.com/Kesav2k04/RepoMind) is public. | Confirm the public URL opens while signed out. |
+| Setup and testing | [README](README.md) covers dashboard, CLI, MCP, runtime modes, and verification. | Keep commands aligned with the release. |
+| Codex and GPT-5.6 disclosure | [README](README.md#how-codex-and-gpt-56-contributed) distinguishes development use, Native mode, and deterministic controls. | Add the genuine feedback session ID. |
+| Public project page | [Devpost project](https://devpost.com/software/repomind-context-before-code) is the known project URL. | Ensure its title, description, thumbnail, and links match the release. |
+| Video proof | A checklist exists in [docs/DEMO_PROOF_CHECKLIST.md](docs/DEMO_PROOF_CHECKLIST.md). | Record and publish the real video. |
+| Live testing path | Deployment guidance exists in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). | Publish and verify a judge-accessible URL. |
+| Native runtime proof | Native-mode behavior is documented and tested at contract level. | Capture a real Native-mode run with a valid key and supported model. |
+
+## Submission guardrails
+
+- Do not present Evidence Mode, a mocked test, or deterministic output as Native GPT-5.6 proof.
+- Do not claim a live deployment, public video, or feedback session until the real artifact is available.
+- Keep a public final repository or grant both required judge accounts private access before submitting.
+- Use the [submission handoff](docs/SUBMISSION_HANDOFF.md) as the source of truth for final links and proof.

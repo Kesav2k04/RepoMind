@@ -11,6 +11,7 @@ RepoMind prepares a public GitHub repository for one concrete change. It returns
 [![Node 22.12](https://img.shields.io/badge/Node-22.12%2B-339933?logo=nodedotjs&logoColor=white)](frontend/.nvmrc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-1F8A70.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/Live_demo-Open_RepoMind-6D5DFB?logo=render&logoColor=white)](https://repomind-r9zo.onrender.com/)
+[![Watch demo](https://img.shields.io/badge/Watch_demo-YouTube-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=Ht1RKE4rIYo)
 
 `GPT-5.6 source specialists` &middot; `citation firewall` &middot; `task-scoped preflight` &middot; `MCP + CLI`
 

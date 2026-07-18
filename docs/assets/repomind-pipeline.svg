@@ -3,36 +3,36 @@
   <desc id="desc">A public GitHub repository becomes a bounded evidence pack, is reviewed by four specialists, reconciled by a Master, and produces AGENTS.md and a risk-annotated repository map.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#08120c"/>
-      <stop offset="1" stop-color="#14261a"/>
+      <stop offset="0" stop-color="#0a0f18"/>
+      <stop offset="1" stop-color="#172235"/>
     </linearGradient>
     <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#d6f44f"/>
-      <stop offset="1" stop-color="#99d940"/>
+      <stop stop-color="#83adff"/>
+      <stop offset="1" stop-color="#b8f96a"/>
     </linearGradient>
     <filter id="glow" x="-30%" y="-40%" width="160%" height="180%">
       <feGaussianBlur stdDeviation="10" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-      <path d="M0 0 L10 5 L0 10 Z" fill="#708776"/>
+      <path d="M0 0 L10 5 L0 10 Z" fill="#607898"/>
     </marker>
     <style>
-      .label { fill:#edf5ed; font:700 24px Arial, sans-serif; letter-spacing:-.3px }
-      .detail { fill:#9db1a1; font:16px Arial, sans-serif }
-      .micro { fill:#b8d958; font:700 13px Arial, sans-serif; letter-spacing:2px }
-      .node { fill:#102016; stroke:#40664b; stroke-width:2 }
-      .output { fill:#e6eedf; stroke:#d6f44f; stroke-width:2 }
+      .label { fill:#f7f9fc; font:700 24px ui-sans-serif, system-ui, sans-serif; letter-spacing:-.3px }
+      .detail { fill:#a8b4c5; font:16px ui-sans-serif, system-ui, sans-serif }
+      .micro { fill:#b8f96a; font:700 13px ui-monospace, monospace; letter-spacing:2px }
+      .node { fill:#111d2d; stroke:#36537d; stroke-width:2 }
+      .output { fill:#f4f6f8; stroke:#b8f96a; stroke-width:2 }
     </style>
   </defs>
   <rect width="1600" height="620" rx="28" fill="url(#bg)"/>
-  <circle cx="1240" cy="65" r="260" fill="#d6f44f" opacity=".04"/>
-  <circle cx="200" cy="560" r="310" fill="#7e57ff" opacity=".055"/>
+  <circle cx="1240" cy="65" r="260" fill="#83adff" opacity=".10"/>
+  <circle cx="200" cy="560" r="310" fill="#b8f96a" opacity=".055"/>
   <text x="72" y="76" class="micro">REPOSITORY INTELLIGENCE · EVIDENCE FIRST</text>
   <text x="72" y="126" class="label" style="font-size:40px">How RepoMind turns unknown code into safe context</text>
-  <path d="M274 294 H424" stroke="#708776" stroke-width="3" marker-end="url(#arrow)"/>
-  <path d="M630 294 H748" stroke="#708776" stroke-width="3" marker-end="url(#arrow)"/>
-  <path d="M1140 294 H1260" stroke="#708776" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M274 294 H424" stroke="#607898" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M630 294 H748" stroke="#607898" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1140 294 H1260" stroke="#607898" stroke-width="3" marker-end="url(#arrow)"/>
   <rect x="72" y="222" width="202" height="146" rx="16" class="node"/>
   <text x="100" y="266" class="micro">INPUT</text>
   <text x="100" y="306" class="label">Repository</text>
@@ -43,11 +43,11 @@
   <text x="452" y="336" class="detail">Bounded files · tests · history</text>
   <rect x="748" y="172" width="392" height="246" rx="16" class="node"/>
   <text x="776" y="216" class="micro">4 PARALLEL SPECIALISTS</text>
-  <g fill="#d6f44f" opacity=".9">
+  <g fill="#83adff" opacity=".94">
     <rect x="776" y="244" width="158" height="58" rx="9"/><rect x="954" y="244" width="158" height="58" rx="9"/>
     <rect x="776" y="322" width="158" height="58" rx="9"/><rect x="954" y="322" width="158" height="58" rx="9"/>
   </g>
-  <g fill="#122012" font-family="Arial, sans-serif" font-size="17" font-weight="700">
+  <g fill="#0a0f18" font-family="ui-sans-serif, system-ui, sans-serif" font-size="17" font-weight="700">
     <text x="800" y="279">Architecture</text><text x="1007" y="279">Risk</text>
     <text x="808" y="357">Testing</text><text x="1001" y="357">History</text>
   </g>
@@ -55,10 +55,10 @@
   <circle cx="1302" cy="294" r="21" fill="url(#accent)" filter="url(#glow)"/>
   <text x="1340" y="286" class="label">Master</text>
   <text x="1340" y="316" class="detail">Reconciliation</text>
-  <path d="M1385 368 V464" stroke="#708776" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1385 368 V464" stroke="#607898" stroke-width="3" marker-end="url(#arrow)"/>
   <rect x="1025" y="474" width="340" height="104" rx="16" class="output"/>
-  <text x="1054" y="514" class="micro" style="fill:#42672a">AGENT-READY OUTPUT</text>
-  <text x="1054" y="552" fill="#122012" font-family="Arial, sans-serif" font-size="25" font-weight="700">AGENTS.md + Risk Map</text>
+  <text x="1054" y="514" class="micro" style="fill:#365d2b">AGENT-READY OUTPUT</text>
+  <text x="1054" y="552" fill="#0a0f18" font-family="ui-sans-serif, system-ui, sans-serif" font-size="25" font-weight="700">AGENTS.md + Risk Map</text>
   <text x="72" y="504" class="label" style="font-size:28px">Every recommendation carries its proof.</text>
   <text x="72" y="540" class="detail">Severity, confidence, a path, a line when available, and an explicit scope boundary travel together.</text>
 </svg>

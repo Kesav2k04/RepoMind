@@ -75,6 +75,27 @@ function metricValue(event?: ProgressEvent): string | undefined {
   return undefined
 }
 
+function evidenceActivity(job: AnalysisJob): string {
+  const event = latestEvent(job)
+  const raw = event?.action || event?.message || event?.phase || ''
+  const normalized = raw.toLowerCase()
+  if (normalized.includes('clone')) return 'Cloning source'
+  if (normalized.includes('inventor') || normalized.includes('index')) return 'Indexing files'
+  if (normalized.includes('sample') || normalized.includes('evidence')) return 'Capturing evidence'
+  if (normalized.includes('history') || normalized.includes('commit')) return 'Reading history'
+  if (normalized.includes('reconcil') || normalized.includes('master')) return 'Reconciling signals'
+  if (raw) return raw.replaceAll('_', ' ')
+  return job.status === 'queued' || job.status === 'pending' ? 'Queued safely' : 'Preparing evidence'
+}
+
+function EvidenceMetric({ value, label, pending, complete }: { value: number; label: string; pending: string; complete: boolean }) {
+  const observed = value > 0 || complete
+  return <div className={observed ? '' : 'evidence-summary__metric--pending'}>
+    <span className="evidence-summary__number">{observed ? value : pending}</span>
+    <span>{observed ? label : `${label} · in progress`}</span>
+  </div>
+}
+
 type PipelineState = 'waiting' | 'working' | 'complete' | 'failed'
 
 function PipelineStage({ label, detail, state, children }: { label: string; detail: string; state: PipelineState; children?: React.ReactNode }) {
@@ -97,7 +118,9 @@ function Pipeline({ job }: { job?: AnalysisJob }) {
   const evidenceState: PipelineState = hasEvidence ? (activeRoles ? 'complete' : 'working') : failed ? 'failed' : 'waiting'
   const masterState: PipelineState = complete ? 'complete' : failed ? 'failed' : masterEvent || completedRoles > 0 ? 'working' : 'waiting'
 
-  return <section className="pipeline" aria-label="RepoMind orchestration pipeline">
+  const isActive = Boolean(job && !complete && !failed)
+
+  return <section className={`pipeline ${isActive ? 'pipeline--active' : ''}`} aria-label="RepoMind orchestration pipeline">
     <PipelineStage label="Repository" detail={job ? 'Source received' : 'Paste a public GitHub URL'} state={job ? 'complete' : 'waiting'} />
     <span className="pipeline-arrow" aria-hidden="true">→</span>
     <PipelineStage label="Evidence Pack" detail={hasEvidence ? `${job?.metrics.filesAnalyzed || evidenceEvent?.metrics.files_analyzed || 'Bounded'} files indexed` : failed ? 'Evidence pack unavailable' : 'Manifests, tests, history'} state={evidenceState} />
@@ -174,9 +197,25 @@ function MapBranch({ node, depth, onSelect, selectedPath }: { node: RepositoryMa
 
 function RepositoryMap({ nodes, overview, markdown }: { nodes: RepositoryMapNode[]; overview?: string; markdown?: string }) {
   const [selected, setSelected] = useState<RepositoryMapNode>()
+  const preferredNode = useMemo(() => {
+    const severityOrder: Record<FindingSeverity, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 }
+    const flatten = (items: RepositoryMapNode[]): RepositoryMapNode[] => items.flatMap((item) => [item, ...flatten(item.children)])
+    return flatten(nodes).sort((left, right) => severityOrder[left.risk] - severityOrder[right.risk])[0]
+  }, [nodes])
+
+  useEffect(() => {
+    if (!preferredNode) return
+    setSelected((current) => {
+      if (!current) return preferredNode
+      const exists = (items: RepositoryMapNode[]): boolean => items.some((item) => item.path === current.path || exists(item.children))
+      return exists(nodes) ? current : preferredNode
+    })
+  }, [nodes, preferredNode])
+
+  const activeNode = selected ?? preferredNode
   if (!nodes.length && !markdown) return <p className="empty-state">The risk-annotated map will appear when reconciliation finishes.</p>
   if (!nodes.length) return <pre className="markdown-fallback">{markdown}</pre>
-  return <div className="map-explorer" aria-label="Interactive risk annotated repository map"><p className="map-overview">{overview || 'Select a path to see the evidence-backed repository context.'}</p><div className="map-tree"><ul>{nodes.map((node) => <MapBranch node={node} depth={0} key={node.path} onSelect={setSelected} selectedPath={selected?.path} />)}</ul></div><aside className="map-detail" aria-live="polite"><p className="eyebrow">Selected path</p><strong>{selected?.path || 'Choose a path'}</strong><p>{selected?.purpose || 'Each color reflects the highest evidence-backed risk attached to that area.'}</p></aside></div>
+  return <div className="map-explorer" aria-label="Interactive risk annotated repository map"><p className="map-overview">{overview || 'The highest-risk evidence-backed path is selected first; choose any path to inspect its context.'}</p><div className="map-tree"><ul>{nodes.map((node) => <MapBranch node={node} depth={0} key={node.path} onSelect={setSelected} selectedPath={activeNode?.path} />)}</ul></div><aside className="map-detail" aria-live="polite"><p className="eyebrow">Selected path</p><strong>{activeNode?.path || 'Path unavailable'}</strong><p>{activeNode?.purpose || 'Each color reflects the highest evidence-backed risk attached to that area.'}</p></aside></div>
 }
 
 interface AgentsSection { title: string; body: string }
@@ -237,17 +276,39 @@ function AgentActivity({ job, agent, index }: { job: AnalysisJob; agent: (typeof
   const report = reportFor(job, agent.role)
   const event = latestEvent(job, agent.role)
   const state = agentState(job, agent.role)
-  const action = report ? 'Completed' : event?.action ?? event?.message ?? agent.defaultAction
+  const action = report ? 'Completed' : event?.action ?? event?.message ?? (state === 'queued' ? 'Waiting for evidence pack…' : agent.defaultAction)
   const progress = report ? 'Evidence report ready' : metricValue(event) ?? (state === 'queued' ? 'Waiting for evidence' : 'Working from evidence')
   const percent = report ? 100 : event?.percent ?? (event?.current !== undefined && event.total ? Math.round((event.current / event.total) * 100) : undefined)
-  return <article className={`agent-card agent-card--${state}`}><span className="agent-card__number">0{index + 1}</span><AgentGlyph role={agent.role} /><div className="agent-card__content"><h3>{agent.label}</h3><p className="agent-action">{action}</p><p className="agent-progress">{progress}</p></div>{percent !== undefined && <div className="agent-progressbar" aria-label={`${percent}% complete`}><i style={{ width: `${Math.min(100, Math.max(0, percent))}%` }} /></div>}<span className="step-state" aria-label={state}>{state === 'complete' ? '✓' : <i />}</span></article>
+  const stateLabel = state === 'complete' ? 'Report ready' : state === 'working' ? 'Working from evidence' : state === 'failed' ? 'Stopped safely' : 'Awaiting evidence'
+  const liveDetail = event?.phase?.replaceAll('_', ' ') ?? 'specialist review'
+
+  return <article className={`agent-card agent-card--${state}`} aria-label={`${agent.label}: ${stateLabel}`}>
+    <span className="agent-card__number">0{index + 1}</span>
+    <div className="agent-card__glyph-wrap"><AgentGlyph role={agent.role} />{state === 'working' && <span className="agent-card__activity-ring" aria-hidden="true" />}</div>
+    <div className="agent-card__content"><h3>{agent.label}</h3><p className="agent-action">{action}</p><p className="agent-progress">{progress}</p></div>
+    <div className="agent-card__status" aria-live="polite"><span className="agent-card__status-dot" aria-hidden="true" />{state === 'working' ? `Live · ${liveDetail}` : stateLabel}</div>
+    {percent !== undefined && <div className="agent-progressbar" aria-label={`${percent}% complete`}><i style={{ width: `${Math.min(100, Math.max(0, percent))}%` }} /></div>}
+    <span className="step-state" aria-hidden="true">{state === 'complete' ? '✓' : <i />}</span>
+  </article>
 }
 
 function ReconciliationPanel({ job }: { job: AnalysisJob }) {
   const reconciliation = job.reconciliation
   const hasData = job.reports.length > 0 || reconciliation.decisions.length > 0 || job.events.some((event) => event.phase.toLowerCase().includes('reconcil'))
+  const leadDecision = reconciliation.decisions.find((decision) => decision.disposition === 'accepted' || decision.disposition === 'merged') ?? reconciliation.decisions[0]
+  const contributorLabels = leadDecision ? AGENTS.filter((agent) => reportFor(job, agent.role)?.findings.some((finding) => leadDecision.findingIds.includes(finding.id))).map((agent) => agent.label) : []
+  const masterSummary = isComplete(job)
+    ? leadDecision
+      ? leadDecision.rationale || `${leadDecision.findingIds.length} evidence-backed finding${leadDecision.findingIds.length === 1 ? '' : 's'} resolved.`
+      : 'No conflicting evidence was found; validated specialist signals were carried forward as independent context.'
+    : 'Comparing specialist evidence.'
+  const decisionStats = [
+    { label: 'accepted', value: reconciliation.acceptedCount },
+    { label: 'merged', value: reconciliation.mergedCount },
+    { label: 'deferred', value: reconciliation.deferredCount },
+  ].filter((item) => item.value > 0)
   if (!hasData) return null
-  return <section className="reconciliation-panel"><div className="reconciliation-panel__heading"><div><p className="eyebrow eyebrow--accent">Master reconciliation</p><h2>Signals become an engineering decision.</h2></div><div className="decision-counts"><span><strong>{reconciliation.acceptedCount}</strong> accepted</span><span><strong>{reconciliation.mergedCount}</strong> merged</span><span><strong>{reconciliation.deferredCount}</strong> deferred</span></div></div><div className="reconciliation-flow"><div className="agent-opinions">{AGENTS.map((agent) => <div key={agent.role}><AgentGlyph role={agent.role} /><p><strong>{agent.label} says</strong>{reportFor(job, agent.role)?.summary || 'Evidence is still arriving.'}</p></div>)}</div><div className="master-merge"><span>✦</span><strong>Master</strong><p>{isComplete(job) ? 'Merged the evidence into the final report.' : 'Comparing specialist evidence.'}</p></div><div className="decision-list">{reconciliation.decisions.length ? reconciliation.decisions.slice(0, 3).map((decision, index) => <article key={`${decision.disposition}-${index}`}><span className={`decision-badge decision-badge--${decision.disposition}`}>{decision.disposition}</span><p>{decision.rationale || `${decision.findingIds.length} finding${decision.findingIds.length === 1 ? '' : 's'} considered`}</p></article>) : <p className="empty-state">The Master will show accepted, merged, and deferred evidence here.</p>}</div></div></section>
+  return <section className="reconciliation-panel"><div className="reconciliation-panel__heading"><div><p className="eyebrow eyebrow--accent">Master reconciliation</p><h2>Signals become an engineering decision.</h2></div><div className="decision-counts">{decisionStats.length ? decisionStats.map((item) => <span key={item.label}><strong>{item.value}</strong> {item.label}</span>) : <span><strong>Clear</strong> no conflict</span>}</div></div><div className="reconciliation-flow"><div className="agent-opinions">{AGENTS.map((agent) => <div key={agent.role}><AgentGlyph role={agent.role} /><p><strong>{agent.label} says</strong>{reportFor(job, agent.role)?.summary || 'Evidence is still arriving.'}</p></div>)}</div><div className="master-merge"><span>✦</span><strong>Master</strong><p>{masterSummary}</p>{leadDecision && <small>{contributorLabels.length ? contributorLabels.join(' + ') : 'Specialist evidence'} · {leadDecision.findingIds.length} finding{leadDecision.findingIds.length === 1 ? '' : 's'} considered</small>}</div><div className="decision-list">{reconciliation.decisions.length ? reconciliation.decisions.slice(0, 3).map((decision, index) => <article key={`${decision.disposition}-${index}`}><span className={`decision-badge decision-badge--${decision.disposition}`}>{decision.disposition}</span><p>{decision.rationale || `${decision.findingIds.length} finding${decision.findingIds.length === 1 ? '' : 's'} considered`}</p></article>) : <p className="empty-state">The Master will show accepted, merged, and deferred evidence here.</p>}</div></div></section>
 }
 
 function CompletionSummary({ job }: { job: AnalysisJob }) {
@@ -346,9 +407,9 @@ function RepoMindApp() {
 
   return <main className="repomind-shell">
     <header className="site-header"><a className="brand" href="#top" aria-label="RepoMind home"><BrandMark /><span>RepoMind</span></a><p className="header-note"><span className="header-note__dot" aria-hidden="true" /> Evidence-first repository intelligence</p></header>
-    <section className="hero" id="top"><div><p className="eyebrow eyebrow--accent">Context before code</p><h1>Give every coding agent a reliable starting point.</h1><p className="hero-lede">RepoMind turns an unfamiliar repository into evidence-backed architecture, risks, test context, and conventions—before anyone edits a line.</p><div className="hero-proof" aria-label="RepoMind capabilities"><span>4 evidence specialists</span><span>Validated findings</span><span>AGENTS.md + risk map</span></div></div><aside className="hero-story" aria-label="Why AGENTS.md matters"><p className="eyebrow">Why AGENTS.md matters</p><div><span>Without RepoMind</span><strong>AI starts coding blindly.</strong></div><div className="hero-story__with"><span>With RepoMind</span><strong>AI starts with architecture, risk boundaries, tests, and a verification plan.</strong></div></aside></section>
-    <section className="launch-panel" aria-labelledby="analyze-heading"><div><p className="eyebrow">Start an analysis</p><h2 id="analyze-heading">Bring a public GitHub repository.</h2><p>Turn its existing code into context a contributor can trust.</p></div><form className="repo-form" onSubmit={submit}><label htmlFor="repo-url">Repository URL</label><div className="repo-form__controls"><span aria-hidden="true">⌁</span><input id="repo-url" type="url" inputMode="url" autoComplete="url" placeholder="https://github.com/owner/repository" value={repoUrl} onChange={(event) => setRepoUrl(event.target.value)} disabled={busy} aria-describedby={error ? 'form-error' : 'repo-hint'} /><button type="submit" disabled={busy}>{isStarting ? 'Launching…' : busy ? 'Analysis running' : 'Analyze repository'}</button></div><p className="form-hint" id="repo-hint">Public repositories only. RepoMind reads a bounded evidence pack and never modifies the source repository.</p></form>{error && <p className="form-error" id="form-error" role="alert">{error}</p>}</section>
-    <section className="orchestration-zone" aria-live="polite"><div className="orchestration-zone__heading"><div><p className="eyebrow">Visible orchestration</p><h2>{job ? title : 'A clear path from repository to trusted context.'}</h2>{job?.repoUrl && <p className="repository-url">{job.repoUrl}</p>}</div>{job && <div className="session-meta"><span className={`status-chip status-chip--${job.status}`}>{STATUS_LABELS[job.status] ?? job.status}</span><span className={`mode-chip ${job.mode === 'native_multi_agent' ? 'mode-chip--native' : ''}`}>{modeLabel(job.mode)}</span></div>}</div><Pipeline job={job} />{job && <>{job.error && <p className="job-error" role="alert">{job.error}</p>}<div className="evidence-summary"><div><span className="evidence-summary__number">{job.metrics.filesAnalyzed || job.repository?.fileCount || '—'}</span><span>files analyzed</span></div><div><span className="evidence-summary__number">{job.metrics.manifestsFound || '—'}</span><span>manifests</span></div><div><span className="evidence-summary__number">{job.metrics.testsDiscovered || '—'}</span><span>test files found</span></div><div><span className="evidence-summary__number">{job.metrics.commitsInspected || '—'}</span><span>commits read</span></div></div><div className="agent-timeline">{AGENTS.map((agent, index) => <AgentActivity job={job} agent={agent} index={index} key={agent.role} />)}</div></>}</section>
+    <section className="hero" id="top"><div><p className="eyebrow eyebrow--accent">Context before code</p><h1>Give every coding agent a reliable starting point.</h1><p className="hero-lede">RepoMind turns an unfamiliar repository into evidence-backed architecture, risks, test context, and conventions—before anyone edits a line.</p><div className="hero-proof" aria-label="RepoMind capabilities"><span>4 evidence specialists</span><span>Validated findings</span><span>AGENTS.md + risk map</span></div></div><aside className="hero-story" aria-label="Why AGENTS.md matters"><p className="eyebrow">Why AGENTS.md matters</p><div><span>Without RepoMind</span><strong>AI starts coding blindly.</strong></div><div className="hero-story__with"><span>With RepoMind</span><strong>AI starts with architecture, risk boundaries, tests, and a verification plan.</strong></div><div className="hero-story__trace" aria-label="Repository evidence becomes validated context"><span>Repository</span><i aria-hidden="true" /><span>Evidence</span><i aria-hidden="true" /><strong>AGENTS.md</strong></div></aside></section>
+    <section className="launch-panel" aria-labelledby="analyze-heading"><div><p className="eyebrow">Start an analysis</p><h2 id="analyze-heading">Bring a public GitHub repository.</h2><p>Turn its existing code into context a contributor can trust.</p></div><form className="repo-form" onSubmit={submit}><label htmlFor="repo-url">Repository URL</label><div className="repo-form__controls"><span aria-hidden="true">⌁</span><input id="repo-url" type="url" inputMode="url" autoComplete="url" placeholder="https://github.com/owner/repository" value={repoUrl} onChange={(event) => setRepoUrl(event.target.value)} disabled={busy} aria-describedby={error ? 'form-error' : 'repo-hint'} /><button type="submit" disabled={busy}>{isStarting ? 'Launching…' : busy ? 'Analysis running' : 'Analyze repository'}</button></div><div className="form-assist"><p className="form-hint" id="repo-hint">Public repositories only. RepoMind reads a bounded evidence pack and never modifies the source repository.</p><button type="button" className="repo-form__example" onClick={() => setRepoUrl('https://github.com/pallets/flask')} disabled={busy}>Use Flask demo</button></div></form>{error && <p className="form-error" id="form-error" role="alert">{error}</p>}</section>
+    <section className="orchestration-zone" aria-live="polite"><div className="orchestration-zone__heading"><div><p className="eyebrow">Visible orchestration</p><h2>{job ? title : 'A clear path from repository to trusted context.'}</h2>{job?.repoUrl && <p className="repository-url">{job.repoUrl}</p>}</div>{job && <div className="session-meta"><span className={`status-chip status-chip--${job.status}`}>{STATUS_LABELS[job.status] ?? job.status}</span><span className={`mode-chip ${job.mode === 'native_multi_agent' ? 'mode-chip--native' : ''}`}>{modeLabel(job.mode)}</span></div>}</div><Pipeline job={job} />{job && <>{job.error && <p className="job-error" role="alert">{job.error}</p>}{complete || job.metrics.filesAnalyzed > 0 || job.metrics.manifestsFound > 0 || job.metrics.testsDiscovered > 0 || job.metrics.commitsInspected > 0 ? <div className="evidence-summary"><EvidenceMetric value={job.metrics.filesAnalyzed || job.repository?.fileCount || 0} label="files analyzed" pending={evidenceActivity(job)} complete={complete} /><EvidenceMetric value={job.metrics.manifestsFound} label="manifests" pending={evidenceActivity(job)} complete={complete} /><EvidenceMetric value={job.metrics.testsDiscovered} label="test files found" pending={evidenceActivity(job)} complete={complete} /><EvidenceMetric value={job.metrics.commitsInspected} label="commits read" pending={evidenceActivity(job)} complete={complete} /></div> : <div className="evidence-summary evidence-summary--pending"><div className="evidence-summary__stage"><span className="evidence-summary__number">{evidenceActivity(job)}</span><span>Evidence pack · in progress</span></div><p>RepoMind will publish counts only after it has observed bounded repository evidence.</p></div>}<div className="agent-timeline">{AGENTS.map((agent, index) => <AgentActivity job={job} agent={agent} index={index} key={agent.role} />)}</div></>}</section>
     {job && failed && <FailureRecovery job={job} onRetry={retryAnalysis} retrying={isStarting} />}
     {job && <TrustPanel job={job} />}
     {job && <ReconciliationPanel job={job} />}

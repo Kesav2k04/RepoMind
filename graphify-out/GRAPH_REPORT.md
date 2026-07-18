@@ -1,16 +1,16 @@
 # Graph Report - RepoMind  (2026-07-18)
 
 ## Corpus Check
-- 33 files · ~88,861 words
+- 33 files · ~104,057 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 515 nodes · 1128 edges · 14 communities (13 shown, 1 thin omitted)
+- 516 nodes · 1131 edges · 14 communities (13 shown, 1 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 30 edges (avg confidence: 0.54)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `77121989`
+- Built from commit: `15a9bd61`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -44,13 +44,13 @@
 ## Surprising Connections (you probably didn't know these)
 - `Job` --uses--> `AnalysisResult`  [INFERRED]
   main.py → schemas.py
-- `_run_analysis()` --indirect_call--> `cleanup_checkout()`  [INFERRED]
-  main.py → repository.py
 - `_run_analysis()` --indirect_call--> `snapshot_repository()`  [INFERRED]
   main.py → repository.py
 - `FileInventory` --uses--> `EvidenceLocation`  [INFERRED]
   repository.py → schemas.py
 - `EvidenceExtraction` --uses--> `EvidenceLocation`  [INFERRED]
+  repository.py → schemas.py
+- `RepositorySnapshot` --uses--> `RepositoryInfo`  [INFERRED]
   repository.py → schemas.py
 
 ## Import Cycles
@@ -63,24 +63,24 @@ Cohesion: 0.05
 Nodes (83): apiBase, ApiError, array(), boolean(), createAnalysis(), endpoint(), extractArtifacts(), fetchArtifact() (+75 more)
 
 ### Community 1 - "RepositorySnapshot"
-Cohesion: 0.06
-Nodes (77): Number of files retained in this bounded inventory., Whether any repository source was excluded or truncated by safety limits., Return the fixed source-evidence budgets used for this snapshot., RepositorySnapshot, RepositoryInfo, EvidenceLocation, Finding, A concrete source location supporting a finding. (+69 more)
+Cohesion: 0.05
+Nodes (89): Number of files retained in this bounded inventory., Whether any repository source was excluded or truncated by safety limits., Return the fixed source-evidence budgets used for this snapshot., RepositorySnapshot, RepositoryInfo, EvidenceLocation, Finding, A concrete source location supporting a finding. (+81 more)
 
 ### Community 2 - "main.py"
-Cohesion: 0.08
-Nodes (35): Exception, FileResponse, analysis_events(), _at_demo_capacity(), _frontend_index(), get_analysis_status(), get_artifact(), Job (+27 more)
+Cohesion: 0.07
+Nodes (39): Exception, FileResponse, analysis_events(), _at_demo_capacity(), _frontend_index(), get_analysis_status(), get_artifact(), Job (+31 more)
 
 ### Community 3 - "schemas.py"
 Cohesion: 0.06
-Nodes (68): AnalysisMetrics, AnalysisScope, build_repository_map(), _finding_files(), _finding_line(), generate_agents_md(), _purpose(), Finding (+60 more)
+Nodes (66): AnalysisMetrics, AnalysisScope, build_repository_map(), _finding_files(), _finding_line(), generate_agents_md(), _purpose(), Finding (+58 more)
 
 ### Community 4 - "devDependencies"
 Cohesion: 0.06
 Nodes (35): @fontsource-variable/geist, @fontsource-variable/geist-mono, dependencies, @fontsource-variable/geist, @fontsource-variable/geist-mono, react, react-dom, devDependencies (+27 more)
 
 ### Community 5 - "repository.py"
-Cohesion: 0.06
-Nodes (69): MonkeyPatch, _apply_extraction_metrics(), _bounded_text(), _cache_root(), cleanup_checkout(), clone_github_repository(), _collect_file_records(), count_manifest_files() (+61 more)
+Cohesion: 0.09
+Nodes (45): _apply_extraction_metrics(), _bounded_text(), _collect_file_records(), count_manifest_files(), count_test_files(), _emit_progress(), evidence_location(), EvidenceExtraction (+37 more)
 
 ### Community 6 - "compilerOptions"
 Cohesion: 0.08
@@ -91,16 +91,16 @@ Cohesion: 0.10
 Nodes (19): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib, module, moduleDetection, noEmit, noFallthroughCasesInSwitch (+11 more)
 
 ### Community 8 - "RepoMind"
-Cohesion: 0.13
-Nodes (14): 1. Start the API, 2. Start the dashboard, Architecture, Codex and GPT-5.6 boundaries, From repository to usable context, License, Prerequisites, Quick start (+6 more)
+Cohesion: 0.14
+Nodes (13): 1. Start the API, 2. Start the dashboard, Architecture, Codex and GPT-5.6 boundaries, From repository to usable context, License, Prerequisites, Quick start (+5 more)
 
 ### Community 9 - "test_repository.py"
-Cohesion: 0.13
-Nodes (20): _cors_origins(), _d_drive_is_available(), _default_cache_dir(), _positive_int(), Path, Runtime configuration for RepoMind.  Configuration is deliberately small for the, Keep the established D: cache only on hosts where that drive exists., Choose the local D: cache when available, otherwise use a portable temp path. (+12 more)
+Cohesion: 0.11
+Nodes (30): MonkeyPatch, _cache_root(), Return UI-ready, evidence-backed counts for this bounded snapshot., Validate a public GitHub URL and return a canonical clone URL., Create and resolve the configured cache root with an actionable error., validate_github_url(), _cors_origins(), _d_drive_is_available() (+22 more)
 
 ### Community 10 - "plugins"
-Cohesion: 0.22
-Nodes (8): plugins, rules, react/only-export-components, react/rules-of-hooks, $schema, oxc, typescript, warn
+Cohesion: 0.17
+Nodes (9): plugins, rules, react/only-export-components, react/rules-of-hooks, $schema, oxc, react, typescript (+1 more)
 
 ### Community 13 - "OpenAI Build Week Challenge Rules & Requirements"
 Cohesion: 0.33
@@ -115,16 +115,16 @@ Nodes (5): GPT-5.6 Features to Leverage, Judging Criteria (Equally Weighted), Ke
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `RepositorySnapshot` connect `RepositorySnapshot` to `test_repository.py`, `schemas.py`, `repository.py`?**
-  _High betweenness centrality (0.103) - this node is a cross-community bridge._
-- **Why does `snapshot_repository()` connect `repository.py` to `RepositorySnapshot`, `main.py`?**
+  _High betweenness centrality (0.102) - this node is a cross-community bridge._
+- **Why does `snapshot_repository()` connect `repository.py` to `RepositorySnapshot`, `main.py`, `test_repository.py`?**
   _High betweenness centrality (0.028) - this node is a cross-community bridge._
-- **Why does `orchestrate_analysis()` connect `schemas.py` to `RepositorySnapshot`, `main.py`, `test_repository.py`?**
+- **Why does `orchestrate_analysis()` connect `schemas.py` to `RepositorySnapshot`, `main.py`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `RepositorySnapshot` (e.g. with `EvidenceLocation` and `RepositoryInfo`) actually correct?**
   _`RepositorySnapshot` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `typescript`, `oxc` to the rest of the system?**
   _87 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `api.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.05131578947368421 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.052407614781634936 - nodes in this community are weakly interconnected._
 - **Should `RepositorySnapshot` be split into smaller, more focused modules?**
-  _Cohesion score 0.05934065934065934 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05054945054945055 - nodes in this community are weakly interconnected._

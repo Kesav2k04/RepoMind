@@ -1,15 +1,21 @@
-# RepoMind
+<div align="center">
 
-> **Context before code.** RepoMind turns a public GitHub repository into evidence-backed operating context for the next developer or coding agent.
+<h1>RepoMind</h1>
 
-[![CI](https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml/badge.svg)](https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml)
-[![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Node 20.19%2B](https://img.shields.io/badge/Node-20.19%2B-339933?logo=nodedotjs&logoColor=white)](frontend/.nvmrc)
-[![License: MIT](https://img.shields.io/badge/License-MIT-1F8A70.svg)](LICENSE)
+<p><strong>Context before code.</strong> Give every coding agent evidence-backed repository context before the first edit.</p>
 
-`Developer tools` · `Evidence-first` · `Agent-ready context` · `OpenAI Build Week`
+<p>
+  <a href="https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml"><img src="https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.11-3776AB?logo=python&amp;logoColor=white" alt="Python 3.11" /></a>
+  <a href="frontend/.nvmrc"><img src="https://img.shields.io/badge/Node-20.19%2B-339933?logo=nodedotjs&amp;logoColor=white" alt="Node 20.19 or newer" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-1F8A70.svg" alt="MIT License" /></a>
+</p>
 
-![RepoMind home screen](docs/images/01-home.png)
+<p><code>Developer tools</code> &nbsp;·&nbsp; <code>Evidence-first</code> &nbsp;·&nbsp; <code>Agent-ready context</code> &nbsp;·&nbsp; <code>OpenAI Build Week</code></p>
+
+<img src="docs/images/01-home.png" alt="RepoMind evidence-first repository intelligence dashboard" width="100%" />
+
+</div>
 
 RepoMind replaces a blind first edit with a concise repository briefing. It inventories bounded source evidence, lets four specialist lenses inspect it in parallel, reconciles their signals, and delivers two handoff artifacts:
 

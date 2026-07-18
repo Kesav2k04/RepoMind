@@ -53,6 +53,8 @@ Use RepoMind before unfamiliar, cross-cutting, high-risk, or agent-assisted work
 
 RepoMind never fabricates a source citation, model mode, line number, confidence score, or completion state.
 
+> **Note to Judges:** The live Render deployment is pre-loaded with a $5.00 OpenAI API credit limit to allow for live Native Mode evaluation. If community testing exhausts this limit during the judging period, RepoMind will automatically and gracefully degrade into its deterministic Evidence Mode fallback. Both modes utilize the same trusted preflight architecture.
+
 ## Architecture: one trusted path
 
 <p align="center">

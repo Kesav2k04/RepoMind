@@ -10,6 +10,9 @@ frontend/dist/
 .local/
 graphify-out/
 .repomind-integration-cache/
+# Defensive ignore rules for deployment credentials if they are ever copied here.
+deploy-assets/
+hf_token.txt
 # Generated local handoffs and private release-operator notes.
 repo-map.md
 test_artifacts_agents.md

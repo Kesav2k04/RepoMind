@@ -1,0 +1,13 @@
+.git/
+.github/
+.venv/
+__pycache__/
+.pytest_cache/
+.repomind-integration-cache/
+graphify-out/
+docs/
+tests/
+frontend/node_modules/
+frontend/dist/
+.env
+*.pyc

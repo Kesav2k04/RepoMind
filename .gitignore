@@ -6,3 +6,4 @@ coverage/
 graphify-out/cache/ast/
 frontend/node_modules/
 frontend/dist/
+.local/

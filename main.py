@@ -5,12 +5,14 @@ from __future__ import annotations
 import asyncio
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
+from pathlib import Path
 from time import perf_counter
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import FileResponse, PlainTextResponse
+from fastapi.staticfiles import StaticFiles
 
 from repository import validate_github_url
 from schemas import AnalysisResult, AnalysisStatus, AnalyzeRequest, ProgressEvent
@@ -27,6 +29,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# The Docker image builds the Vite application into this directory. Keeping the
+# API and dashboard on one origin avoids a production CORS dependency while
+# preserving the standalone Vite development workflow.
+FRONTEND_DIST_DIR = Path(__file__).resolve().parent / "frontend" / "dist"
+FRONTEND_ASSETS_DIR = FRONTEND_DIST_DIR / "assets"
+if FRONTEND_ASSETS_DIR.is_dir():
+    app.mount("/assets", StaticFiles(directory=FRONTEND_ASSETS_DIR), name="frontend-assets")
 
 
 @dataclass
@@ -270,3 +280,29 @@ def _safe_failure_message(exc: Exception) -> str:
     if "clone" in detail or "repository" in detail or "git" in detail:
         return "RepoMind could not clone this repository. Confirm that it is public and reachable, then try again."
     return "RepoMind could not complete this analysis. Try again or choose another public repository."
+
+
+def _frontend_index() -> FileResponse:
+    """Serve the compiled dashboard only when this deployment includes it."""
+    index = FRONTEND_DIST_DIR / "index.html"
+    if not index.is_file():
+        raise HTTPException(status_code=404, detail="RepoMind frontend build is not available")
+    return FileResponse(index)
+
+
+@app.get("/", include_in_schema=False)
+async def serve_frontend_index() -> FileResponse:
+    return _frontend_index()
+
+
+@app.get("/{path:path}", include_in_schema=False)
+async def serve_frontend_route(path: str) -> FileResponse:
+    """Serve static files or the SPA without masking missing API endpoints."""
+    if path == "api" or path.startswith("api/"):
+        raise HTTPException(status_code=404, detail="Not found")
+
+    candidate = (FRONTEND_DIST_DIR / path).resolve()
+    frontend_root = FRONTEND_DIST_DIR.resolve()
+    if frontend_root in candidate.parents and candidate.is_file():
+        return FileResponse(candidate)
+    return _frontend_index()

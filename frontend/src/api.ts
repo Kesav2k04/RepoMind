@@ -15,7 +15,9 @@ import type {
   ValidationSummary,
 } from './types'
 
-const apiBase = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000').replace(/\/$/, '')
+// Vite development remains convenient out of the box, while the Docker image
+// serves the dashboard and FastAPI API from one origin in production.
+const apiBase = (import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? 'http://localhost:8000' : '')).replace(/\/$/, '')
 const roles: AgentRole[] = ['architecture', 'risk', 'testing', 'history']
 
 export class ApiError extends Error {
@@ -292,7 +294,9 @@ export async function fetchArtifact(jobId: string, artifactName: 'AGENTS.md' | '
 }
 
 function webSocketEndpoint(jobId: string): string {
-  const url = new URL(apiBase)
+  // `apiBase` is intentionally empty for a same-origin production build.
+  // URL() needs an absolute base for the WebSocket transport.
+  const url = new URL(apiBase || window.location.origin, window.location.origin)
   url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
   url.pathname = `${url.pathname.replace(/\/$/, '')}/api/analyze/${encodeURIComponent(jobId)}/events`
   return url.toString()

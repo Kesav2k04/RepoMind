@@ -2,13 +2,15 @@ import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { createAnalysis, fetchArtifact, getAnalysis, getArtifactUrl, openEventStream } from './api'
 import type { AgentRole, AnalysisJob, Finding, FindingSeverity, ProgressEvent, RepositoryMapNode, SpecialistReport } from './types'
+import { AgentGlyph } from './components/AgentGlyph'
+import { BrandMark } from './components/BrandMark'
 import './RepoMind.css'
 
-const AGENTS: Array<{ role: AgentRole; label: string; description: string; glyph: string; defaultAction: string }> = [
-  { role: 'architecture', label: 'Architecture', description: 'Maps entry points and boundaries.', glyph: '⌘', defaultAction: 'Finding entry points…' },
-  { role: 'risk', label: 'Risk', description: 'Surfaces fragile and exposed areas.', glyph: '!', defaultAction: 'Checking dependencies…' },
-  { role: 'testing', label: 'Testing', description: 'Finds verification gaps.', glyph: '✓', defaultAction: 'Discovering tests…' },
-  { role: 'history', label: 'History', description: 'Traces churn and change context.', glyph: '↗', defaultAction: 'Reading commits…' },
+const AGENTS: Array<{ role: AgentRole; label: string; description: string; defaultAction: string }> = [
+  { role: 'architecture', label: 'Architecture', description: 'Maps entry points and boundaries.', defaultAction: 'Finding entry points…' },
+  { role: 'risk', label: 'Risk', description: 'Surfaces fragile and exposed areas.', defaultAction: 'Checking dependencies…' },
+  { role: 'testing', label: 'Testing', description: 'Finds verification gaps.', defaultAction: 'Discovering tests…' },
+  { role: 'history', label: 'History', description: 'Traces churn and change context.', defaultAction: 'Reading commits…' },
 ]
 
 const STATUS_LABELS: Record<string, string> = {
@@ -154,7 +156,7 @@ function FindingRow({ finding }: { finding: Finding }) {
 
 function ReportCard({ report, agent }: { report?: SpecialistReport; agent: (typeof AGENTS)[number] }) {
   const findings = report?.findings ?? []
-  return <article className="report-card"><div className="report-card__heading"><span className="agent-glyph" aria-hidden="true">{agent.glyph}</span><div><p className="eyebrow">{agent.label}</p><h3>{report?.summary || agent.description}</h3></div>{report?.confidence !== undefined && <span className="confidence">{Math.round(report.confidence * 100)}% confidence</span>}</div>{findings.length ? <div className="finding-list">{findings.map((finding) => <FindingRow finding={finding} key={finding.id} />)}</div> : <p className="card-empty">No evidence-backed findings published yet.</p>}</article>
+  return <article className="report-card"><div className="report-card__heading"><AgentGlyph role={agent.role} /><div><p className="eyebrow">{agent.label}</p><h3>{report?.summary || agent.description}</h3></div>{report?.confidence !== undefined && <span className="confidence">{Math.round(report.confidence * 100)}% confidence</span>}</div>{findings.length ? <div className="finding-list">{findings.map((finding) => <FindingRow finding={finding} key={finding.id} />)}</div> : <p className="card-empty">No evidence-backed findings published yet.</p>}</article>
 }
 
 function MapBranch({ node, depth, onSelect, selectedPath }: { node: RepositoryMapNode; depth: number; onSelect: (node: RepositoryMapNode) => void; selectedPath?: string }) {
@@ -163,7 +165,7 @@ function MapBranch({ node, depth, onSelect, selectedPath }: { node: RepositoryMa
   return <li className="map-tree__item">
     <div className={`map-tree__row ${selectedPath === node.path ? 'map-tree__row--selected' : ''}`} style={{ paddingLeft: `${depth * 1.05 + .45}rem` }}>
       {hasChildren ? <button type="button" className="tree-toggle" aria-label={`${expanded ? 'Collapse' : 'Expand'} ${node.path}`} onClick={() => setExpanded((value) => !value)}>{expanded ? '−' : '+'}</button> : <span className="tree-leaf" aria-hidden="true">•</span>}
-      <button type="button" className="map-tree__name" onClick={() => onSelect(node)}><code>{node.path}</code></button>
+      <button type="button" className="map-tree__name" aria-pressed={selectedPath === node.path} onClick={() => onSelect(node)}><code>{node.path}</code></button>
       <span className={severityClass(node.risk)}>{node.risk === 'info' ? 'safe' : node.risk}</span>
     </div>
     {hasChildren && expanded && <ul>{node.children.map((child) => <MapBranch node={child} depth={depth + 1} key={`${node.path}/${child.path}`} onSelect={onSelect} selectedPath={selectedPath} />)}</ul>}
@@ -174,7 +176,7 @@ function RepositoryMap({ nodes, overview, markdown }: { nodes: RepositoryMapNode
   const [selected, setSelected] = useState<RepositoryMapNode>()
   if (!nodes.length && !markdown) return <p className="empty-state">The risk-annotated map will appear when reconciliation finishes.</p>
   if (!nodes.length) return <pre className="markdown-fallback">{markdown}</pre>
-  return <div className="map-explorer" aria-label="Interactive risk annotated repository map"><p className="map-overview">{overview || 'Select a path to see the evidence-backed repository context.'}</p><div className="map-tree"><ul>{nodes.map((node) => <MapBranch node={node} depth={0} key={node.path} onSelect={setSelected} selectedPath={selected?.path} />)}</ul></div><aside className="map-detail"><p className="eyebrow">Selected path</p><strong>{selected?.path || 'Choose a path'}</strong><p>{selected?.purpose || 'Each color reflects the highest evidence-backed risk attached to that area.'}</p></aside></div>
+  return <div className="map-explorer" aria-label="Interactive risk annotated repository map"><p className="map-overview">{overview || 'Select a path to see the evidence-backed repository context.'}</p><div className="map-tree"><ul>{nodes.map((node) => <MapBranch node={node} depth={0} key={node.path} onSelect={setSelected} selectedPath={selected?.path} />)}</ul></div><aside className="map-detail" aria-live="polite"><p className="eyebrow">Selected path</p><strong>{selected?.path || 'Choose a path'}</strong><p>{selected?.purpose || 'Each color reflects the highest evidence-backed risk attached to that area.'}</p></aside></div>
 }
 
 interface AgentsSection { title: string; body: string }
@@ -185,7 +187,9 @@ function parseAgentsSections(markdown?: string): AgentsSection[] {
   for (const line of markdown.split('\n')) {
     const heading = line.match(/^#{1,3}\s+(.+)$/)
     if (heading) {
-      if (current.body.trim() || current.title !== 'Overview') sections.push(current)
+      // A document-level `# AGENTS.md` heading has no useful panel body. Do
+      // not turn it into the initially selected empty tab.
+      if (current.body.trim()) sections.push(current)
       current = { title: heading[1].trim(), body: '' }
     } else current.body += `${line}\n`
   }
@@ -193,13 +197,40 @@ function parseAgentsSections(markdown?: string): AgentsSection[] {
   return sections
 }
 
+function plainMarkdown(value: string): string {
+  return value
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/^[-*]\s+/, '')
+    .trim()
+}
+
+function AgentsSectionContent({ body }: { body: string }) {
+  const lines = body.split('\n').map((line) => line.trim()).filter(Boolean)
+  return <div className="agents-content">{lines.map((line, index) => {
+    const isBullet = /^[-*]\s+/.test(line)
+    return <p className={isBullet ? 'agents-content__item' : 'agents-content__text'} key={`${index}-${line}`}>{plainMarkdown(line)}</p>
+  })}</div>
+}
+
 function AgentsPreview({ markdown }: { markdown?: string }) {
   const sections = useMemo(() => parseAgentsSections(markdown), [markdown])
-  const [active, setActive] = useState('Overview')
-  useEffect(() => { setActive(sections[0]?.title ?? 'Overview') }, [sections])
+  const [activeIndex, setActiveIndex] = useState(0)
+  useEffect(() => { setActiveIndex(0) }, [sections])
   if (!markdown) return <p className="empty-state">Your concise repository guide is being prepared.</p>
-  const selected = sections.find((section) => section.title === active) ?? sections[0]
-  return <div className="agents-navigator"><div className="agents-tabs" role="tablist" aria-label="AGENTS.md sections">{sections.map((section) => <button type="button" role="tab" aria-selected={section.title === selected?.title} className={section.title === selected?.title ? 'agents-tabs__tab agents-tabs__tab--active' : 'agents-tabs__tab'} onClick={() => setActive(section.title)} key={section.title}>{section.title}</button>)}</div><pre className="agents-preview">{selected?.body.trim() || markdown}</pre></div>
+  const selected = sections[activeIndex] ?? sections[0]
+  const onTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let nextIndex = index
+    if (event.key === 'ArrowRight') nextIndex = (index + 1) % sections.length
+    else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + sections.length) % sections.length
+    else if (event.key === 'Home') nextIndex = 0
+    else if (event.key === 'End') nextIndex = sections.length - 1
+    else return
+    event.preventDefault()
+    setActiveIndex(nextIndex)
+    document.getElementById(`agents-tab-${nextIndex}`)?.focus()
+  }
+  return <div className="agents-navigator"><div className="agents-tabs" role="tablist" aria-label="AGENTS.md sections">{sections.map((section, index) => <button type="button" id={`agents-tab-${index}`} role="tab" tabIndex={index === activeIndex ? 0 : -1} aria-selected={index === activeIndex} aria-controls={`agents-panel-${index}`} className={index === activeIndex ? 'agents-tabs__tab agents-tabs__tab--active' : 'agents-tabs__tab'} onKeyDown={(event) => onTabKeyDown(event, index)} onClick={() => setActiveIndex(index)} key={`${section.title}-${index}`}>{section.title}</button>)}</div><div id={`agents-panel-${activeIndex}`} role="tabpanel" aria-labelledby={`agents-tab-${activeIndex}`} className="agents-preview">{selected?.body.trim() ? <AgentsSectionContent body={selected.body} /> : <AgentsSectionContent body={markdown} />}</div></div>
 }
 
 function AgentActivity({ job, agent, index }: { job: AnalysisJob; agent: (typeof AGENTS)[number]; index: number }) {
@@ -209,14 +240,14 @@ function AgentActivity({ job, agent, index }: { job: AnalysisJob; agent: (typeof
   const action = report ? 'Completed' : event?.action ?? event?.message ?? agent.defaultAction
   const progress = report ? 'Evidence report ready' : metricValue(event) ?? (state === 'queued' ? 'Waiting for evidence' : 'Working from evidence')
   const percent = report ? 100 : event?.percent ?? (event?.current !== undefined && event.total ? Math.round((event.current / event.total) * 100) : undefined)
-  return <article className={`agent-card agent-card--${state}`}><span className="agent-card__number">0{index + 1}</span><span className="agent-glyph" aria-hidden="true">{agent.glyph}</span><div className="agent-card__content"><h3>{agent.label}</h3><p className="agent-action">{action}</p><p className="agent-progress">{progress}</p></div>{percent !== undefined && <div className="agent-progressbar" aria-label={`${percent}% complete`}><i style={{ width: `${Math.min(100, Math.max(0, percent))}%` }} /></div>}<span className="step-state" aria-label={state}>{state === 'complete' ? '✓' : <i />}</span></article>
+  return <article className={`agent-card agent-card--${state}`}><span className="agent-card__number">0{index + 1}</span><AgentGlyph role={agent.role} /><div className="agent-card__content"><h3>{agent.label}</h3><p className="agent-action">{action}</p><p className="agent-progress">{progress}</p></div>{percent !== undefined && <div className="agent-progressbar" aria-label={`${percent}% complete`}><i style={{ width: `${Math.min(100, Math.max(0, percent))}%` }} /></div>}<span className="step-state" aria-label={state}>{state === 'complete' ? '✓' : <i />}</span></article>
 }
 
 function ReconciliationPanel({ job }: { job: AnalysisJob }) {
   const reconciliation = job.reconciliation
   const hasData = job.reports.length > 0 || reconciliation.decisions.length > 0 || job.events.some((event) => event.phase.toLowerCase().includes('reconcil'))
   if (!hasData) return null
-  return <section className="reconciliation-panel"><div className="reconciliation-panel__heading"><div><p className="eyebrow eyebrow--accent">Master reconciliation</p><h2>Signals become an engineering decision.</h2></div><div className="decision-counts"><span><strong>{reconciliation.acceptedCount}</strong> accepted</span><span><strong>{reconciliation.mergedCount}</strong> merged</span><span><strong>{reconciliation.deferredCount}</strong> deferred</span></div></div><div className="reconciliation-flow"><div className="agent-opinions">{AGENTS.map((agent) => <div key={agent.role}><span className="agent-glyph" aria-hidden="true">{agent.glyph}</span><p><strong>{agent.label} says</strong>{reportFor(job, agent.role)?.summary || 'Evidence is still arriving.'}</p></div>)}</div><div className="master-merge"><span>✦</span><strong>Master</strong><p>{isComplete(job) ? 'Merged the evidence into the final report.' : 'Comparing specialist evidence.'}</p></div><div className="decision-list">{reconciliation.decisions.length ? reconciliation.decisions.slice(0, 3).map((decision, index) => <article key={`${decision.disposition}-${index}`}><span className={`decision-badge decision-badge--${decision.disposition}`}>{decision.disposition}</span><p>{decision.rationale || `${decision.findingIds.length} finding${decision.findingIds.length === 1 ? '' : 's'} considered`}</p></article>) : <p className="empty-state">The Master will show accepted, merged, and deferred evidence here.</p>}</div></div></section>
+  return <section className="reconciliation-panel"><div className="reconciliation-panel__heading"><div><p className="eyebrow eyebrow--accent">Master reconciliation</p><h2>Signals become an engineering decision.</h2></div><div className="decision-counts"><span><strong>{reconciliation.acceptedCount}</strong> accepted</span><span><strong>{reconciliation.mergedCount}</strong> merged</span><span><strong>{reconciliation.deferredCount}</strong> deferred</span></div></div><div className="reconciliation-flow"><div className="agent-opinions">{AGENTS.map((agent) => <div key={agent.role}><AgentGlyph role={agent.role} /><p><strong>{agent.label} says</strong>{reportFor(job, agent.role)?.summary || 'Evidence is still arriving.'}</p></div>)}</div><div className="master-merge"><span>✦</span><strong>Master</strong><p>{isComplete(job) ? 'Merged the evidence into the final report.' : 'Comparing specialist evidence.'}</p></div><div className="decision-list">{reconciliation.decisions.length ? reconciliation.decisions.slice(0, 3).map((decision, index) => <article key={`${decision.disposition}-${index}`}><span className={`decision-badge decision-badge--${decision.disposition}`}>{decision.disposition}</span><p>{decision.rationale || `${decision.findingIds.length} finding${decision.findingIds.length === 1 ? '' : 's'} considered`}</p></article>) : <p className="empty-state">The Master will show accepted, merged, and deferred evidence here.</p>}</div></div></section>
 }
 
 function CompletionSummary({ job }: { job: AnalysisJob }) {
@@ -314,10 +345,10 @@ function RepoMindApp() {
   const title = repositoryLabel(job)
 
   return <main className="repomind-shell">
-    <header className="site-header"><a className="brand" href="#top" aria-label="RepoMind home"><span className="brand-mark" aria-hidden="true"><i /><i /><i /></span><span>RepoMind</span></a><p className="header-note"><span className="live-dot" /> Agentic repository intelligence</p></header>
-    <section className="hero" id="top"><div><p className="eyebrow eyebrow--accent">OpenAI Build Week · Developer tools</p><h1>Give any GitHub repository an AI engineering review.</h1><p className="hero-lede">RepoMind turns unknown code into safe, usable context—architecture, risks, test strategy, and conventions—before an AI coding agent touches a line.</p></div><div className="hero-story"><p className="eyebrow">Why AGENTS.md matters</p><div><span>Without RepoMind</span><strong>AI starts coding blindly.</strong></div><div className="hero-story__with"><span>With RepoMind</span><strong>AI begins with architecture, risks, tests, and verification.</strong></div></div></section>
-    <section className="launch-panel" aria-labelledby="analyze-heading"><div><p className="eyebrow">Start an analysis</p><h2 id="analyze-heading">Bring a public GitHub repository.</h2></div><form className="repo-form" onSubmit={submit}><label htmlFor="repo-url">Repository URL</label><div className="repo-form__controls"><span aria-hidden="true">↗</span><input id="repo-url" type="url" inputMode="url" autoComplete="url" placeholder="https://github.com/owner/repository" value={repoUrl} onChange={(event) => setRepoUrl(event.target.value)} disabled={busy} aria-describedby={error ? 'form-error' : 'repo-hint'} /><button type="submit" disabled={busy}>{isStarting ? 'Launching…' : busy ? 'Analysis running' : 'Analyze repository'}</button></div><p className="form-hint" id="repo-hint">Public repositories only. RepoMind reads a bounded evidence pack and never modifies the source repository.</p></form>{error && <p className="form-error" id="form-error" role="alert">{error}</p>}</section>
-    <section className="orchestration-zone" aria-live="polite"><div className="orchestration-zone__heading"><div><p className="eyebrow">Visible orchestration</p><h2>{job ? title : 'A clear path from repository to safe context.'}</h2>{job?.repoUrl && <p className="repository-url">{job.repoUrl}</p>}</div>{job && <div className="session-meta"><span className={`status-chip status-chip--${job.status}`}>{STATUS_LABELS[job.status] ?? job.status}</span><span className={`mode-chip ${job.mode === 'native_multi_agent' ? 'mode-chip--native' : ''}`}>{modeLabel(job.mode)}</span></div>}</div><Pipeline job={job} />{job && <>{job.error && <p className="job-error" role="alert">{job.error}</p>}<div className="evidence-summary"><div><span className="evidence-summary__number">{job.metrics.filesAnalyzed || job.repository?.fileCount || '—'}</span><span>files analyzed</span></div><div><span className="evidence-summary__number">{job.metrics.manifestsFound || '—'}</span><span>manifests</span></div><div><span className="evidence-summary__number">{job.metrics.testsDiscovered || '—'}</span><span>tests discovered</span></div><div><span className="evidence-summary__number">{job.metrics.commitsInspected || '—'}</span><span>commits read</span></div></div><div className="agent-timeline">{AGENTS.map((agent, index) => <AgentActivity job={job} agent={agent} index={index} key={agent.role} />)}</div></>}</section>
+    <header className="site-header"><a className="brand" href="#top" aria-label="RepoMind home"><BrandMark /><span>RepoMind</span></a><p className="header-note"><span className="header-note__dot" aria-hidden="true" /> Evidence-first repository intelligence</p></header>
+    <section className="hero" id="top"><div><p className="eyebrow eyebrow--accent">Context before code</p><h1>Give every coding agent a reliable starting point.</h1><p className="hero-lede">RepoMind turns an unfamiliar repository into evidence-backed architecture, risks, test context, and conventions—before anyone edits a line.</p><div className="hero-proof" aria-label="RepoMind capabilities"><span>4 evidence specialists</span><span>Validated findings</span><span>AGENTS.md + risk map</span></div></div><aside className="hero-story" aria-label="Why AGENTS.md matters"><p className="eyebrow">Why AGENTS.md matters</p><div><span>Without RepoMind</span><strong>AI starts coding blindly.</strong></div><div className="hero-story__with"><span>With RepoMind</span><strong>AI starts with architecture, risk boundaries, tests, and a verification plan.</strong></div></aside></section>
+    <section className="launch-panel" aria-labelledby="analyze-heading"><div><p className="eyebrow">Start an analysis</p><h2 id="analyze-heading">Bring a public GitHub repository.</h2><p>Turn its existing code into context a contributor can trust.</p></div><form className="repo-form" onSubmit={submit}><label htmlFor="repo-url">Repository URL</label><div className="repo-form__controls"><span aria-hidden="true">⌁</span><input id="repo-url" type="url" inputMode="url" autoComplete="url" placeholder="https://github.com/owner/repository" value={repoUrl} onChange={(event) => setRepoUrl(event.target.value)} disabled={busy} aria-describedby={error ? 'form-error' : 'repo-hint'} /><button type="submit" disabled={busy}>{isStarting ? 'Launching…' : busy ? 'Analysis running' : 'Analyze repository'}</button></div><p className="form-hint" id="repo-hint">Public repositories only. RepoMind reads a bounded evidence pack and never modifies the source repository.</p></form>{error && <p className="form-error" id="form-error" role="alert">{error}</p>}</section>
+    <section className="orchestration-zone" aria-live="polite"><div className="orchestration-zone__heading"><div><p className="eyebrow">Visible orchestration</p><h2>{job ? title : 'A clear path from repository to trusted context.'}</h2>{job?.repoUrl && <p className="repository-url">{job.repoUrl}</p>}</div>{job && <div className="session-meta"><span className={`status-chip status-chip--${job.status}`}>{STATUS_LABELS[job.status] ?? job.status}</span><span className={`mode-chip ${job.mode === 'native_multi_agent' ? 'mode-chip--native' : ''}`}>{modeLabel(job.mode)}</span></div>}</div><Pipeline job={job} />{job && <>{job.error && <p className="job-error" role="alert">{job.error}</p>}<div className="evidence-summary"><div><span className="evidence-summary__number">{job.metrics.filesAnalyzed || job.repository?.fileCount || '—'}</span><span>files analyzed</span></div><div><span className="evidence-summary__number">{job.metrics.manifestsFound || '—'}</span><span>manifests</span></div><div><span className="evidence-summary__number">{job.metrics.testsDiscovered || '—'}</span><span>test files found</span></div><div><span className="evidence-summary__number">{job.metrics.commitsInspected || '—'}</span><span>commits read</span></div></div><div className="agent-timeline">{AGENTS.map((agent, index) => <AgentActivity job={job} agent={agent} index={index} key={agent.role} />)}</div></>}</section>
     {job && failed && <FailureRecovery job={job} onRetry={retryAnalysis} retrying={isStarting} />}
     {job && <TrustPanel job={job} />}
     {job && <ReconciliationPanel job={job} />}

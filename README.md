@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="docs/assets/repomind-pipeline.svg" alt="RepoMind turns a bounded repository evidence pack into a cited task brief, AGENTS.md, and repository map" width="100%" />
-
 # RepoMind
 
 **Context before code. Give the next coding agent a cited change brief before its first edit.**
@@ -40,20 +38,23 @@ RepoMind does not compete with an IDE assistant or write the patch. It sits befo
 
 Use RepoMind before unfamiliar, cross-cutting, high-risk, or agent-assisted work. It is especially useful when a task crosses authentication, data boundaries, test suites, or recently changing files. Skip it for a tiny repository that you can read in one pass.
 
-## Judge quick path
+## What you can verify in three minutes
 
 | In under three minutes | Evidence |
 | --- | --- |
-| Understand the value | Read [Why RepoMind exists](#why-repomind-exists), then view the [product loop](#the-product-loop). |
+| Understand the value | Read [Why RepoMind exists](#why-repomind-exists), then view [the architecture](#architecture-one-trusted-path). |
 | Verify it builds | [GitHub Actions CI](https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml) runs backend tests plus frontend lint, tests, and production build. |
 | Inspect real output | Open the authentic [Flask Evidence Mode sample](docs/examples/flask/README.md), [AGENTS.md](docs/examples/flask/AGENTS.md), and [repository map](docs/examples/flask/repository-map.md). |
 | Check the AI boundary | Read [Execution modes](#execution-modes) and the [citation firewall](#the-citation-firewall). |
 | Try the handoff | Run the [CLI](#cli) or connect the [stdio MCP server](#mcp). Both use the same preflight path as the dashboard. |
-| View the project entry | [RepoMind on Devpost](https://devpost.com/software/repomind-context-before-code) contains submission-facing metadata. |
 
-For the final Build Week proof checklist, see [the submission handoff](docs/SUBMISSION_HANDOFF.md), [judge path](docs/JUDGE_PATH.md), and [demo proof checklist](docs/DEMO_PROOF_CHECKLIST.md). RepoMind never fabricates a video, deployment, feedback session, or Native-mode record.
+RepoMind never fabricates a source citation, model mode, line number, confidence score, or completion state.
 
-## The product loop
+## Architecture: one trusted path
+
+<p align="center">
+  <img src="docs/assets/repomind-pipeline.svg" alt="RepoMind turns a bounded repository evidence pack into a cited task brief, AGENTS.md, and repository map" width="100%" />
+</p>
 
 ```mermaid
 flowchart LR
@@ -69,7 +70,16 @@ flowchart LR
   G --> I[Human or coding agent]
 ```
 
-The dashboard exposes the work rather than pretending it happened: evidence metrics, recorded source-tool events, specialist progress, firewall decisions, execution mode, elapsed time, and downloadable artifacts.
+Every interface reaches the same trusted preflight path. The dashboard exposes recorded progress while the CLI and MCP server deliver the same reviewed handoff directly to a coding workflow.
+
+| Layer | Responsibility | Trust boundary |
+| --- | --- | --- |
+| **Dashboard** | React and TypeScript input, progress, evidence, and artifact views. | Displays recorded events only. |
+| **Preflight API** | FastAPI request lifecycle, WebSocket stream, bounded job admission, and same-origin static serving. | Never writes to the analyzed repository. |
+| **Evidence pack** | GitHub URL validation, shallow clone, bounded file inventory, excerpts, and Git history. | Public HTTPS repositories only; scope limits are disclosed. |
+| **Specialists** | Architecture, Risk, Testing, and History reviews. | Native specialists receive read-only bounded tools; Evidence Mode remains deterministic. |
+| **Citation firewall** | Verifies path, line range, quoted source, and same-worker provenance. | Unsupported claims are withheld. |
+| **Handoff** | Task brief, `AGENTS.md`, and interactive repository map. | Artifacts are validated again before download. |
 
 <table>
   <tr>
@@ -127,7 +137,6 @@ Model self-confidence is not treated as evidence. Retained Native confidence is 
 The CLI is the fastest route from a ticket to a local handoff. It runs the same bounded pipeline as the dashboard and writes reviewable Markdown.
 
 ```powershell
-$env:PIP_CACHE_DIR = 'D:/dev-cache/pip-cache'
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
@@ -167,12 +176,10 @@ For Windows clients that do not inherit the virtual environment, point `command`
 
 ```powershell
 # Terminal 1
-$env:PIP_CACHE_DIR = 'D:/dev-cache/pip-cache'
 uvicorn main:app --reload --port 8000
 
 # Terminal 2
 Set-Location frontend
-$env:NPM_CONFIG_CACHE = 'D:/dev-cache/npm-cache'
 $env:VITE_API_BASE_URL = 'http://localhost:8000'
 npm ci
 npm run dev
@@ -180,22 +187,33 @@ npm run dev
 
 Paste a public GitHub HTTPS URL and describe the desired change. A useful task includes behavior, a constraint, and a boundary. For example: `Add a focused test around an error-handling change without changing the public API.`
 
-## Architecture
+## Project structure
 
 ```text
-React and TypeScript dashboard
-  -> FastAPI REST API and WebSocket event stream
-     -> one bounded, read-only GitHub clone and evidence snapshot
-        -> four concurrent GPT-5.6 source specialists or deterministic specialists
-           -> citation firewall and artifact validation
-              -> Native root reconciliation or deterministic reconciliation
-                 -> task brief, AGENTS.md, and repository map
-
-CLI and stdio MCP adapter
-  -> the same run_preflight() pipeline
+RepoMind/
+├── main.py                 # FastAPI API, WebSocket events, and dashboard serving
+├── preflight.py            # One shared API, CLI, and MCP execution path
+├── repository.py           # GitHub validation, bounded clone, and evidence snapshot
+├── native_agents.py        # GPT-5.6 source specialists and citation firewall
+├── master.py               # Native or deterministic reconciliation and fallbacks
+├── workers/                # Deterministic Architecture, Risk, Testing, History workers
+├── artifacts.py            # Task brief, AGENTS.md, map generation, validation
+├── repomind_cli.py         # Terminal handoff
+├── repomind_mcp.py         # stdio MCP handoff
+├── frontend/
+│   ├── src/                # React UI, event timeline, API normalization
+│   └── public/             # Social preview asset
+├── tests/                  # Backend contract, reliability, and trust-boundary tests
+├── docs/
+│   ├── examples/flask/     # Authentic Evidence Mode output
+│   ├── images/             # Product screenshots
+│   └── assets/             # Architecture graphic
+├── Dockerfile              # Remote single-service deployment image
+├── .env.example            # Runtime configuration template without secrets
+└── AGENTS.md               # Durable contributor and coding-agent guidance
 ```
 
-The API, CLI, and MCP server share `run_preflight()`. A polished dashboard therefore does not hide a different trust path from the agent-native interfaces.
+The API, CLI, and MCP server share `run_preflight()`. The dashboard therefore cannot hide a different trust path from agent-native interfaces.
 
 ## Limits and honest boundaries
 
@@ -208,19 +226,15 @@ The API, CLI, and MCP server share `run_preflight()`. A polished dashboard there
 ## Local verification
 
 ```powershell
-$env:PYTHONPYCACHEPREFIX = 'D:/dev-cache/pycache'
-$env:TEMP = 'D:/dev-cache/tmp'
-$env:TMP = 'D:/dev-cache/tmp'
 python -m pytest -q
 
 Set-Location frontend
-$env:NPM_CONFIG_CACHE = 'D:/dev-cache/npm-cache'
 npm run lint
 npm run test
 npm run build
 ```
 
-CI uses Python 3.11 and the Node version pinned in [`frontend/.nvmrc`](frontend/.nvmrc). See [deployment guidance](docs/DEPLOYMENT.md) for the single-origin topology and runtime configuration.
+CI uses Python 3.11 and the Node version pinned in [`frontend/.nvmrc`](frontend/.nvmrc).
 
 ## How Codex and GPT-5.6 contributed
 
@@ -230,17 +244,6 @@ CI uses Python 3.11 and the Node version pinned in [`frontend/.nvmrc`](frontend/
 | **GPT-5.6 at runtime** | In Native mode, four source-reading GPT-5.6 specialists use bounded function tools and a separate GPT-5.6 root reconciles only firewall-verified finding IDs. |
 | **Deterministic trust controls** | Citation validation, artifact validation, bounded cloning, partial-analysis disclosure, and fallback mode are application code rather than model promises. |
 | **Agent-native delivery** | The CLI, MCP server, and dashboard all call the same `run_preflight()` pipeline, so the handoff can enter a real coding workflow. |
-
-## Build Week submission status
-
-The known project page is [RepoMind on Devpost](https://devpost.com/software/repomind-context-before-code). The repository intentionally does not fabricate final submission proof. Before submitting, the creator must add:
-
-- a public video under three minutes with audio explaining Codex and GPT-5.6;
-- a judge-accessible live deployment URL;
-- the primary Codex `/feedback` session ID; and
-- a timestamped Native-mode record captured after a real successful GPT-5.6 run.
-
-Use [the submission handoff](docs/SUBMISSION_HANDOFF.md) to add those facts consistently. The concise [Build Week requirements](OpenAI_Build_Week_Rules.md) are linked to the official rules page.
 
 ## License
 

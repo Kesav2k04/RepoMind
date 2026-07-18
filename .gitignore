@@ -10,3 +10,8 @@ frontend/dist/
 .local/
 graphify-out/
 .repomind-integration-cache/
+# Generated local handoffs and private release-operator notes.
+repo-map.md
+test_artifacts_agents.md
+docs/HARD_CRITIQUE.md
+docs/WIN_PLAN.md

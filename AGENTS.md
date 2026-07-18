@@ -60,13 +60,9 @@ Use this preflight for unfamiliar, cross-cutting, high-risk, or agent-assisted w
 Run the relevant checks before handing off a change:
 
 ```powershell
-$env:PYTHONPYCACHEPREFIX = 'D:/dev-cache/pycache'
-$env:TEMP = 'D:/dev-cache/tmp'
-$env:TMP = 'D:/dev-cache/tmp'
 python -m pytest -q
 
 Set-Location frontend
-$env:NPM_CONFIG_CACHE = 'D:/dev-cache/npm-cache'
 npm run lint
 npm run test
 npm run build
@@ -84,7 +80,7 @@ Use a real `OPENAI_API_KEY` only to verify Native mode. A mocked test proves con
 
 ## Local workspace hygiene
 
-- Keep caches, clones, temporary output, and build output out of source control. Use `D:/dev-cache/` on this Windows workspace; do not direct caches to `C:/`.
+- Keep caches, clones, temporary output, and build output out of source control. Use an OS-managed temporary or workspace cache location that is never committed.
 - Never commit `.env`, generated artifacts, `node_modules`, `frontend/dist`, virtual environments, or local `.local/` evidence runs.
 - Run the repository graph refresh after code edits when available:
 

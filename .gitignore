@@ -7,3 +7,5 @@ graphify-out/cache/ast/
 frontend/node_modules/
 frontend/dist/
 .local/
+graphify-out/
+.repomind-integration-cache/

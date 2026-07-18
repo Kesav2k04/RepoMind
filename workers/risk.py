@@ -7,7 +7,7 @@ from pathlib import PurePosixPath
 import re
 
 from repository import RepositorySnapshot
-from schemas import AgentReport, Finding
+from schemas import AgentReport, EvidenceLocation, Finding
 from workers._shared import (
     WorkerObserver,
     bounded_confidence,
@@ -55,6 +55,7 @@ _NODE_LOCKFILES = {
 _PYTHON_MANIFESTS = {"pyproject.toml", "setup.py", "setup.cfg", "pipfile", "requirements.txt"}
 _PYTHON_LOCKFILES = {"poetry.lock", "uv.lock", "pdm.lock", "pipfile.lock", "requirements.lock"}
 _ENV_TEMPLATES = {".env.example", ".env.sample", ".env.template", "env.example"}
+_TEST_DIRECTORY_NAMES = {"__tests__", "fixtures", "fixture", "spec", "specs", "test", "tests"}
 
 
 def analyze(snapshot: RepositorySnapshot, observer: WorkerObserver | None = None) -> AgentReport:
@@ -69,12 +70,12 @@ def analyze(snapshot: RepositorySnapshot, observer: WorkerObserver | None = None
 
     notify(
         observer,
-        "Checking unsafe dynamic-code patterns",
+        "Checking unsafe dynamic-code patterns outside test fixtures",
         1,
         4,
         sampled_files=len(contents),
     )
-    dynamic_evidence = pattern_evidence(
+    dynamic_evidence = _security_pattern_evidence(
         contents,
         _DYNAMIC_CODE_PATTERNS,
         "Matched a dynamic code-execution pattern in the captured source excerpt.",
@@ -107,7 +108,7 @@ def analyze(snapshot: RepositorySnapshot, observer: WorkerObserver | None = None
         4,
         sampled_files=len(contents),
     )
-    tls_evidence = pattern_evidence(
+    tls_evidence = _security_pattern_evidence(
         contents,
         _TLS_PATTERNS,
         "Matched an insecure TLS configuration pattern in the captured source excerpt.",
@@ -133,7 +134,7 @@ def analyze(snapshot: RepositorySnapshot, observer: WorkerObserver | None = None
             )
         )
 
-    pickle_evidence = pattern_evidence(
+    pickle_evidence = _security_pattern_evidence(
         contents,
         _PICKLE_PATTERNS,
         "Matched a pickle-style deserialization call in the captured source excerpt.",
@@ -265,6 +266,39 @@ def _missing_lockfile_finding(snapshot: RepositorySnapshot) -> Finding | None:
             "Commit the ecosystem's lockfile (or fully pinned requirements file) and keep it "
             "synchronized in dependency update workflows."
         ),
+    )
+
+
+def _security_pattern_evidence(
+    contents: dict[str, str],
+    patterns: Iterable[re.Pattern[str]],
+    reason: str,
+) -> list[EvidenceLocation]:
+    """Avoid treating intentionally unsafe test fixtures as product security findings.
+
+    Test suites often construct an ``eval`` call, disabled TLS, or deserialization
+    example to exercise the scanner itself. Those snippets are still source
+    evidence, but they are not a high-severity implementation risk in the
+    analyzed application. The filter is deliberately narrow and applies only to
+    security-pattern findings; maintenance and test-coverage evidence remains.
+    """
+    return [
+        evidence
+        for evidence in pattern_evidence(contents, patterns, reason)
+        if not _is_test_or_fixture_path(evidence.path)
+    ]
+
+
+def _is_test_or_fixture_path(path: str) -> bool:
+    """Recognize conventional test and fixture locations without guessing code intent."""
+    candidate = PurePosixPath(path)
+    parts = {part.lower() for part in candidate.parts[:-1]}
+    name = candidate.name.lower()
+    return (
+        bool(parts.intersection(_TEST_DIRECTORY_NAMES))
+        or name == "conftest.py"
+        or name.startswith("test_")
+        or name.endswith(("_test.py", ".test.js", ".test.ts", ".test.tsx", ".spec.js", ".spec.ts", ".spec.tsx"))
     )
 
 

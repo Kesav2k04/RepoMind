@@ -16,6 +16,7 @@ from repository import RepositorySnapshot
 from schemas import AgentReport, EvidenceLocation, Finding
 from settings import Settings
 from workers.history import analyze as analyze_history
+from workers.risk import analyze as analyze_risk
 
 
 async def _collect_progress(phase: str, message: str, role: str | None = None) -> None:
@@ -100,6 +101,22 @@ def test_orchestration_streams_concrete_specialist_actions(
         for report in result.reports
         for finding in report.findings
     )
+
+
+def test_risk_worker_does_not_promote_intentionally_unsafe_test_fixture(
+    repository_snapshot: RepositorySnapshot,
+) -> None:
+    fixture_only = replace(
+        repository_snapshot,
+        important_file_contents={},
+        sampled_contents={
+            "tests/conftest.py": "def exercise_scanner():\n    return eval('1 + 1')\n",
+        },
+    )
+
+    report = analyze_risk(fixture_only)
+
+    assert not any(finding.id == "risk-dynamic-code-execution" for finding in report.findings)
 
 
 def test_history_worker_tolerates_null_history_metadata(repository_snapshot: RepositorySnapshot) -> None:

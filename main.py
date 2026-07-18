@@ -128,33 +128,11 @@ async def run_analysis_task(job: Job) -> None:
 async def _run_analysis(job: Job) -> None:
     """Perform one resource-bounded analysis while holding a demo-capacity slot."""
     started = perf_counter()
-    checkout = None
     try:
-        # Deferred imports preserve a healthy API surface while specialist modules evolve.
-        from master import orchestrate_analysis
-        from repository import clone_github_repository, snapshot_repository
+        # The API deliberately shares this exact clone/evidence/orchestration path with the CLI and MCP adapter.
+        from preflight import run_preflight
 
         job.status = "running"
-        await publish(job, "cloning", "Cloning public repository with bounded history.", action="cloning_repository")
-        checkout = await clone_github_repository(job.repository_url)
-        await publish(job, "indexing", "Building a bounded evidence pack from code, manifests, tests, and history.", action="starting_evidence_pack")
-        loop = asyncio.get_running_loop()
-
-        def evidence_progress(action: str, current: int | None, total: int | None, metrics: dict[str, int]) -> None:
-            asyncio.run_coroutine_threadsafe(
-                publish(
-                    job,
-                    "indexing",
-                    _evidence_message(action, current, total),
-                    action=action,
-                    current=current,
-                    total=total,
-                    metrics=metrics,
-                ),
-                loop,
-            )
-
-        snapshot = await asyncio.to_thread(snapshot_repository, checkout, job.repository_url, evidence_progress)
 
         async def progress(
             phase: str,
@@ -173,7 +151,7 @@ async def _run_analysis(job: Job) -> None:
                 metrics=details.get("metrics") if isinstance(details.get("metrics"), dict) else None,
             )
 
-        job.result = await orchestrate_analysis(snapshot, progress, job.task_description)
+        job.result = await run_preflight(job.repository_url, job.task_description, progress)
         elapsed_ms = _job_duration_ms(started)
         job.result.metrics.duration_ms = elapsed_ms
         job.result.orchestration.duration_ms = elapsed_ms
@@ -190,12 +168,6 @@ async def _run_analysis(job: Job) -> None:
         job.error = _safe_failure_message(exc)
         await publish(job, "failed", f"Analysis failed: {job.error}")
     finally:
-        if checkout is not None:
-            from repository import cleanup_checkout
-            try:
-                await asyncio.to_thread(cleanup_checkout, checkout)
-            except (OSError, ValueError):
-                pass
         job.completed_at = datetime.now(UTC)
 
 
@@ -264,16 +236,6 @@ async def analysis_events(websocket: WebSocket, job_id: str) -> None:
         pass
     finally:
         job.subscribers.discard(queue)
-
-
-def _evidence_message(action: str, current: int | None, total: int | None) -> str:
-    labels = {
-        "inventorying_files": "Inventorying repository files",
-        "sampling_evidence": "Sampling source and configuration evidence",
-        "evidence_ready": "Evidence pack ready",
-    }
-    label = labels.get(action, "Building evidence pack")
-    return f"{label}: {current}/{total}." if current is not None and total else label
 
 
 def _at_demo_capacity() -> bool:

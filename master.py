@@ -150,9 +150,11 @@ artifacts."""
         mode="native_multi_agent",
         model=settings.openai_model,
         completed_roles=["architecture", "risk", "testing", "history"],
+        priority_finding_ids=priority_ids,
         note=(
             "Hosted GPT-5.6 multi-agent reconciliation prioritized "
-            f"{len(priority_ids)} validated deterministic finding(s); canonical artifacts remain evidence-generated."
+            f"{len(priority_ids)} validated deterministic finding(s) for presentation; "
+            "canonical artifacts remain evidence-generated."
         ),
     )
     return fallback

@@ -20,8 +20,8 @@
     "semantic_hash": ""
   },
   "frontend/src/RepoMindApp.tsx": {
-    "mtime": 1784333778.352199,
-    "ast_hash": "c27f2e7f05ea7833fe42fbb5e7cab0e7",
+    "mtime": 1784336133.6138637,
+    "ast_hash": "c299eca2dac8b3f370203d6013b2da32",
     "semantic_hash": ""
   },
   "frontend/src/api.ts": {
@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1784332760.6968262,
-    "ast_hash": "5149a13c22b8cecc7a866b3e4955b73a",
+    "mtime": 1784336255.7617834,
+    "ast_hash": "b9c8596c61169e07ef310ae6605051c4",
     "semantic_hash": ""
   },
   "frontend/index.html": {
@@ -195,38 +195,38 @@
     "semantic_hash": ""
   },
   "docs/assets/repomind-pipeline.svg": {
-    "mtime": 1784330696.5965483,
-    "ast_hash": "ea316aef1253d40844fbcab508425058",
+    "mtime": 1784335756.040649,
+    "ast_hash": "791d5e4e418a8cf00bdb18c9ea2ec9c6",
     "semantic_hash": ""
   },
   "docs/images/01-home.png": {
-    "mtime": 1784333362.7896056,
-    "ast_hash": "ded71b9ab888f113fbcb4bc34756cafd",
+    "mtime": 1784336205.933894,
+    "ast_hash": "1e57290446636c4c4da59b988f7f6052",
     "semantic_hash": ""
   },
   "docs/images/02-orchestration.png": {
-    "mtime": 1784333689.9810047,
-    "ast_hash": "407e20aef6b3282dac64c978764e36e3",
+    "mtime": 1784336207.189421,
+    "ast_hash": "96955d6b2b04c3fa5d240a6e418420d6",
     "semantic_hash": ""
   },
   "docs/images/03-findings.png": {
-    "mtime": 1784333692.873492,
-    "ast_hash": "eaf47977295295895ef01108f6ce306a",
+    "mtime": 1784336210.6842453,
+    "ast_hash": "4f56f83706003477395ab101f7a2ff8d",
     "semantic_hash": ""
   },
   "docs/images/04-reconciliation.png": {
-    "mtime": 1784333693.4096007,
-    "ast_hash": "6dfbae574a91693ebc2098e4be57509b",
+    "mtime": 1784336210.8345056,
+    "ast_hash": "9274b39a09ae009e45e906e857f0b20e",
     "semantic_hash": ""
   },
   "docs/images/05-artifacts.png": {
-    "mtime": 1784333806.0840707,
-    "ast_hash": "7af2d83025636d41701194215b4d2308",
+    "mtime": 1784336211.0631027,
+    "ast_hash": "f57da616f66c487350639cdaa97f7eac",
     "semantic_hash": ""
   },
   "docs/images/06-complete.png": {
-    "mtime": 1784333694.4913912,
-    "ast_hash": "752313d6a0516c0660996e0fae4b8e56",
+    "mtime": 1784336211.1507394,
+    "ast_hash": "28a308806499d096cc9dfa01040c3658",
     "semantic_hash": ""
   },
   "frontend/src/components/AgentGlyph.tsx": {

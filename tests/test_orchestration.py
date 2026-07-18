@@ -176,6 +176,7 @@ def test_native_reconciliation_uses_configured_model_and_validates_root_output(
 
     assert result.orchestration.mode == "native_multi_agent"
     assert result.orchestration.model == "gpt-5.6-unit-test"
+    assert result.orchestration.priority_finding_ids == ["risk-dynamic-code-execution"]
     assert "prioritized 1 validated deterministic finding" in (result.orchestration.note or "")
     assert result.agents_md.startswith("# AGENTS.md\n")
     assert "[HIGH] `src/app.py`" in result.repo_map.markdown

@@ -164,6 +164,16 @@ h2 { letter-spacing: -.055em; }
 .agent-opinions p, .decision-list p, .master-merge p { font-size: .78rem; }
 .master-merge > span { color: #142035; background: #b9cbff; }
 .master-merge small { display: block; margin-top: .7rem; color: #8fa0b9; font: 600 .62rem/1.45 var(--mono); text-transform: uppercase; letter-spacing: .025em; }
+.native-priorities { display: grid; grid-template-columns: minmax(12rem, .75fr) minmax(16rem, 1.25fr); gap: 1.1rem; margin-top: 1rem; padding: 1rem; border: 1px solid rgba(184, 249, 106, .32); border-radius: .7rem; background: linear-gradient(105deg, rgba(184, 249, 106, .1), rgba(131, 173, 255, .1)); }
+.native-priorities h3 { margin: .2rem 0 .45rem; color: #f3f7fb; font-size: 1rem; }
+.native-priorities p { margin: 0; color: #b8c6d9; font-size: .73rem; line-height: 1.5; }
+.native-priorities ol { display: grid; gap: .45rem; padding: 0; margin: 0; list-style: none; }
+.native-priorities li { display: grid; grid-template-columns: 2rem 1fr; gap: .5rem; align-items: start; padding: .52rem .62rem; border: 1px solid rgba(145, 167, 205, .22); border-radius: .45rem; background: rgba(9, 17, 28, .36); }
+.native-priorities__rank { color: var(--acid); font: 700 .72rem/1.6 var(--mono); }
+.native-priorities li strong { display: block; color: #edf4fb; font-size: .78rem; line-height: 1.35; }
+.native-priorities li p { display: flex; flex-wrap: wrap; align-items: center; gap: .42rem; margin-top: .32rem; }
+.native-priorities li .severity { min-width: 3.25rem; height: 1.16rem; font-size: .52rem; }
+.native-priorities code { color: #b6c8df; font: .61rem/1.4 var(--mono); overflow-wrap: anywhere; }
 .reports-section { background: #0b121d; }
 .section-aside, .mode-explainer { color: #a9b6c7; font-size: .88rem; }
 .report-grid { gap: .9rem; border: 0; background: transparent; }
@@ -199,6 +209,7 @@ h2 { letter-spacing: -.055em; }
   .hero { min-height: 0; }
   .evidence-summary { gap: .5rem; }
   .evidence-summary > div { border-radius: .52rem; }
+  .native-priorities { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 620px) {

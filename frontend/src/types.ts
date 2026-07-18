@@ -124,6 +124,7 @@ export interface AnalysisJob {
   repository?: RepositoryInfo
   mode?: string
   model?: string
+  priorityFindingIds: string[]
   summary?: string
   error?: string
   reports: SpecialistReport[]

@@ -258,6 +258,7 @@ export function normalizeJob(value: unknown): AnalysisJob {
     },
     mode: string(orchestration.mode) ?? string(source.mode) ?? string(source.execution_mode) ?? string(source.analysis_mode),
     model: string(orchestration.model),
+    priorityFindingIds: strings(orchestration.priority_finding_ids ?? orchestration.priorityFindingIds),
     summary: string(result.summary) ?? string(source.summary) ?? string(source.executive_summary),
     error: string(source.error) ?? string(source.detail),
     reports,

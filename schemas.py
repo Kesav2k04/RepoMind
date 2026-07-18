@@ -76,11 +76,14 @@ class RepositoryMap(BaseModel):
 
 
 class OrchestrationMeta(BaseModel):
+    """Execution metadata without elevating hosted synthesis into canonical evidence."""
+
     mode: Literal["native_multi_agent", "evidence_fallback"]
     model: str | None = None
     root_agent: str = "/root"
     requested_subagents: int = 4
     completed_roles: list[AgentRole] = Field(default_factory=list)
+    priority_finding_ids: list[str] = Field(default_factory=list)
     duration_ms: int = 0
     note: str | None = None
 

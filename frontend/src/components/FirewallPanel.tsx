@@ -30,14 +30,19 @@ function totals(job: AnalysisJob): FirewallTotals {
 export function FirewallPanel({ job }: { job: AnalysisJob }) {
   const state = totals(job)
   const complete = job.status === 'completed' || job.status === 'complete'
-  const title = state.native ? 'Citation firewall' : 'Evidence validation'
+  const technicalName = state.native ? 'Citation firewall' : 'Evidence validation'
+  const title = 'Cited or withheld'
   const copy = state.native
     ? 'A GPT-5.6 claim is published only when its quote matches both the bounded checkout and source returned to that specialist by a read-only tool.'
     : 'Evidence Mode did not ask a model to propose claims. Local specialist findings remain bounded and evidence-backed.'
 
+  const pendingMetric = complete ? 0 : 'Pending'
+  const toolCallValue = state.native ? state.toolCalls || pendingMetric : 'Model calls'
+  const toolCallLabel = state.native ? 'model tool calls' : 'not used in this mode'
+
   return <section className={`firewall-panel firewall-panel--${state.native ? 'native' : 'evidence'}`} aria-label={title}>
-    <div className="firewall-panel__lead"><div><p className="eyebrow eyebrow--accent">{state.native ? 'Trust boundary' : 'Fallback trust boundary'}</p><h2>{title}</h2><p>{copy}</p></div><span className="firewall-panel__state">{state.native ? 'active' : 'evidence mode'}</span></div>
-    <div className="firewall-panel__metrics"><div><strong>{state.proposed || (complete ? 0 : '—')}</strong><span>{state.native ? 'claims proposed' : 'signals considered'}</span></div><div><strong>{state.verified || (complete ? 0 : '—')}</strong><span>{state.native ? 'claims verified' : 'findings published'}</span></div><div><strong>{state.withheld || (complete ? 0 : '—')}</strong><span>{state.native ? 'claims withheld' : 'signals withheld'}</span></div><div><strong>{state.toolCalls || (complete ? 0 : '—')}</strong><span>{state.native ? 'model tool calls' : 'model tool calls'}</span></div></div>
+    <div className="firewall-panel__lead"><div><p className="eyebrow eyebrow--accent">{state.native ? `Trust boundary: ${technicalName}` : `Fallback trust boundary: ${technicalName}`}</p><h2>{title}</h2><p>{copy}</p></div><span className="firewall-panel__state">{state.native ? 'active' : 'evidence mode'}</span></div>
+    <div className="firewall-panel__metrics"><div><strong>{state.proposed || pendingMetric}</strong><span>{state.native ? 'claims proposed' : 'signals considered'}</span></div><div><strong>{state.verified || pendingMetric}</strong><span>{state.native ? 'claims verified' : 'findings published'}</span></div><div><strong>{state.withheld || pendingMetric}</strong><span>{state.native ? 'claims withheld' : 'signals withheld'}</span></div><div aria-label={state.native ? undefined : 'Model calls not used in this mode'}><strong>{toolCallValue}</strong><span>{toolCallLabel}</span></div></div>
     {job.validation.message && <p className="firewall-panel__note">{job.validation.message}</p>}
   </section>
 }

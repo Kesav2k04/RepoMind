@@ -8,7 +8,7 @@ describe('FirewallPanel', () => {
   it('makes the verified and withheld claim counts visible', () => {
     render(<FirewallPanel job={nativeJob()} />)
 
-    expect(screen.getByRole('region', { name: 'Citation firewall' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Cited or withheld' })).toBeInTheDocument()
     expect(screen.getByText('claims proposed')).toBeInTheDocument()
     expect(screen.getByText('claims verified')).toBeInTheDocument()
     expect(screen.getByText('claims withheld')).toBeInTheDocument()

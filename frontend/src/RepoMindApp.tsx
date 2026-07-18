@@ -19,8 +19,14 @@ const STATUS_LABELS: Record<string, string> = {
   queued: 'Queued', pending: 'Queued', running: 'Analyzing', reconciling: 'Reconciling', completed: 'Complete', complete: 'Complete', failed: 'Needs attention',
 }
 
+const TASK_STARTERS = [
+  { label: 'Fix a bug', value: 'Fix a regression without changing the public API.' },
+  { label: 'Add a feature', value: 'Add a focused feature while preserving existing conventions.' },
+  { label: 'Refactor safely', value: 'Refactor a focused module and keep behavior verified.' },
+]
+
 function reportFor(job: AnalysisJob, role: AgentRole): SpecialistReport | undefined { return job.reports.find((report) => report.role === role) }
-function modeLabel(mode?: string): string { return mode === 'native_multi_agent' ? 'GPT-5.6 Native · Connected' : mode ? 'Evidence Mode · Deterministic' : 'Mode resolving' }
+function modeLabel(mode?: string): string { return mode === 'native_multi_agent' ? 'GPT-5.6 Native: connected' : mode ? 'Evidence Mode: rules-based fallback' : 'Mode resolving' }
 function severityClass(severity: FindingSeverity): string { return `severity severity--${severity}` }
 function isComplete(job?: AnalysisJob): boolean { return job?.status === 'completed' || job?.status === 'complete' }
 function isFailed(job?: AnalysisJob): boolean { return job?.status === 'failed' }
@@ -52,7 +58,7 @@ function agentState(job: AnalysisJob, role: AgentRole): string {
 }
 
 function formatDuration(milliseconds: number): string {
-  if (!milliseconds) return '—'
+  if (!milliseconds) return 'Pending'
   return milliseconds >= 60_000 ? `${Math.round(milliseconds / 1_000 / 60)}m ${Math.round((milliseconds / 1_000) % 60)}s` : `${Math.max(1, Math.round(milliseconds / 1_000))}s`
 }
 
@@ -94,7 +100,7 @@ function EvidenceMetric({ value, label, pending, complete }: { value: number; la
   const observed = value > 0 || complete
   return <div className={observed ? '' : 'evidence-summary__metric--pending'}>
     <span className="evidence-summary__number">{observed ? value : pending}</span>
-    <span>{observed ? label : `${label} · in progress`}</span>
+    <span>{observed ? label : `${label}: in progress`}</span>
   </div>
 }
 
@@ -118,7 +124,7 @@ function Pipeline({ job }: { job?: AnalysisJob }) {
   const completedRoles = job?.reports.length ?? 0
   const decisions = job?.reconciliation.decisions.length ?? 0
   const nativeDispatch = job?.mode === 'native_multi_agent' || job?.events.some((event) => event.action === 'dispatching_gpt56_specialists')
-  const specialistLabel = nativeDispatch ? '4 GPT-5.6 specialists · parallel source reviews' : '4 specialists · parallel evidence reviews'
+  const specialistLabel = nativeDispatch ? '4 GPT-5.6 specialists: parallel source reviews' : '4 specialists: parallel evidence reviews'
   const masterLabel = nativeDispatch ? 'GPT-5.6 Root Reconciliation' : 'Master Reconciliation'
   const evidenceState: PipelineState = hasEvidence ? (activeRoles ? 'complete' : 'working') : failed ? 'failed' : 'waiting'
   const masterState: PipelineState = complete ? 'complete' : failed ? 'failed' : masterEvent || completedRoles > 0 ? 'working' : 'waiting'
@@ -171,7 +177,7 @@ function FindingRow({ finding }: { finding: Finding }) {
   const evidence = finding.evidence.find((item) => item.path.trim().length > 0)
   const evidenceBacked = hasFindingEvidence(finding)
   const confidence = evidenceBacked && finding.confidence !== undefined ? Math.round(finding.confidence * 100) : undefined
-  const location = evidence ? `${evidence.path}${evidence.lineStart ? ` · line ${evidence.lineStart}${evidence.lineEnd && evidence.lineEnd !== evidence.lineStart ? `–${evidence.lineEnd}` : ''}` : ' · file-level evidence'}` : finding.files[0]
+  const location = evidence ? `${evidence.path}${evidence.lineStart ? `: line ${evidence.lineStart}${evidence.lineEnd && evidence.lineEnd !== evidence.lineStart ? ` to ${evidence.lineEnd}` : ''}` : ': file-level evidence'}` : finding.files[0]
   if (!evidenceBacked) return <article className="finding-row finding-row--unverified">
     <div className="finding-row__meta"><span className={severityClass(finding.severity)}>{finding.severity === 'info' ? 'signal' : finding.severity}</span></div>
     <div className="finding-row__content"><h4>{finding.title}</h4>{finding.detail && <p>{finding.detail}</p>}<p className="finding-unverified"><strong>Evidence unavailable:</strong> this signal is not included in the trusted recommendation set.</p></div>
@@ -198,7 +204,7 @@ function NativePriorities({ job }: { job: AnalysisJob }) {
     <div><p className="eyebrow eyebrow--accent">GPT-5.6 root synthesis</p><h3>Model-ranked priorities</h3><p>The root selected firewall-verified specialist signals for this task. Specialists proposed claims through read-only tools; the citation firewall alone decides what is published.</p></div>
     <ol>{priorities.map((finding, index) => {
       const evidence = finding.evidence.find((item) => item.path.trim().length > 0)
-      const location = evidence ? `${evidence.path}${evidence.lineStart ? ` · line ${evidence.lineStart}` : ''}` : finding.files[0]
+      const location = evidence ? `${evidence.path}${evidence.lineStart ? `: line ${evidence.lineStart}` : ''}` : finding.files[0]
       return <li key={finding.id}><span className="native-priorities__rank">{String(index + 1).padStart(2, '0')}</span><div><strong>{finding.title}</strong><p><span className={severityClass(finding.severity)}>{finding.severity === 'info' ? 'signal' : finding.severity}</span>{location && <code>{location}</code>}</p></div></li>
     })}</ol>
   </aside>
@@ -214,13 +220,66 @@ function ReviewBrief({ job }: { job: AnalysisJob }) {
   const finding = modelPriority ?? [...findings].sort((left, right) => severityRank[left.severity] - severityRank[right.severity] || (right.confidence ?? 0) - (left.confidence ?? 0))[0]
   if (!finding) return null
   const evidence = finding.evidence.find((item) => item.path.trim().length > 0)
-  const location = evidence ? `${evidence.path}${evidence.lineStart ? ` · line ${evidence.lineStart}` : ' · file-level evidence'}` : finding.files[0]
+  const location = evidence ? `${evidence.path}${evidence.lineStart ? `: line ${evidence.lineStart}` : ': file-level evidence'}` : finding.files[0]
   const confidence = finding.confidence === undefined ? undefined : Math.round(finding.confidence * 100)
   return <aside className="review-brief" aria-label="Recommended first review signal">
-    <div className="review-brief__meta"><p className="eyebrow eyebrow--accent">Start here</p><span>{modelPriority ? 'GPT-5.6 presentation priority' : 'Highest deterministic severity'}</span></div>
-    <div className="review-brief__signal"><span className={severityClass(finding.severity)}>{finding.severity === 'info' ? 'signal' : finding.severity}</span><div><h3>{finding.title}</h3><p>{finding.recommendation || finding.detail}</p>{location && <code>Evidence · {location}{confidence !== undefined ? ` · ${confidence}% evidence confidence` : ''}</code>}</div></div>
+    <div className="review-brief__meta"><p className="eyebrow eyebrow--accent">Start here</p><span>{modelPriority ? 'GPT-5.6 priority over verified evidence' : 'Most urgent evidence-backed signal'}</span></div>
+    <div className="review-brief__signal"><span className={severityClass(finding.severity)}>{finding.severity === 'info' ? 'signal' : finding.severity}</span><div><h3>{finding.title}</h3><p>{finding.recommendation || finding.detail}</p>{location && <code>Evidence: {location}{confidence !== undefined ? `, ${confidence}% evidence confidence` : ''}</code>}</div></div>
     <p className="review-brief__scope">A recommended review starting point, not a complete repository verdict. Inspect the linked evidence and the analysis scope before changing code.</p>
   </aside>
+}
+
+function TaskBriefPanel({ job }: { job: AnalysisJob }) {
+  const brief = job.taskBrief
+  if (!brief) return null
+  const findingById = new Map(job.reports.flatMap((report) => report.findings).map((finding) => [finding.id, finding]))
+  const priorityFinding = brief.priorityFindingIds.map((id) => findingById.get(id)).find((finding): finding is Finding => Boolean(finding))
+  const reviewPaths = brief.reviewPaths.slice(0, 4)
+  const verificationCommands = brief.verificationCommands.slice(0, 3)
+
+  return <section className="task-brief" aria-labelledby="task-brief-heading">
+    <div className="task-brief__heading">
+      <div>
+        <p className="eyebrow eyebrow--accent">For this change</p>
+        <h2 id="task-brief-heading">{brief.taskDescription}</h2>
+        <p>Start with observed repository evidence, then decide the implementation with the codebase in view.</p>
+      </div>
+      <span className="task-brief__state">Evidence-backed handoff</span>
+    </div>
+    <div className="task-brief__grid">
+      <article>
+        <p className="eyebrow">Inspect first</p>
+        {reviewPaths.length ? <ol>{reviewPaths.map((path) => <li key={path}><code>{path}</code></li>)}</ol> : <p className="task-brief__empty">No task-specific path was retained in this bounded run.</p>}
+      </article>
+      <article>
+        <p className="eyebrow">Run after editing</p>
+        {verificationCommands.length ? <ol>{verificationCommands.map((command) => <li key={command}><code>{command}</code></li>)}</ol> : <p className="task-brief__empty">No verification command was observed. Confirm the project workflow before merging.</p>}
+      </article>
+      <article className="task-brief__priority">
+        <p className="eyebrow">Priority evidence</p>
+        {priorityFinding ? <><span className={severityClass(priorityFinding.severity)}>{priorityFinding.severity === 'info' ? 'signal' : priorityFinding.severity}</span><strong>{priorityFinding.title}</strong><p>{priorityFinding.recommendation || priorityFinding.detail}</p></> : <p className="task-brief__empty">No finding was elevated for this task. Review the retained paths before making a change.</p>}
+      </article>
+    </div>
+  </section>
+}
+
+function SpecialistActivity({ job }: { job: AnalysisJob }) {
+  const content = <div className="analysis-activity__content"><div className="agent-timeline">{AGENTS.map((agent, index) => <AgentActivity job={job} agent={agent} index={index} key={agent.role} />)}</div><ExecutionTrace job={job} /></div>
+  if (!isComplete(job)) return content
+  return <details className="analysis-activity"><summary>Review recorded specialist activity <span>{job.events.length} event{job.events.length === 1 ? '' : 's'}</span></summary>{content}</details>
+}
+
+function HandoffStrip({ agentsHref, job }: { agentsHref: string; job: AnalysisJob }) {
+  if (!isComplete(job)) return null
+  return <section className="handoff-strip" id="handoff" aria-labelledby="handoff-heading">
+    <div className="handoff-strip__heading"><p className="eyebrow eyebrow--accent">Handoff</p><h2 id="handoff-heading">Move the evidence back into your coding loop.</h2><p>RepoMind prepares context. Your editor or coding agent uses the cited paths and checks to plan the patch.</p></div>
+    <ol className="handoff-strip__steps">
+      <li><span>01</span><div><strong>Download the guide</strong><a href={agentsHref} download>Get AGENTS.md</a></div></li>
+      <li><span>02</span><div><strong>Place it beside the repository</strong><p>Keep the generated guide with the codebase while the task is active.</p></div></li>
+      <li><span>03</span><div><strong>Brief the coding agent</strong><p>Ask it to read the cited paths before proposing a plan or changing code.</p></div></li>
+      <li><span>04</span><div><strong>Run the observed checks</strong><p>Use the verification commands after the edit, then review the diff as usual.</p></div></li>
+    </ol>
+  </section>
 }
 
 function MapBranch({ node, depth, onSelect, selectedPath }: { node: RepositoryMapNode; depth: number; onSelect: (node: RepositoryMapNode) => void; selectedPath?: string }) {
@@ -317,7 +376,7 @@ function AgentActivity({ job, agent, index }: { job: AnalysisJob; agent: (typeof
   const report = reportFor(job, agent.role)
   const event = latestEvent(job, agent.role)
   const state = agentState(job, agent.role)
-  const action = event?.action ?? event?.message ?? (report ? 'Completed evidence report' : state === 'queued' ? 'Waiting for evidence pack…' : 'Starting a bounded review…')
+  const action = event?.action ?? event?.message ?? (report ? 'Completed evidence report' : state === 'queued' ? 'Waiting for evidence pack...' : 'Starting a bounded review...')
   const progress = report ? 'Evidence report ready' : metricValue(event) ?? (state === 'queued' ? 'Waiting for evidence' : 'Working from evidence')
   const percent = report ? 100 : event?.percent ?? (event?.current !== undefined && event.total ? Math.round((event.current / event.total) * 100) : undefined)
   const stateLabel = state === 'complete' ? 'Report ready' : state === 'working' ? 'Working from evidence' : state === 'failed' ? 'Stopped safely' : 'Awaiting evidence'
@@ -327,7 +386,7 @@ function AgentActivity({ job, agent, index }: { job: AnalysisJob; agent: (typeof
     <span className="agent-card__number">0{index + 1}</span>
     <div className="agent-card__glyph-wrap"><AgentGlyph role={agent.role} />{state === 'working' && <span className="agent-card__activity-ring" aria-hidden="true" />}</div>
     <div className="agent-card__content"><h3>{agent.label}</h3><p className="agent-action">{action}</p><p className="agent-progress">{progress}</p></div>
-    <div className="agent-card__status" aria-live="polite"><span className="agent-card__status-dot" aria-hidden="true" />{state === 'working' ? `Live · ${liveDetail}` : stateLabel}</div>
+    <div className="agent-card__status" aria-live="polite"><span className="agent-card__status-dot" aria-hidden="true" />{state === 'working' ? `Live: ${liveDetail}` : stateLabel}</div>
     {percent !== undefined && <div className="agent-progressbar" aria-label={`${percent}% complete`}><i style={{ width: `${Math.min(100, Math.max(0, percent))}%` }} /></div>}
     <span className="step-state" aria-hidden="true">{state === 'complete' ? '✓' : <i />}</span>
   </article>
@@ -349,19 +408,19 @@ function ReconciliationPanel({ job }: { job: AnalysisJob }) {
     { label: 'deferred', value: reconciliation.deferredCount },
   ].filter((item) => item.value > 0)
   if (!hasData) return null
-  return <section className="reconciliation-panel"><div className="reconciliation-panel__heading"><div><p className="eyebrow eyebrow--accent">Master reconciliation</p><h2>Signals become an engineering decision.</h2></div><div className="decision-counts">{decisionStats.length ? decisionStats.map((item) => <span key={item.label}><strong>{item.value}</strong> {item.label}</span>) : <span><strong>Clear</strong> no conflict</span>}</div></div><div className="reconciliation-flow"><div className="agent-opinions">{AGENTS.map((agent) => <div key={agent.role}><AgentGlyph role={agent.role} /><p><strong>{agent.label} says</strong>{reportFor(job, agent.role)?.summary || 'Evidence is still arriving.'}</p></div>)}</div><div className="master-merge"><span>✦</span><strong>Master</strong><p>{masterSummary}</p>{leadDecision && <small>{contributorLabels.length ? contributorLabels.join(' + ') : 'Specialist evidence'} · {leadDecision.findingIds.length} finding{leadDecision.findingIds.length === 1 ? '' : 's'} considered</small>}</div><div className="decision-list">{reconciliation.decisions.length ? reconciliation.decisions.slice(0, 3).map((decision, index) => <article key={`${decision.disposition}-${index}`}><span className={`decision-badge decision-badge--${decision.disposition}`}>{decision.disposition}</span><p>{decision.rationale || `${decision.findingIds.length} finding${decision.findingIds.length === 1 ? '' : 's'} considered`}</p></article>) : <p className="empty-state">The Master will show accepted, merged, and deferred evidence here.</p>}</div></div><NativePriorities job={job} /></section>
+  return <section className="reconciliation-panel"><div className="reconciliation-panel__heading"><div><p className="eyebrow eyebrow--accent">Master reconciliation</p><h2>Signals become an engineering decision.</h2></div><div className="decision-counts">{decisionStats.length ? decisionStats.map((item) => <span key={item.label}><strong>{item.value}</strong> {item.label}</span>) : <span><strong>Clear</strong> no conflict</span>}</div></div><div className="reconciliation-flow"><div className="agent-opinions">{AGENTS.map((agent) => <div key={agent.role}><AgentGlyph role={agent.role} /><p><strong>{agent.label} says</strong>{reportFor(job, agent.role)?.summary || 'Evidence is still arriving.'}</p></div>)}</div><div className="master-merge"><span>✦</span><strong>Master</strong><p>{masterSummary}</p>{leadDecision && <small>{contributorLabels.length ? contributorLabels.join(' + ') : 'Specialist evidence'}: {leadDecision.findingIds.length} finding{leadDecision.findingIds.length === 1 ? '' : 's'} considered</small>}</div><div className="decision-list">{reconciliation.decisions.length ? reconciliation.decisions.slice(0, 3).map((decision, index) => <article key={`${decision.disposition}-${index}`}><span className={`decision-badge decision-badge--${decision.disposition}`}>{decision.disposition}</span><p>{decision.rationale || `${decision.findingIds.length} finding${decision.findingIds.length === 1 ? '' : 's'} considered`}</p></article>) : <p className="empty-state">The Master will show accepted, merged, and deferred evidence here.</p>}</div></div><NativePriorities job={job} /></section>
 }
 
 function CompletionSummary({ job }: { job: AnalysisJob }) {
   if (!isComplete(job)) return null
   const metrics = job.metrics
   const findings = metrics.findingsPublished || job.reports.reduce((total, report) => total + report.findings.length, 0)
-  return <section className="completion-summary" aria-live="polite"><span className="completion-summary__check">✓</span><div><p className="eyebrow">Analysis complete</p><h2>Context is ready for the next coding agent.</h2><p>{metrics.filesAnalyzed || job.repository?.fileCount || 'Bounded'} files analyzed <i>·</i> 4 specialists <i>·</i> {findings} findings <i>·</i> {metrics.artifactsGenerated || 2} artifacts <i>·</i> {formatDuration(metrics.durationMs)}</p></div></section>
+  return <section className="completion-summary" aria-live="polite"><span className="completion-summary__check">✓</span><div><p className="eyebrow">Analysis complete</p><h2>Context is ready for the next coding agent.</h2><p>{metrics.filesAnalyzed || job.repository?.fileCount || 'Bounded'} files analyzed. 4 specialists. {findings} findings. {metrics.artifactsGenerated || 2} artifacts. {formatDuration(metrics.durationMs)}.</p></div></section>
 }
 
 function FailureRecovery({ job, onRetry, retrying }: { job: AnalysisJob; onRetry: () => void; retrying: boolean }) {
   const detail = job.error || 'RepoMind stopped before it could produce a trusted evidence pack.'
-  return <section className="failure-recovery" role="alert" aria-live="assertive"><div><p className="eyebrow">Analysis paused safely</p><h2>Nothing unsupported was presented as a finding.</h2><p>{detail}</p><p className="failure-recovery__hint">Check that the repository is public and reachable, then retry. RepoMind will create a new read-only analysis request.</p></div><button type="button" onClick={onRetry} disabled={retrying || !job.repoUrl}>{retrying ? 'Retrying…' : 'Retry this repository'}</button></section>
+  return <section className="failure-recovery" role="alert" aria-live="assertive"><div><p className="eyebrow">Analysis paused safely</p><h2>Nothing unsupported was presented as a finding.</h2><p>{detail}</p><p className="failure-recovery__hint">Check that the repository is public and reachable, then retry. RepoMind will create a new read-only analysis request.</p></div><button type="button" onClick={onRetry} disabled={retrying || !job.repoUrl}>{retrying ? 'Retrying...' : 'Retry this repository'}</button></section>
 }
 
 function RepoMindApp() {
@@ -395,6 +454,7 @@ function RepoMindApp() {
 
   useEffect(() => {
     if (!jobId || complete || failed) return undefined
+    let active = true
     const stream = openEventStream(jobId, (event) => {
       if (event.job) { setJob(event.job); return }
       const progress = event.progress
@@ -404,8 +464,15 @@ function RepoMindApp() {
         const duplicate = current.events.some((item) => item.timestamp === progress.timestamp && item.phase === progress.phase && item.role === progress.role && item.action === progress.action && item.percent === progress.percent)
         return duplicate ? current : { ...current, events: [...current.events, progress] }
       })
+      if (progress.phase === 'completed' || progress.phase === 'failed' || progress.action === 'artifacts_ready') {
+        void getAnalysis(jobId).then((next) => {
+          if (active) { setJob(next); setError(undefined) }
+        }).catch((refreshError) => {
+          if (active) setError(refreshError instanceof Error ? `Could not refresh the completed analysis: ${refreshError.message}` : 'Could not refresh the completed analysis.')
+        })
+      }
     })
-    return () => stream.close()
+    return () => { active = false; stream.close() }
   }, [jobId, complete, failed])
 
   useEffect(() => {
@@ -450,17 +517,57 @@ function RepoMindApp() {
   const title = repositoryLabel(job)
 
   return <main className="repomind-shell">
-    <header className="site-header"><a className="brand" href="#top" aria-label="RepoMind home"><BrandMark /><span>RepoMind</span></a><p className="header-note"><span className="header-note__dot" aria-hidden="true" /> Evidence-first change preflight</p></header>
-    <section className="hero" id="top"><div><p className="eyebrow eyebrow--accent">Change preflight for coding agents</p><h1>Before you delegate a ticket, give the agent the repository’s rules.</h1><p className="hero-lede">RepoMind turns an unfamiliar repository into a checked operating brief: what to read first, where risk sits, what tests matter, and how to verify the change—before the first edit.</p><div className="hero-proof" aria-label="RepoMind change-preflight outcomes"><span>Read first</span><span>Avoid risky paths</span><span>Verify the change</span></div></div><aside className="hero-story" aria-label="How RepoMind helps a change handoff"><p className="eyebrow">Monday-morning handoff</p><div><span>Ticket: fix a race condition in auth</span><strong>RepoMind does not write the fix.</strong></div><div className="hero-story__with"><span>Before the agent starts</span><strong>Give it observed architecture, risk boundaries, test signals, and a verification checklist.</strong></div><div className="hero-story__trace" aria-label="Repository evidence becomes an agent handoff"><span>Repository</span><i aria-hidden="true" /><span>Evidence</span><i aria-hidden="true" /><strong>AGENTS.md</strong></div></aside></section>
-    <section className="launch-panel" aria-labelledby="analyze-heading"><div><p className="eyebrow">Create a change preflight</p><h2 id="analyze-heading">Brief the repository before the ticket.</h2><p>Download the evidence-backed handoff, add it beside the code, then let your IDE agent begin with shared constraints.</p></div><form className="repo-form" onSubmit={submit}><label htmlFor="repo-url">Public GitHub repository to brief</label><div className="repo-form__controls"><span aria-hidden="true">⌁</span><input id="repo-url" type="url" inputMode="url" autoComplete="url" placeholder="https://github.com/owner/repository" value={repoUrl} onChange={(event) => setRepoUrl(event.target.value)} disabled={busy} aria-describedby={error ? 'form-error' : 'repo-hint'} /><button type="submit" disabled={busy}>{isStarting ? 'Launching…' : busy ? 'Analysis running' : 'Create preflight'}</button></div><label className="repo-form__task-label" htmlFor="task-description">What are you about to change? <span>Optional</span></label><textarea id="task-description" className="repo-form__task" rows={2} maxLength={2000} placeholder="e.g. Fix the auth-session race without changing the public API" value={taskDescription} onChange={(event) => setTaskDescription(event.target.value)} disabled={busy} /><div className="form-assist"><p className="form-hint" id="repo-hint">Public repositories only. RepoMind reads a bounded evidence pack and never modifies the source repository. A task focuses the briefing; it never becomes a repository fact.</p><button type="button" className="repo-form__example" onClick={() => { setRepoUrl('https://github.com/pallets/flask'); setTaskDescription('Add a focused test around an error-handling change.') }} disabled={busy}>Use Flask demo</button></div></form>{error && <p className="form-error" id="form-error" role="alert">{error}</p>}</section>
-    <section className="orchestration-zone" aria-live="polite"><div className="orchestration-zone__heading"><div><p className="eyebrow">Visible orchestration</p><h2>{job ? title : 'A brief your IDE agent can use—not another dashboard to watch.'}</h2>{job?.repoUrl && <p className="repository-url">{job.repoUrl}</p>}{job?.taskDescription && <p className="task-context"><span>Task focus</span>{job.taskDescription}</p>}</div>{job && <div className="session-meta"><span className={`status-chip status-chip--${job.status}`}>{STATUS_LABELS[job.status] ?? job.status}</span><span className={`mode-chip ${job.mode === 'native_multi_agent' ? 'mode-chip--native' : ''}`}>{modeLabel(job.mode)}</span></div>}</div><Pipeline job={job} />{job && <>{job.error && <p className="job-error" role="alert">{job.error}</p>}{complete || job.metrics.filesAnalyzed > 0 || job.metrics.manifestsFound > 0 || job.metrics.testsDiscovered > 0 || job.metrics.commitsInspected > 0 ? <div className="evidence-summary"><EvidenceMetric value={job.metrics.filesAnalyzed || job.repository?.fileCount || 0} label="files analyzed" pending={evidenceActivity(job)} complete={complete} /><EvidenceMetric value={job.metrics.manifestsFound} label="manifests" pending={evidenceActivity(job)} complete={complete} /><EvidenceMetric value={job.metrics.testsDiscovered} label="test files found" pending={evidenceActivity(job)} complete={complete} /><EvidenceMetric value={job.metrics.commitsInspected} label="commits read" pending={evidenceActivity(job)} complete={complete} /></div> : <div className="evidence-summary evidence-summary--pending"><div className="evidence-summary__stage"><span className="evidence-summary__number">{evidenceActivity(job)}</span><span>Evidence pack · in progress</span></div><p>RepoMind will publish counts only after it has observed bounded repository evidence.</p></div>}<div className="agent-timeline">{AGENTS.map((agent, index) => <AgentActivity job={job} agent={agent} index={index} key={agent.role} />)}</div><ExecutionTrace job={job} /></>}</section>
+    <header className="site-header">
+      <a className="brand" href="#top" aria-label="RepoMind home"><BrandMark /><span>RepoMind</span></a>
+      <nav className="site-nav" aria-label="Primary navigation"><a href="#how-it-works">How it works</a><a href="#evidence">Evidence</a><a href="#handoff">Handoff</a></nav>
+      <p className="header-note"><span className="header-note__dot" aria-hidden="true" /> Evidence-first change preflight</p>
+    </header>
+
+    <section className="hero" id="top">
+      <div>
+        <p className="eyebrow eyebrow--accent">Change preflight for coding agents</p>
+        <h1>Before your coding agent edits the ticket, give it the evidence.</h1>
+        <p className="hero-lede">Paste a public repository and the change you need. RepoMind returns a cited brief: where to start, what could break, and which checks to run before the patch.</p>
+        <div className="hero-proof" aria-label="RepoMind change-preflight outcomes"><span>Read first</span><span>Avoid risky paths</span><span>Verify the change</span></div>
+      </div>
+      <aside className="hero-story" aria-label="How RepoMind helps a change handoff">
+        <p className="eyebrow">Monday morning handoff</p>
+        <div><span>Ticket: fix a race condition in auth</span><strong>RepoMind does not write the patch.</strong></div>
+        <div className="hero-story__with"><span>Before the agent starts</span><strong>Give it observed architecture, risk boundaries, test signals, and a verification checklist.</strong></div>
+        <div className="hero-story__trace" aria-label="Repository evidence becomes an agent handoff"><span>Repository</span><i aria-hidden="true" /><span>Evidence</span><i aria-hidden="true" /><strong>AGENTS.md</strong></div>
+      </aside>
+    </section>
+
+    <section className="launch-panel" aria-labelledby="analyze-heading">
+      <div><p className="eyebrow">Create a change preflight</p><h2 id="analyze-heading">Set up the change, not just the repository.</h2><p>Bring the cited handoff back to your codebase, then let your IDE agent start with the same constraints as the team.</p></div>
+      <form className="repo-form" onSubmit={submit}>
+        <label htmlFor="repo-url">Public GitHub repository to brief</label>
+        <div className="repo-form__controls"><span aria-hidden="true">⌁</span><input id="repo-url" type="url" inputMode="url" autoComplete="url" placeholder="https://github.com/owner/repository" value={repoUrl} onChange={(event) => setRepoUrl(event.target.value)} disabled={busy} aria-describedby={error ? 'form-error' : 'repo-hint'} /><button type="submit" disabled={busy}>{isStarting ? 'Launching...' : busy ? 'Analysis running' : 'Create preflight'}</button></div>
+        <label className="repo-form__task-label" htmlFor="task-description">What are you about to change? <span>Optional</span></label>
+        <textarea id="task-description" className="repo-form__task" rows={2} maxLength={2000} placeholder="For example: Fix the auth-session race without changing the public API" value={taskDescription} onChange={(event) => setTaskDescription(event.target.value)} disabled={busy} />
+        <div className="task-starters" aria-label="Task starters"><span>Try a task</span>{TASK_STARTERS.map((starter) => <button type="button" className="task-starter" key={starter.label} onClick={() => setTaskDescription(starter.value)} disabled={busy}>{starter.label}</button>)}</div>
+        <div className="form-assist"><p className="form-hint" id="repo-hint">Public repositories only. RepoMind reads a bounded evidence pack and never modifies the source repository. A task focuses the brief. It never becomes a repository fact.</p><button type="button" className="repo-form__example" onClick={() => { setRepoUrl('https://github.com/pallets/flask'); setTaskDescription('Add a focused test around an error-handling change.') }} disabled={busy}>Fill Flask example</button></div>
+      </form>
+      {error && <p className="form-error" id="form-error" role="alert">{error}</p>}
+    </section>
+
+    <section className="orchestration-zone" id="how-it-works" aria-live="polite">
+      <div className="orchestration-zone__heading"><div><p className="eyebrow">Visible orchestration</p><h2>{job ? title : 'A brief your IDE agent can use, not another dashboard to watch.'}</h2>{job?.repoUrl && <p className="repository-url">{job.repoUrl}</p>}{job?.taskDescription && <p className="task-context"><span>Task focus</span>{job.taskDescription}</p>}</div>{job && <div className="session-meta"><span className={`status-chip status-chip--${job.status}`}>{STATUS_LABELS[job.status] ?? job.status}</span><span className={`mode-chip ${job.mode === 'native_multi_agent' ? 'mode-chip--native' : ''}`}>{modeLabel(job.mode)}</span></div>}</div>
+      <Pipeline job={job} />
+      {job && <>
+        {job.error && <p className="job-error" role="alert">{job.error}</p>}
+        {complete || job.metrics.filesAnalyzed > 0 || job.metrics.manifestsFound > 0 || job.metrics.testsDiscovered > 0 || job.metrics.commitsInspected > 0 ? <div className="evidence-summary"><EvidenceMetric value={job.metrics.filesAnalyzed || job.repository?.fileCount || 0} label="files analyzed" pending={evidenceActivity(job)} complete={complete} /><EvidenceMetric value={job.metrics.manifestsFound} label="manifests" pending={evidenceActivity(job)} complete={complete} /><EvidenceMetric value={job.metrics.testsDiscovered} label="test files found" pending={evidenceActivity(job)} complete={complete} /><EvidenceMetric value={job.metrics.commitsInspected} label="commits read" pending={evidenceActivity(job)} complete={complete} /></div> : <div className="evidence-summary evidence-summary--pending"><div className="evidence-summary__stage"><span className="evidence-summary__number">{evidenceActivity(job)}</span><span>Evidence pack: in progress</span></div><p>RepoMind will publish counts only after it has observed bounded repository evidence.</p></div>}
+        <TaskBriefPanel job={job} />
+        <SpecialistActivity job={job} />
+      </>}
+    </section>
     {job && failed && <FailureRecovery job={job} onRetry={retryAnalysis} retrying={isStarting} />}
     {job && <TrustPanel job={job} />}
     {job && <FirewallPanel job={job} />}
     {job && <ReconciliationPanel job={job} />}
-    {job && (job.reports.length > 0 || complete) && <section className="reports-section"><div className="section-heading"><div><p className="eyebrow">Specialist evidence</p><h2>Every recommendation carries its proof.</h2></div><p className="section-aside">Severity, confidence, evidence path, line number, and reason travel together. Confidence reflects captured-evidence support—not a guarantee that unscanned code is safe.</p></div><ReviewBrief job={job} /><div className="report-grid">{AGENTS.map((agent) => <ReportCard key={agent.role} agent={agent} report={reportFor(job, agent.role)} />)}</div></section>}
-    {job && (complete || mapMarkdown || agentsMarkdown) && <><CompletionSummary job={job} /><section className="artifacts-section"><div className="section-heading"><div><p className="eyebrow">Take the brief back to the codebase</p><h2>Artifacts for the next person—or agent—to touch the code.</h2></div>{job.mode && <p className="mode-explainer">{job.mode === 'native_multi_agent' ? 'GPT-5.6 source specialists and root reconciliation completed behind a citation firewall.' : 'Evidence Mode is using deterministic reconciliation.'}</p>}</div><div className="artifact-grid"><article className="artifact-card"><div className="artifact-card__top"><div><p className="eyebrow">Repository map</p><h3>Interactive risk topology</h3></div><span className="artifact-icon" aria-hidden="true">⌘</span></div><RepositoryMap nodes={job.artifacts.repoMapNodes} overview={job.artifacts.repoMapOverview} markdown={mapMarkdown} /><div className="legend"><span><i className="severity severity--critical" /> critical</span><span><i className="severity severity--high" /> high</span><span><i className="severity severity--medium" /> medium</span><span><i className="severity severity--info" /> informational</span></div><p className="map-scope-note">Unanalyzed does not mean safe. Risk labels reflect only verified evidence in this bounded run.</p><a className="download-link" href={artifactMap} download>Download repo-map.md <span aria-hidden="true">↓</span></a></article><article className="artifact-card artifact-card--agents"><div className="artifact-card__top"><div><p className="eyebrow">AGENTS.md</p><h3>Agent-ready operating context</h3></div><span className="artifact-icon" aria-hidden="true">✦</span></div><AgentsPreview markdown={agentsMarkdown} /><a className="download-link" href={artifactAgents} download>Download AGENTS.md <span aria-hidden="true">↓</span></a></article></div></section></>}
-    <footer className="site-footer"><span>RepoMind / Evidence-first change preflight</span><span>Complements your IDE; it does not replace it.</span></footer>
+    {job && (complete || mapMarkdown || agentsMarkdown) && <><CompletionSummary job={job} />{!artifactsWithheld && <HandoffStrip agentsHref={artifactAgents} job={job} />}<section className="artifacts-section"><div className="section-heading"><div><p className="eyebrow">Take the brief back to the codebase</p><h2>Artifacts for the next person or agent to touch the code.</h2></div>{job.mode && <p className="mode-explainer">{job.mode === 'native_multi_agent' ? 'GPT-5.6 source specialists and root reconciliation completed behind a citation firewall.' : 'Evidence Mode uses rules-based reconciliation. Model calls were not used.'}</p>}</div><div className="artifact-grid"><article className="artifact-card"><div className="artifact-card__top"><div><p className="eyebrow">Repository map</p><h3>Interactive risk map</h3></div><span className="artifact-icon" aria-hidden="true">⌘</span></div><RepositoryMap nodes={job.artifacts.repoMapNodes} overview={job.artifacts.repoMapOverview} markdown={mapMarkdown} /><div className="legend"><span><i className="severity severity--critical" /> critical</span><span><i className="severity severity--high" /> high</span><span><i className="severity severity--medium" /> medium</span><span><i className="severity severity--info" /> informational</span></div><p className="map-scope-note">Unanalyzed does not mean safe. Risk labels reflect only verified evidence in this bounded run.</p><a className="download-link" href={artifactMap} download>Download repo-map.md <span aria-hidden="true">↓</span></a></article><article className="artifact-card artifact-card--agents"><div className="artifact-card__top"><div><p className="eyebrow">AGENTS.md</p><h3>Agent-ready operating context</h3></div><span className="artifact-icon" aria-hidden="true">✦</span></div><AgentsPreview markdown={agentsMarkdown} /><a className="download-link" href={artifactAgents} download>Download AGENTS.md <span aria-hidden="true">↓</span></a></article></div></section></>}
+    {job && (job.reports.length > 0 || complete) && <section className="reports-section" id="evidence"><div className="section-heading"><div><p className="eyebrow">Specialist evidence</p><h2>Every recommendation carries its proof.</h2></div><p className="section-aside">Severity, confidence, evidence path, line number, and reason travel together. Confidence reflects captured-evidence support, not a guarantee that unscanned code is safe.</p></div><ReviewBrief job={job} /><div className="report-grid">{AGENTS.map((agent) => <ReportCard key={agent.role} agent={agent} report={reportFor(job, agent.role)} />)}</div></section>}
+    <footer className="site-footer"><span>RepoMind / Evidence-first change preflight</span><span>Complements your IDE. It does not replace it.</span></footer>
   </main>
 }
 

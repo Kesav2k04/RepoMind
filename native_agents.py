@@ -437,24 +437,38 @@ async def _run_specialist(
             break
         response_requested_tools = True
         input_items.extend(getattr(response, "output", None) or [])
-        for tool_call in tool_calls[:MAX_TOOL_CALLS_PER_SPECIALIST - toolbelt.tool_calls]:
+        for tool_call in tool_calls:
             name = getattr(tool_call, "name", "")
             raw_arguments = getattr(tool_call, "arguments", "{}")
-            try:
-                arguments = json.loads(raw_arguments) if isinstance(raw_arguments, str) else {}
-            except json.JSONDecodeError:
-                arguments = {}
-            execution = await asyncio.to_thread(toolbelt.execute, name, arguments)
-            source_reads += int(execution.source_read)
-            await progress(
-                "agent_tool_call",
-                f"{profile['label']} used {execution.name} on {execution.label}.",
-                role,
-                action=f"{execution.name} · {execution.label}",
-                current=min(toolbelt.tool_calls, MAX_TOOL_CALLS_PER_SPECIALIST),
-                total=MAX_TOOL_CALLS_PER_SPECIALIST,
-                metrics={"model_tool_calls": toolbelt.tool_calls},
-            )
+            if toolbelt.tool_calls >= MAX_TOOL_CALLS_PER_SPECIALIST:
+                # Responses continuations require an output for every function call.
+                # Return an explicit bounded result instead of omitting excess parallel calls.
+                execution = ToolExecution(
+                    name=name if isinstance(name, str) else "unknown",
+                    label="tool budget exhausted",
+                    output=_json_output(
+                        {
+                            "error": "RepoMind's bounded tool-call budget is exhausted. "
+                            "Continue with the source already inspected."
+                        }
+                    ),
+                )
+            else:
+                try:
+                    arguments = json.loads(raw_arguments) if isinstance(raw_arguments, str) else {}
+                except json.JSONDecodeError:
+                    arguments = {}
+                execution = await asyncio.to_thread(toolbelt.execute, name, arguments)
+                source_reads += int(execution.source_read)
+                await progress(
+                    "agent_tool_call",
+                    f"{profile['label']} used {execution.name} on {execution.label}.",
+                    role,
+                    action=f"{execution.name} · {execution.label}",
+                    current=min(toolbelt.tool_calls, MAX_TOOL_CALLS_PER_SPECIALIST),
+                    total=MAX_TOOL_CALLS_PER_SPECIALIST,
+                    metrics={"model_tool_calls": toolbelt.tool_calls},
+                )
             input_items.append(
                 {
                     "type": "function_call_output",

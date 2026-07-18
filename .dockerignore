@@ -5,6 +5,11 @@ __pycache__/
 .pytest_cache/
 .repomind-integration-cache/
 graphify-out/
+.local/
+deploy-assets/
+hf_token.txt
+repo-map.md
+test_artifacts_agents.md
 docs/
 tests/
 frontend/node_modules/

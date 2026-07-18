@@ -279,6 +279,75 @@ def test_native_specialists_use_read_only_tools_and_firewall_verified_claims(
     assert any(phase == "reconciled" for phase, _, _ in _collect_progress.events)
 
 
+def test_native_specialist_returns_outputs_for_excess_parallel_tool_calls(
+    monkeypatch, repository_snapshot: RepositorySnapshot
+) -> None:
+    requests: list[dict[str, object]] = []
+
+    class FakeResponses:
+        async def create(self, **kwargs: object) -> object:
+            requests.append(kwargs)
+            if len(requests) == 1:
+                return SimpleNamespace(
+                    output=[
+                        SimpleNamespace(
+                            type="function_call",
+                            name="read_file",
+                            arguments='{"path":"src/app.py","line_start":1,"line_end":7}',
+                            call_id="allowed_read",
+                        ),
+                        SimpleNamespace(
+                            type="function_call",
+                            name="read_file",
+                            arguments='{"path":"src/app.py","line_start":1,"line_end":7}',
+                            call_id="budgeted_read",
+                        ),
+                    ],
+                    output_text="",
+                )
+            tool_outputs = [
+                item
+                for item in kwargs["input"]  # type: ignore[index]
+                if isinstance(item, dict) and item.get("type") == "function_call_output"
+            ]
+            assert {item["call_id"] for item in tool_outputs} == {"allowed_read", "budgeted_read"}
+            blocked_output = next(item["output"] for item in tool_outputs if item["call_id"] == "budgeted_read")
+            assert "tool-call budget is exhausted" in blocked_output
+            assert kwargs["tool_choice"] == "none"
+            return SimpleNamespace(
+                output=[],
+                output_text=(
+                    '{"summary":"Source-reviewed signal.","findings":['
+                    '{"title":"Dynamic evaluation is reachable","detail":"The handler evaluates payload text.",'
+                    '"recommendation":"Replace dynamic evaluation with an explicit parser.",'
+                    '"path":"src/app.py","line_start":5,"line_end":5,'
+                    '"quoted_evidence":"return eval(payload)","severity":"high","confidence":0.99}]}'
+                ),
+            )
+
+    class FakeClient:
+        def __init__(self) -> None:
+            self.responses = FakeResponses()
+
+    monkeypatch.setattr(native_agents, "MAX_TOOL_CALLS_PER_SPECIALIST", 1)
+    _collect_rich_progress.events.clear()
+
+    result = asyncio.run(
+        native_agents._run_specialist(
+            repository_snapshot,
+            "architecture",
+            "Replace the dynamic parser without changing the public API.",
+            "gpt-5.6-unit-test",
+            FakeClient(),
+            _collect_rich_progress,
+        )
+    )
+
+    assert result.tool_calls == 1
+    assert result.verified_claims == 1
+    assert len(requests) == 2
+
+
 def test_native_reconciliation_timeout_returns_fast_evidence_fallback(
     monkeypatch, repository_snapshot: RepositorySnapshot
 ) -> None:

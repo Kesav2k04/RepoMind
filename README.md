@@ -10,6 +10,7 @@ RepoMind prepares a public GitHub repository for one concrete change. It returns
 [![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Node 22.12](https://img.shields.io/badge/Node-22.12%2B-339933?logo=nodedotjs&logoColor=white)](frontend/.nvmrc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-1F8A70.svg)](LICENSE)
+[![Live demo](https://img.shields.io/badge/Live_demo-Open_RepoMind-6D5DFB?logo=render&logoColor=white)](https://repomind-r9zo.onrender.com/)
 
 `GPT-5.6 source specialists` &middot; `citation firewall` &middot; `task-scoped preflight` &middot; `MCP + CLI`
 
@@ -44,6 +45,7 @@ Use RepoMind before unfamiliar, cross-cutting, high-risk, or agent-assisted work
 | --- | --- |
 | Understand the value | Read [Why RepoMind exists](#why-repomind-exists), then view [the architecture](#architecture-one-trusted-path). |
 | Verify it builds | [GitHub Actions CI](https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml) runs backend tests plus frontend lint, tests, and production build. |
+| Try the live product | Open the [public Render deployment](https://repomind-r9zo.onrender.com/). It is a single-origin FastAPI service; pre-warm it before a live walkthrough because free hosting can sleep. |
 | Inspect real output | Open the authentic [Flask Evidence Mode sample](docs/examples/flask/README.md), [AGENTS.md](docs/examples/flask/AGENTS.md), and [repository map](docs/examples/flask/repository-map.md). |
 | Check the AI boundary | Read [Execution modes](#execution-modes) and the [citation firewall](#the-citation-firewall). |
 | Try the handoff | Run the [CLI](#cli) or connect the [stdio MCP server](#mcp). Both use the same preflight path as the dashboard. |

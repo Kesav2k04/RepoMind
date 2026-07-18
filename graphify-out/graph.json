@@ -2661,8 +2661,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "master",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "master.py"
     },
     {
@@ -2672,8 +2672,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "master_orchestrate_analysis",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "orchestrate_analysis()"
     },
     {
@@ -2683,8 +2683,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "master_py_progresscallback",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "progresscallback"
     },
     {
@@ -2694,8 +2694,8 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "master_reconcile_with_native_multi_agent",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "_reconcile_with_native_multi_agent()"
     },
     {
@@ -2705,8 +2705,8 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "master_root_final_text",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "_root_final_text()"
     },
     {
@@ -2716,8 +2716,8 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "master_extract_json",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "_extract_json()"
     },
     {
@@ -2727,8 +2727,8 @@
       "source_location": "L190",
       "_origin": "ast",
       "id": "master_validated_priority_finding_ids",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "_validated_priority_finding_ids()"
     },
     {
@@ -2738,8 +2738,8 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "master_trusted_reconciliation_packet",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "_trusted_reconciliation_packet()"
     },
     {
@@ -2749,8 +2749,8 @@
       "source_location": "L249",
       "_origin": "ast",
       "id": "master_duration_ms",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "_duration_ms()"
     },
     {
@@ -2760,8 +2760,8 @@
       "source_location": "L253",
       "_origin": "ast",
       "id": "master_emit",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "_emit()"
     },
     {
@@ -2771,8 +2771,8 @@
       "source_location": "L269",
       "_origin": "ast",
       "id": "master_analysis_metrics",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "_analysis_metrics()"
     },
     {
@@ -2782,8 +2782,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "analysismetrics",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "analysismetrics"
     },
     {
@@ -2793,8 +2793,8 @@
       "source_location": "L299",
       "_origin": "ast",
       "id": "master_analysis_scope",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 14,
+      "community_name": "RepositorySnapshot",
       "norm_label": "_analysis_scope()"
     },
     {
@@ -2804,8 +2804,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "analysisscope",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 14,
+      "community_name": "RepositorySnapshot",
       "norm_label": "analysisscope"
     },
     {
@@ -2815,8 +2815,8 @@
       "source_location": "L327",
       "_origin": "ast",
       "id": "master_evidence_backed_reports",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 21,
+      "community_name": "EvidenceLocation",
       "norm_label": "_evidence_backed_reports()"
     },
     {
@@ -2826,8 +2826,8 @@
       "source_location": "L348",
       "_origin": "ast",
       "id": "master_is_evidence_backed",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 21,
+      "community_name": "EvidenceLocation",
       "norm_label": "_is_evidence_backed()"
     },
     {
@@ -2837,8 +2837,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "master_py_finding",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 21,
+      "community_name": "EvidenceLocation",
       "norm_label": "finding"
     },
     {
@@ -2848,8 +2848,8 @@
       "source_location": "L361",
       "_origin": "ast",
       "id": "master_reconcile_evidence",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "_reconcile_evidence()"
     },
     {
@@ -2859,8 +2859,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "reconciliationsummary",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "reconciliationsummary"
     },
     {
@@ -2870,8 +2870,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "master_rationale_1",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "repomind's master orchestration and optional native gpt-5.6 reconciliation."
     },
     {
@@ -2881,8 +2881,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "master_rationale_35",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "run four deterministic workers then optionally reconcile with hosted multi-agent"
     },
     {
@@ -2892,8 +2892,8 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "master_rationale_113",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "ask a hosted root agent to delegate and reconcile evidence-only findings.      t"
     },
     {
@@ -2903,8 +2903,8 @@
       "source_location": "L193",
       "_origin": "ast",
       "id": "master_rationale_193",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "accept hosted output only when it refers to known deterministic evidence."
     },
     {
@@ -2914,8 +2914,8 @@
       "source_location": "L211",
       "_origin": "ast",
       "id": "master_rationale_211",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "send the hosted reconciler a compact inventory, never raw repository excerpts."
     },
     {
@@ -2925,8 +2925,8 @@
       "source_location": "L260",
       "_origin": "ast",
       "id": "master_rationale_260",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "keep the public callback compatible with the original three-argument form."
     },
     {
@@ -2936,8 +2936,8 @@
       "source_location": "L300",
       "_origin": "ast",
       "id": "master_rationale_300",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 14,
+      "community_name": "RepositorySnapshot",
       "norm_label": "explain bounded evidence so absence of a finding is never presented as proof of"
     },
     {
@@ -2947,8 +2947,8 @@
       "source_location": "L330",
       "_origin": "ast",
       "id": "master_rationale_330",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 21,
+      "community_name": "EvidenceLocation",
       "norm_label": "never publish a specialist claim that lacks a valid confidence/evidence pair."
     },
     {
@@ -2958,8 +2958,8 @@
       "source_location": "L362",
       "_origin": "ast",
       "id": "master_rationale_362",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "classify deterministic findings without inventing model-only decisions."
     },
     {
@@ -2980,8 +2980,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "repository_fileinventory",
-      "community": 5,
-      "community_name": "repository.py",
+      "community": 21,
+      "community_name": "EvidenceLocation",
       "norm_label": "fileinventory"
     },
     {
@@ -3002,7 +3002,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "repository_repositorysnapshot",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": "repositorysnapshot"
     },
@@ -3013,7 +3013,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_file_count",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": ".file_count()"
     },
@@ -3024,7 +3024,7 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_selected_file_count",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": ".selected_file_count()"
     },
@@ -3035,7 +3035,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_partial_analysis",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": ".partial_analysis()"
     },
@@ -3046,7 +3046,7 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_evidence_limits",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": ".evidence_limits()"
     },
@@ -3057,7 +3057,7 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_primary_language",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": ".primary_language()"
     },
@@ -3068,7 +3068,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_combined_config",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": ".combined_config()"
     },
@@ -3079,8 +3079,8 @@
       "source_location": "L164",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_combined_test_content",
-      "community": 5,
-      "community_name": "repository.py",
+      "community": 14,
+      "community_name": "RepositorySnapshot",
       "norm_label": ".combined_test_content()"
     },
     {
@@ -3090,7 +3090,7 @@
       "source_location": "L169",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_repository_info",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": ".repository_info()"
     },
@@ -3101,7 +3101,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "repositoryinfo",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": "repositoryinfo"
     },
@@ -3123,7 +3123,7 @@
       "source_location": "L177",
       "_origin": "ast",
       "id": "repository_repositorysnapshot_prompt_summary",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": ".prompt_summary()"
     },
@@ -3310,8 +3310,8 @@
       "source_location": "L451",
       "_origin": "ast",
       "id": "repository_cleanup_checkout",
-      "community": 5,
-      "community_name": "repository.py",
+      "community": 2,
+      "community_name": "main.py",
       "norm_label": "cleanup_checkout()"
     },
     {
@@ -3475,8 +3475,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "repository_rationale_71",
-      "community": 5,
-      "community_name": "repository.py",
+      "community": 21,
+      "community_name": "EvidenceLocation",
       "norm_label": "the bounded file inventory and the limits encountered while producing it."
     },
     {
@@ -3497,7 +3497,7 @@
       "source_location": "L127",
       "_origin": "ast",
       "id": "repository_rationale_127",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": "number of files retained in this bounded inventory."
     },
@@ -3508,7 +3508,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "repository_rationale_132",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": "whether any repository source was excluded or truncated by safety limits."
     },
@@ -3519,7 +3519,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "repository_rationale_146",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": "return the fixed source-evidence budgets used for this snapshot."
     },
@@ -3629,8 +3629,8 @@
       "source_location": "L452",
       "_origin": "ast",
       "id": "repository_rationale_452",
-      "community": 5,
-      "community_name": "repository.py",
+      "community": 2,
+      "community_name": "main.py",
       "norm_label": "remove only the isolated checkout directory created for a completed job."
     },
     {
@@ -3673,8 +3673,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "schemas",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "schemas.py"
     },
     {
@@ -3695,8 +3695,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "basemodel",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "basemodel"
     },
     {
@@ -3706,8 +3706,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "schemas_repositoryinfo",
-      "community": 5,
-      "community_name": "repository.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "repositoryinfo"
     },
     {
@@ -3728,8 +3728,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "schemas_evidencelocation",
-      "community": 1,
-      "community_name": "RepositorySnapshot",
+      "community": 21,
+      "community_name": "EvidenceLocation",
       "norm_label": "evidencelocation"
     },
     {
@@ -3772,8 +3772,8 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "schemas_orchestrationmeta",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "orchestrationmeta"
     },
     {
@@ -3783,8 +3783,8 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "schemas_analysismetrics",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "analysismetrics"
     },
     {
@@ -3794,8 +3794,8 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "schemas_analysisscope",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "analysisscope"
     },
     {
@@ -3805,8 +3805,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "schemas_artifactvalidation",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "artifactvalidation"
     },
     {
@@ -3816,8 +3816,8 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "schemas_reconciliationdecision",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "reconciliationdecision"
     },
     {
@@ -3827,8 +3827,8 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "schemas_reconciliationsummary",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "reconciliationsummary"
     },
     {
@@ -3838,8 +3838,8 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "schemas_analysisresult",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "analysisresult"
     },
     {
@@ -3871,8 +3871,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "schemas_rationale_1",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "pydantic contracts shared by the api, orchestration layer, and ui."
     },
     {
@@ -3893,8 +3893,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "schemas_rationale_45",
-      "community": 1,
-      "community_name": "RepositorySnapshot",
+      "community": 21,
+      "community_name": "EvidenceLocation",
       "norm_label": "a concrete source location supporting a finding."
     },
     {
@@ -3904,8 +3904,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "schemas_rationale_79",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 18,
+      "community_name": "orchestrate_analysis",
       "norm_label": "execution metadata without elevating hosted synthesis into canonical evidence."
     },
     {
@@ -3915,8 +3915,8 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "schemas_rationale_107",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "explicit boundaries for a bounded repository analysis."
     },
     {
@@ -3926,8 +3926,8 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "schemas_rationale_117",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 12,
+      "community_name": "master.py",
       "norm_label": "what was mechanically checked before artifacts were presented."
     },
     {
@@ -4267,8 +4267,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_orchestration",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "test_orchestration.py"
     },
     {
@@ -4278,8 +4278,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "tests_test_orchestration_collect_progress",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "_collect_progress()"
     },
     {
@@ -4289,8 +4289,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "tests_test_orchestration_collect_rich_progress",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "_collect_rich_progress()"
     },
     {
@@ -4300,8 +4300,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_orchestrate_analysis_uses_four_worker_evidence_fallback",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "test_orchestrate_analysis_uses_four_worker_evidence_fallback()"
     },
     {
@@ -4311,8 +4311,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_orchestration_streams_concrete_specialist_actions",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "test_orchestration_streams_concrete_specialist_actions()"
     },
     {
@@ -4322,7 +4322,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_history_worker_tolerates_null_history_metadata",
-      "community": 1,
+      "community": 14,
       "community_name": "RepositorySnapshot",
       "norm_label": "test_history_worker_tolerates_null_history_metadata()"
     },
@@ -4333,8 +4333,8 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_root_output_tolerates_missing_optional_model_text",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "test_root_output_tolerates_missing_optional_model_text()"
     },
     {
@@ -4344,8 +4344,8 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_native_reconciliation_uses_configured_model_and_validates_root_output",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "test_native_reconciliation_uses_configured_model_and_validates_root_output()"
     },
     {
@@ -4355,8 +4355,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_orchestration_py_path",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "path"
     },
     {
@@ -4366,8 +4366,8 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_native_reconciliation_timeout_returns_fast_evidence_fallback",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "test_native_reconciliation_timeout_returns_fast_evidence_fallback()"
     },
     {
@@ -4377,8 +4377,8 @@
       "source_location": "L227",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_native_priority_payload_rejects_unknown_or_duplicate_evidence",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "test_native_priority_payload_rejects_unknown_or_duplicate_evidence()"
     },
     {
@@ -4388,8 +4388,8 @@
       "source_location": "L236",
       "_origin": "ast",
       "id": "tests_test_orchestration_test_unsupported_evidence_paths_are_withheld_before_artifact_generation",
-      "community": 1,
-      "community_name": "RepositorySnapshot",
+      "community": 21,
+      "community_name": "EvidenceLocation",
       "norm_label": "test_unsupported_evidence_paths_are_withheld_before_artifact_generation()"
     },
     {
@@ -4399,8 +4399,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_orchestration_rationale_1",
-      "community": 9,
-      "community_name": "test_repository.py",
+      "community": 17,
+      "community_name": "test_orchestration.py",
       "norm_label": "tests for deterministic workers, artifacts, and mocked hosted reconciliation."
     },
     {
@@ -4586,8 +4586,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "worker",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "worker.py"
     },
     {
@@ -4597,8 +4597,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "worker_run_specialists",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "run_specialists()"
     },
     {
@@ -4608,8 +4608,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "worker_py_progresscallback",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "progresscallback"
     },
     {
@@ -4619,8 +4619,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "worker_publish_update",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "_publish_update()"
     },
     {
@@ -4630,8 +4630,8 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "worker_publish",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "_publish()"
     },
     {
@@ -4641,8 +4641,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "worker_rationale_1",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "concurrent deterministic specialist-worker execution."
     },
     {
@@ -4652,8 +4652,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "worker_rationale_19",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "run the four read-only specialist lenses concurrently against one snapshot."
     },
     {
@@ -4663,8 +4663,8 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "worker_rationale_87",
-      "community": 3,
-      "community_name": "schemas.py",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "support both legacy three-argument and enriched progress callbacks."
     },
     {
@@ -4707,8 +4707,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "workers_shared_workerupdate",
-      "community": 1,
-      "community_name": "RepositorySnapshot",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "workerupdate"
     },
     {
@@ -4828,8 +4828,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "workers_shared_rationale_16",
-      "community": 1,
-      "community_name": "RepositorySnapshot",
+      "community": 20,
+      "community_name": "worker.py",
       "norm_label": "one concrete activity emitted by a synchronous specialist worker."
     },
     {
@@ -5570,10 +5570,21 @@
       "norm_label": "readme.md"
     },
     {
+      "label": "Judge access",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "readme_judge_access",
+      "community": 8,
+      "community_name": "RepoMind",
+      "norm_label": "judge access"
+    },
+    {
       "label": "Why developers and agents need it",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L25",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "readme_why_developers_and_agents_need_it",
       "community": 8,
@@ -5584,7 +5595,7 @@
       "label": "From repository to usable context",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L33",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "readme_from_repository_to_usable_context",
       "community": 8,
@@ -5595,7 +5606,7 @@
       "label": "What ships",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L51",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "readme_what_ships",
       "community": 8,
@@ -5606,7 +5617,7 @@
       "label": "Trust boundaries and execution modes",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L58",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "readme_trust_boundaries_and_execution_modes",
       "community": 8,
@@ -5617,62 +5628,73 @@
       "label": "Quick start",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L74",
+      "source_location": "L87",
       "_origin": "ast",
       "id": "readme_quick_start",
-      "community": 8,
-      "community_name": "RepoMind",
+      "community": 24,
+      "community_name": "Quick start",
       "norm_label": "quick start"
     },
     {
       "label": "Prerequisites",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L76",
+      "source_location": "L89",
       "_origin": "ast",
       "id": "readme_prerequisites",
-      "community": 8,
-      "community_name": "RepoMind",
+      "community": 24,
+      "community_name": "Quick start",
       "norm_label": "prerequisites"
     },
     {
       "label": "1. Start the API",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L82",
+      "source_location": "L95",
       "_origin": "ast",
       "id": "readme_1_start_the_api",
-      "community": 8,
-      "community_name": "RepoMind",
+      "community": 24,
+      "community_name": "Quick start",
       "norm_label": "1. start the api"
     },
     {
       "label": "2. Start the dashboard",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L95",
+      "source_location": "L108",
       "_origin": "ast",
       "id": "readme_2_start_the_dashboard",
-      "community": 8,
-      "community_name": "RepoMind",
+      "community": 24,
+      "community_name": "Quick start",
       "norm_label": "2. start the dashboard"
+    },
+    {
+      "label": "Canonical sample repository",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L120",
+      "_origin": "ast",
+      "id": "readme_canonical_sample_repository",
+      "community": 24,
+      "community_name": "Quick start",
+      "norm_label": "canonical sample repository"
     },
     {
       "label": "Supported developer environments",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L107",
+      "source_location": "L126",
       "_origin": "ast",
       "id": "readme_supported_developer_environments",
-      "community": 8,
-      "community_name": "RepoMind",
+      "community": 24,
+      "community_name": "Quick start",
       "norm_label": "supported developer environments"
     },
     {
       "label": "Architecture",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L117",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "readme_architecture",
       "community": 8,
@@ -5680,10 +5702,21 @@
       "norm_label": "architecture"
     },
     {
+      "label": "Deployment readiness",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L150",
+      "_origin": "ast",
+      "id": "readme_deployment_readiness",
+      "community": 8,
+      "community_name": "RepoMind",
+      "norm_label": "deployment readiness"
+    },
+    {
       "label": "Verify locally",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L131",
+      "source_location": "L154",
       "_origin": "ast",
       "id": "readme_verify_locally",
       "community": 8,
@@ -5694,23 +5727,452 @@
       "label": "Codex and GPT-5.6 boundaries",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L147",
+      "source_location": "L170",
       "_origin": "ast",
       "id": "readme_codex_and_gpt_5_6_boundaries",
+      "community": 28,
+      "community_name": "Codex and GPT-5.6 boundaries",
+      "norm_label": "codex and gpt-5.6 boundaries"
+    },
+    {
+      "label": "How Codex accelerated delivery",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L172",
+      "_origin": "ast",
+      "id": "readme_how_codex_accelerated_delivery",
+      "community": 28,
+      "community_name": "Codex and GPT-5.6 boundaries",
+      "norm_label": "how codex accelerated delivery"
+    },
+    {
+      "label": "Key technical decisions",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L176",
+      "_origin": "ast",
+      "id": "readme_key_technical_decisions",
+      "community": 28,
+      "community_name": "Codex and GPT-5.6 boundaries",
+      "norm_label": "key technical decisions"
+    },
+    {
+      "label": "Submission evidence",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L184",
+      "_origin": "ast",
+      "id": "readme_submission_evidence",
       "community": 8,
       "community_name": "RepoMind",
-      "norm_label": "codex and gpt-5.6 boundaries"
+      "norm_label": "submission evidence"
     },
     {
       "label": "License",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L153",
+      "source_location": "L188",
       "_origin": "ast",
       "id": "readme_license",
       "community": 8,
       "community_name": "RepoMind",
       "norm_label": "license"
+    },
+    {
+      "label": "DEMO_PROOF_CHECKLIST.md",
+      "file_type": "document",
+      "source_file": "docs/DEMO_PROOF_CHECKLIST.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_demo_proof_checklist",
+      "community": 25,
+      "community_name": "Demo proof checklist",
+      "norm_label": "demo_proof_checklist.md"
+    },
+    {
+      "label": "Demo proof checklist",
+      "file_type": "document",
+      "source_file": "docs/DEMO_PROOF_CHECKLIST.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_demo_proof_checklist_demo_proof_checklist",
+      "community": 25,
+      "community_name": "Demo proof checklist",
+      "norm_label": "demo proof checklist"
+    },
+    {
+      "label": "Before recording",
+      "file_type": "document",
+      "source_file": "docs/DEMO_PROOF_CHECKLIST.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_demo_proof_checklist_before_recording",
+      "community": 25,
+      "community_name": "Demo proof checklist",
+      "norm_label": "before recording"
+    },
+    {
+      "label": "In the public video",
+      "file_type": "document",
+      "source_file": "docs/DEMO_PROOF_CHECKLIST.md",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "docs_demo_proof_checklist_in_the_public_video",
+      "community": 25,
+      "community_name": "Demo proof checklist",
+      "norm_label": "in the public video"
+    },
+    {
+      "label": "Before publishing",
+      "file_type": "document",
+      "source_file": "docs/DEMO_PROOF_CHECKLIST.md",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "docs_demo_proof_checklist_before_publishing",
+      "community": 25,
+      "community_name": "Demo proof checklist",
+      "norm_label": "before publishing"
+    },
+    {
+      "label": "DEPLOYMENT.md",
+      "file_type": "document",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_deployment",
+      "community": 22,
+      "community_name": "Deployment guide",
+      "norm_label": "deployment.md"
+    },
+    {
+      "label": "Deployment guide",
+      "file_type": "document",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_deployment_deployment_guide",
+      "community": 22,
+      "community_name": "Deployment guide",
+      "norm_label": "deployment guide"
+    },
+    {
+      "label": "Runtime requirements",
+      "file_type": "document",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_deployment_runtime_requirements",
+      "community": 22,
+      "community_name": "Deployment guide",
+      "norm_label": "runtime requirements"
+    },
+    {
+      "label": "Environment",
+      "file_type": "document",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "docs_deployment_environment",
+      "community": 22,
+      "community_name": "Deployment guide",
+      "norm_label": "environment"
+    },
+    {
+      "label": "Container commands",
+      "file_type": "document",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "docs_deployment_container_commands",
+      "community": 22,
+      "community_name": "Deployment guide",
+      "norm_label": "container commands"
+    },
+    {
+      "label": "Production preflight",
+      "file_type": "document",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "docs_deployment_production_preflight",
+      "community": 22,
+      "community_name": "Deployment guide",
+      "norm_label": "production preflight"
+    },
+    {
+      "label": "JUDGE_PATH.md",
+      "file_type": "document",
+      "source_file": "docs/JUDGE_PATH.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_judge_path",
+      "community": 27,
+      "community_name": "JUDGE_PATH.md",
+      "norm_label": "judge_path.md"
+    },
+    {
+      "label": "Three-minute judge path",
+      "file_type": "document",
+      "source_file": "docs/JUDGE_PATH.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_judge_path_three_minute_judge_path",
+      "community": 27,
+      "community_name": "JUDGE_PATH.md",
+      "norm_label": "three-minute judge path"
+    },
+    {
+      "label": "What not to infer",
+      "file_type": "document",
+      "source_file": "docs/JUDGE_PATH.md",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "docs_judge_path_what_not_to_infer",
+      "community": 27,
+      "community_name": "JUDGE_PATH.md",
+      "norm_label": "what not to infer"
+    },
+    {
+      "label": "SUBMISSION_HANDOFF.md",
+      "file_type": "document",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_submission_handoff",
+      "community": 22,
+      "community_name": "Deployment guide",
+      "norm_label": "submission_handoff.md"
+    },
+    {
+      "label": "RepoMind submission handoff",
+      "file_type": "document",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_submission_handoff_repomind_submission_handoff",
+      "community": 23,
+      "community_name": "RepoMind submission handoff",
+      "norm_label": "repomind submission handoff"
+    },
+    {
+      "label": "Required insertion points",
+      "file_type": "document",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_submission_handoff_required_insertion_points",
+      "community": 23,
+      "community_name": "RepoMind submission handoff",
+      "norm_label": "required insertion points"
+    },
+    {
+      "label": "Ready-to-paste project copy",
+      "file_type": "document",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "docs_submission_handoff_ready_to_paste_project_copy",
+      "community": 23,
+      "community_name": "RepoMind submission handoff",
+      "norm_label": "ready-to-paste project copy"
+    },
+    {
+      "label": "Native GPT-5.6 evidence record",
+      "file_type": "document",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "docs_submission_handoff_native_gpt_5_6_evidence_record",
+      "community": 23,
+      "community_name": "RepoMind submission handoff",
+      "norm_label": "native gpt-5.6 evidence record"
+    },
+    {
+      "label": "Required disclosures",
+      "file_type": "document",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "docs_submission_handoff_required_disclosures",
+      "community": 23,
+      "community_name": "RepoMind submission handoff",
+      "norm_label": "required disclosures"
+    },
+    {
+      "label": "Final checks",
+      "file_type": "document",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L48",
+      "_origin": "ast",
+      "id": "docs_submission_handoff_final_checks",
+      "community": 23,
+      "community_name": "RepoMind submission handoff",
+      "norm_label": "final checks"
+    },
+    {
+      "label": "AGENTS.md",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents",
+      "community": 26,
+      "community_name": "AGENTS.md",
+      "norm_label": "agents.md"
+    },
+    {
+      "label": "AGENTS.md",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_agents_md",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "agents.md"
+    },
+    {
+      "label": "Overview",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_overview",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "overview"
+    },
+    {
+      "label": "Architecture",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_architecture",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "architecture"
+    },
+    {
+      "label": "Important Files",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_important_files",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "important files"
+    },
+    {
+      "label": "Risk Areas",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_risk_areas",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "risk areas"
+    },
+    {
+      "label": "Testing Strategy",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_testing_strategy",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "testing strategy"
+    },
+    {
+      "label": "Things Not to Touch",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_things_not_to_touch",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "things not to touch"
+    },
+    {
+      "label": "Coding Conventions",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_coding_conventions",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "coding conventions"
+    },
+    {
+      "label": "Verification Checklist",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L52",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_verification_checklist",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "verification checklist"
+    },
+    {
+      "label": "Change-Sensitive Context",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "docs_examples_flask_agents_change_sensitive_context",
+      "community": 19,
+      "community_name": "AGENTS.md",
+      "norm_label": "change-sensitive context"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_examples_flask_readme",
+      "community": 26,
+      "community_name": "AGENTS.md",
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "Authentic Flask example",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_examples_flask_readme_authentic_flask_example",
+      "community": 26,
+      "community_name": "AGENTS.md",
+      "norm_label": "authentic flask example"
+    },
+    {
+      "label": "repository-map.md",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/repository-map.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_examples_flask_repository_map",
+      "community": 26,
+      "community_name": "AGENTS.md",
+      "norm_label": "repository-map.md"
+    },
+    {
+      "label": "flask - risk-annotated repository map",
+      "file_type": "document",
+      "source_file": "docs/examples/flask/repository-map.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_examples_flask_repository_map_flask_risk_annotated_repository_map",
+      "community": 26,
+      "community_name": "AGENTS.md",
+      "norm_label": "flask - risk-annotated repository map"
     }
   ],
   "links": [
@@ -18769,10 +19231,76 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/JUDGE_PATH.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_judge_path",
+      "target": "readme",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L186",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_demo_proof_checklist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L152",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_deployment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L124",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_examples_flask_agents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L124",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_examples_flask_repository_map",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_submission_handoff",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L117",
+      "source_location": "L136",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -18783,7 +19311,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L147",
+      "source_location": "L170",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -18794,7 +19322,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L33",
+      "source_location": "L150",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "readme_deployment_readiness",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -18805,7 +19344,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L153",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "readme_judge_access",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L188",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -18816,7 +19366,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L74",
+      "source_location": "L87",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -18827,7 +19377,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L58",
+      "source_location": "L184",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "readme_submission_evidence",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L71",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -18838,7 +19399,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L131",
+      "source_location": "L154",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -18849,7 +19410,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L51",
+      "source_location": "L64",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -18860,7 +19421,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L25",
+      "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -18871,7 +19432,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L82",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_quick_start",
@@ -18882,7 +19443,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L95",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_quick_start",
@@ -18893,7 +19454,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L76",
+      "source_location": "L120",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_quick_start",
+      "target": "readme_canonical_sample_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_quick_start",
@@ -18904,14 +19476,388 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L107",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_quick_start",
       "target": "readme_supported_developer_environments",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L172",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_codex_and_gpt_5_6_boundaries",
+      "target": "readme_how_codex_accelerated_delivery",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L176",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_codex_and_gpt_5_6_boundaries",
+      "target": "readme_key_technical_decisions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEMO_PROOF_CHECKLIST.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_demo_proof_checklist",
+      "target": "docs_demo_proof_checklist_demo_proof_checklist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEMO_PROOF_CHECKLIST.md",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_demo_proof_checklist_demo_proof_checklist",
+      "target": "docs_demo_proof_checklist_before_publishing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEMO_PROOF_CHECKLIST.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_demo_proof_checklist_demo_proof_checklist",
+      "target": "docs_demo_proof_checklist_before_recording",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEMO_PROOF_CHECKLIST.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_demo_proof_checklist_demo_proof_checklist",
+      "target": "docs_demo_proof_checklist_in_the_public_video",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_deployment",
+      "target": "docs_deployment_deployment_guide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_deployment",
+      "target": "docs_submission_handoff",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_deployment_deployment_guide",
+      "target": "docs_deployment_container_commands",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_deployment_deployment_guide",
+      "target": "docs_deployment_environment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_deployment_deployment_guide",
+      "target": "docs_deployment_production_preflight",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEPLOYMENT.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_deployment_deployment_guide",
+      "target": "docs_deployment_runtime_requirements",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/JUDGE_PATH.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_judge_path",
+      "target": "docs_judge_path_three_minute_judge_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/JUDGE_PATH.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_judge_path_three_minute_judge_path",
+      "target": "docs_judge_path_what_not_to_infer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_submission_handoff",
+      "target": "docs_submission_handoff_repomind_submission_handoff",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_submission_handoff_repomind_submission_handoff",
+      "target": "docs_submission_handoff_final_checks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_submission_handoff_repomind_submission_handoff",
+      "target": "docs_submission_handoff_native_gpt_5_6_evidence_record",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_submission_handoff_repomind_submission_handoff",
+      "target": "docs_submission_handoff_ready_to_paste_project_copy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_submission_handoff_repomind_submission_handoff",
+      "target": "docs_submission_handoff_required_disclosures",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SUBMISSION_HANDOFF.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_submission_handoff_repomind_submission_handoff",
+      "target": "docs_submission_handoff_required_insertion_points",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents",
+      "target": "docs_examples_flask_agents_agents_md",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/README.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_readme",
+      "target": "docs_examples_flask_agents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents_agents_md",
+      "target": "docs_examples_flask_agents_architecture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents_agents_md",
+      "target": "docs_examples_flask_agents_change_sensitive_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents_agents_md",
+      "target": "docs_examples_flask_agents_coding_conventions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents_agents_md",
+      "target": "docs_examples_flask_agents_important_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents_agents_md",
+      "target": "docs_examples_flask_agents_overview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents_agents_md",
+      "target": "docs_examples_flask_agents_risk_areas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents_agents_md",
+      "target": "docs_examples_flask_agents_testing_strategy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents_agents_md",
+      "target": "docs_examples_flask_agents_things_not_to_touch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/AGENTS.md",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_agents_agents_md",
+      "target": "docs_examples_flask_agents_verification_checklist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_readme",
+      "target": "docs_examples_flask_readme_authentic_flask_example",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/README.md",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_readme",
+      "target": "docs_examples_flask_repository_map",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/examples/flask/repository-map.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_examples_flask_repository_map",
+      "target": "docs_examples_flask_repository_map_flask_risk_annotated_repository_map",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "99945eba090bf3d49d5fcdc9d0b97f01758b29aa"
+  "built_at_commit": "e8c88ccc403a3e2b4540dda42b3035c76c86c806"
 }

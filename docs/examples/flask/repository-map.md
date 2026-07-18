@@ -1,0 +1,68 @@
+# flask - risk-annotated repository map
+
+- [INFO] `.devcontainer/` - Top-level repository boundary.
+  - [INFO] `.devcontainer/devcontainer.json` - Repository source or configuration
+  - [INFO] `.devcontainer/on-create-command.sh` - Repository source or configuration
+- [MEDIUM] `.github/` - Top-level repository boundary.
+  - [INFO] `.github/ISSUE_TEMPLATE/bug-report.md` - Repository source or configuration
+  - [INFO] `.github/ISSUE_TEMPLATE/config.yml` - Repository source or configuration
+  - [INFO] `.github/ISSUE_TEMPLATE/feature-request.md` - Repository source or configuration
+  - [INFO] `.github/pull_request_template.md` - Repository source or configuration
+  - [INFO] `.github/workflows/lock.yaml` - Repository source or configuration
+  - [INFO] `.github/workflows/pre-commit.yaml` - Repository source or configuration
+  - [INFO] `.github/workflows/publish.yaml` - Repository source or configuration
+  - [MEDIUM] `.github/workflows/tests.yaml` - Test coverage
+  - [INFO] `.github/workflows/zizmor.yaml` - Repository source or configuration
+- [INFO] `docs/` - Top-level repository boundary.
+  - [INFO] `docs/Makefile` - Repository source or configuration
+  - [INFO] `docs/_static/debugger.png` - Repository source or configuration
+  - [INFO] `docs/_static/flask-icon.svg` - Repository source or configuration
+  - [INFO] `docs/_static/flask-logo.svg` - Repository source or configuration
+  - [INFO] `docs/_static/flask-name.svg` - Repository source or configuration
+  - [INFO] `docs/_static/pycharm-run-config.png` - Repository source or configuration
+  - [INFO] `docs/api.rst` - Repository source or configuration
+  - [INFO] `docs/appcontext.rst` - Repository source or configuration
+  - [INFO] `docs/async-await.rst` - Repository source or configuration
+  - [INFO] `docs/blueprints.rst` - Repository source or configuration
+- [INFO] `examples/` - Top-level repository boundary.
+  - [INFO] `examples/celery/README.md` - Developer guidance and documentation
+  - [INFO] `examples/celery/make_celery.py` - Repository source or configuration
+  - [INFO] `examples/celery/pyproject.toml` - Dependency or build manifest
+  - [INFO] `examples/celery/requirements.txt` - Dependency or build manifest
+  - [INFO] `examples/celery/src/task_app/__init__.py` - Repository source or configuration
+  - [INFO] `examples/celery/src/task_app/tasks.py` - Repository source or configuration
+  - [INFO] `examples/celery/src/task_app/templates/index.html` - Likely application entry point
+  - [INFO] `examples/celery/src/task_app/views.py` - Repository source or configuration
+  - [INFO] `examples/javascript/.gitignore` - Repository source or configuration
+  - [INFO] `examples/javascript/LICENSE.txt` - Repository source or configuration
+- [LOW] `src/` - Top-level repository boundary.
+  - [INFO] `src/flask/__init__.py` - Repository source or configuration
+  - [INFO] `src/flask/__main__.py` - Repository source or configuration
+  - [INFO] `src/flask/app.py` - Likely application entry point
+  - [INFO] `src/flask/blueprints.py` - Repository source or configuration
+  - [INFO] `src/flask/cli.py` - Repository source or configuration
+  - [INFO] `src/flask/config.py` - Repository source or configuration
+  - [INFO] `src/flask/ctx.py` - Repository source or configuration
+  - [INFO] `src/flask/debughelpers.py` - Repository source or configuration
+  - [INFO] `src/flask/globals.py` - Repository source or configuration
+  - [LOW] `src/flask/helpers.py` - Repository source or configuration
+- [INFO] `tests/` - Top-level repository boundary.
+  - [INFO] `tests/conftest.py` - Test coverage
+  - [INFO] `tests/static/config.json` - Test coverage
+  - [INFO] `tests/static/config.toml` - Test coverage
+  - [INFO] `tests/static/index.html` - Test coverage
+  - [INFO] `tests/templates/_macro.html` - Test coverage
+  - [INFO] `tests/templates/context_template.html` - Test coverage
+  - [INFO] `tests/templates/escaping_template.html` - Test coverage
+  - [INFO] `tests/templates/mail.txt` - Test coverage
+  - [INFO] `tests/templates/nested/nested.txt` - Test coverage
+  - [INFO] `tests/templates/non_escaping_template.txt` - Test coverage
+- [INFO] `.editorconfig` - Repository source or configuration
+- [INFO] `.gitignore` - Repository source or configuration
+- [MEDIUM] `.pre-commit-config.yaml` - Repository source or configuration
+- [INFO] `.readthedocs.yaml` - Repository source or configuration
+- [MEDIUM] `CHANGES.rst` - Repository source or configuration
+- [INFO] `LICENSE.txt` - Repository source or configuration
+- [INFO] `README.md` - Developer guidance and documentation
+- [MEDIUM] `pyproject.toml` - Dependency or build manifest
+- [MEDIUM] `uv.lock` - Repository source or configuration

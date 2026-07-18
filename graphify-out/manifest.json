@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1784336255.7617834,
-    "ast_hash": "b9c8596c61169e07ef310ae6605051c4",
+    "mtime": 1784337942.70003,
+    "ast_hash": "953c019d1cb3af80c5c911692c616449",
     "semantic_hash": ""
   },
   "frontend/index.html": {
@@ -237,6 +237,41 @@
   "frontend/src/components/BrandMark.tsx": {
     "mtime": 1784332711.6598072,
     "ast_hash": "aa1d952a1ff8a3b609ef1064ec59126f",
+    "semantic_hash": ""
+  },
+  "docs/DEMO_PROOF_CHECKLIST.md": {
+    "mtime": 1784337844.2425697,
+    "ast_hash": "b7baf8b2502e7f1ccb26ce28a2d67872",
+    "semantic_hash": ""
+  },
+  "docs/DEPLOYMENT.md": {
+    "mtime": 1784337844.244074,
+    "ast_hash": "8f266f688b49b741ce26e2cc8129cc94",
+    "semantic_hash": ""
+  },
+  "docs/JUDGE_PATH.md": {
+    "mtime": 1784337844.2425697,
+    "ast_hash": "d85ac2eb05ae8416267243f878ebc56c",
+    "semantic_hash": ""
+  },
+  "docs/SUBMISSION_HANDOFF.md": {
+    "mtime": 1784337844.2415683,
+    "ast_hash": "9c722ff18e5253fdfce883db256f3e8d",
+    "semantic_hash": ""
+  },
+  "docs/examples/flask/AGENTS.md": {
+    "mtime": 1784337942.7041976,
+    "ast_hash": "53b7ca4658712be5821611e058b8b450",
+    "semantic_hash": ""
+  },
+  "docs/examples/flask/README.md": {
+    "mtime": 1784337955.4631815,
+    "ast_hash": "d96dc8fabe2409f1a2f38f23add6248b",
+    "semantic_hash": ""
+  },
+  "docs/examples/flask/repository-map.md": {
+    "mtime": 1784337942.7047124,
+    "ast_hash": "c696ae3aa7140a6fe62096a7f8a4564c",
     "semantic_hash": ""
   }
 }

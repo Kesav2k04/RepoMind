@@ -17,6 +17,19 @@
 
 </div>
 
+## Judge access
+
+| Judge artifact | Current evidence |
+| --- | --- |
+| Source repository | [Kesav2k04/RepoMind](https://github.com/Kesav2k04/RepoMind) |
+| Verified build | [GitHub Actions CI](https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml) |
+| Public demo video (<3 minutes) | `REPLACE_WITH_YOUTUBE_URL_BEFORE_SUBMISSION` |
+| No-build live demo | `REPLACE_WITH_DEPLOYMENT_URL_BEFORE_SUBMISSION` |
+| Codex `/feedback` session | `REPLACE_WITH_SESSION_ID_BEFORE_SUBMISSION` |
+| Devpost project | `REPLACE_WITH_DEVPOST_URL_BEFORE_SUBMISSION` |
+
+The included screenshots are authentic **Evidence Mode · Deterministic** runs. They are not presented as proof of a hosted GPT run. Complete the marked external evidence before submission; [the handoff](docs/SUBMISSION_HANDOFF.md) records the exact fields and truthful wording.
+
 RepoMind replaces a blind first edit with a concise repository briefing. It inventories bounded source evidence, lets four specialist lenses inspect it in parallel, reconciles their signals, and delivers two handoff artifacts:
 
 - **`AGENTS.md`** — architecture, important files, risk areas, testing guidance, conventions, and a verification checklist.
@@ -102,7 +115,13 @@ npm ci
 npm run dev
 ```
 
-Open the local Vite address, submit a public GitHub HTTPS URL, and watch the complete pipeline. [FastAPI](https://github.com/fastapi/fastapi) is a useful demo target because it has a recognisable structure, tests, manifests, and active history.
+Open the local Vite address, submit a public GitHub HTTPS URL, and watch the complete pipeline.
+
+### Canonical sample repository
+
+Use [`https://github.com/pallets/flask`](https://github.com/pallets/flask) for the checked-in screenshot/demo target. It exercises manifests, tests, bounded Git history, risk-map output, and the generated `AGENTS.md` flow. It is public and may change over time, so run it once before recording a demo.
+
+The latest checked-in deterministic run completed on 2026-07-18 with 236 analyzed files, 12 published findings, two artifacts, and partial-analysis disclosure. Inspect its authentic outputs directly: [sample `AGENTS.md`](docs/examples/flask/AGENTS.md) and [sample repository map](docs/examples/flask/repository-map.md).
 
 ### Supported developer environments
 
@@ -128,6 +147,10 @@ React + TypeScript dashboard
 
 The Build Week MVP deliberately keeps jobs and artifacts in one API process and uses ephemeral clones. It is designed for a short, single-instance demo session—not durable history, accounts, private-repository OAuth, or multi-replica job recovery.
 
+## Deployment readiness
+
+The checked-in [Dockerfile](Dockerfile) builds the dashboard and serves it with FastAPI on one origin, avoiding a separate frontend CORS dependency. Before hosting, ensure the runtime has outbound GitHub access, `git`, a writable `REPOMIND_CACHE_DIR`, and one persistent process for the judge session. Follow [the deployment guide](docs/DEPLOYMENT.md) for the exact environment variables and preflight checks; it deliberately does not claim a deployed URL.
+
 ## Verify locally
 
 ```powershell
@@ -146,9 +169,21 @@ For a meaningful manual check, run one public-repository analysis in Evidence Mo
 
 ## Codex and GPT-5.6 boundaries
 
-Codex was used as a development collaborator; it is not a hidden runtime dependency of a RepoMind analysis. RepoMind’s runtime GPT integration is optional and narrow: it uses the configured model for Master reconciliation of the bounded specialist inventory. The deterministic evidence layer remains authoritative in either mode.
+### How Codex accelerated delivery
 
-This repository intentionally does not publish a session ID, video URL, live deployment URL, or claim a successful hosted run without verifiable evidence. The included screenshots are authentic local captures of **Evidence Mode · Deterministic**.
+Codex was used as a development collaborator for repository review, implementation iterations, test validation, UI QA, and release-document preparation. It is not a hidden runtime dependency of a RepoMind analysis.
+
+### Key technical decisions
+
+- Deterministic, bounded repository evidence is authoritative for canonical findings and generated artifacts.
+- `OPENAI_MODEL` is configuration, never a hardcoded runtime claim.
+- The optional hosted GPT-5.6 call can only prioritize existing, validated finding IDs for presentation. It cannot create findings, paths, line numbers, confidence values, or artifact content.
+- The UI shows those model-ranked priorities only when native mode succeeds. Timeouts, provider failures, and invalid output visibly fall back to deterministic Evidence Mode.
+- Every canonical source claim requires repository evidence; partial analysis is disclosed rather than treated as complete coverage.
+
+## Submission evidence
+
+The repository is ready for the final human-supplied evidence, but it does not fabricate it. Before Devpost submission, add the public video, deployment URL, Codex session ID, Devpost URL, and a native-mode record only after a successful visible GPT-5.6 run. Use [the handoff](docs/SUBMISSION_HANDOFF.md), [judge path](docs/JUDGE_PATH.md), and [demo proof checklist](docs/DEMO_PROOF_CHECKLIST.md) to complete those fields consistently.
 
 ## License
 

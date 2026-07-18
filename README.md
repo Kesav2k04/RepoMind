@@ -122,6 +122,8 @@ repomind preflight https://github.com/pallets/flask `
 
 The command also writes `repo-map.md` beside `AGENTS.md`. Existing output requires `--force`, so a preflight cannot silently overwrite your handoff.
 
+RepoMind dogfoods this workflow: the repository's own [root `AGENTS.md`](AGENTS.md) was seeded from a local Evidence Mode preflight and then reviewed to remove temporary task context.
+
 ### MCP
 
 RepoMind exposes a local stdio MCP server so a coding agent can request the same preflight before a change. After the editable install above, add the following generic MCP entry in the client configuration your agent uses:

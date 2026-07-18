@@ -118,7 +118,9 @@ def test_snapshot_discloses_inventory_truncation_in_summary_and_progress(
         "inventory_limit_reached": True,
         "selection_limit_reached": True,
         "source_evidence_partial": True,
-        "evidence_chars_collected": 26,
+        "evidence_chars_collected": sum(
+            map(len, snapshot.sampled_contents.values())
+        ),
         "evidence_char_limit_reached": False,
         "oversized_files_skipped": 0,
         "unreadable_files_skipped": 0,

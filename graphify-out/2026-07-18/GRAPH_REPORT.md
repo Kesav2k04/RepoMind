@@ -1,16 +1,16 @@
 # Graph Report - RepoMind  (2026-07-18)
 
 ## Corpus Check
-- 34 files · ~64,753 words
+- 33 files · ~88,858 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 530 nodes · 1131 edges · 17 communities (16 shown, 1 thin omitted)
+- 515 nodes · 1128 edges · 14 communities (13 shown, 1 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 30 edges (avg confidence: 0.54)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5c3d9393`
+- Built from commit: `650334fe`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -26,10 +26,7 @@
 - RepoMind
 - test_repository.py
 - plugins
-- RepositorySnapshot
-- RepoMind — Final Locked Spec
 - OpenAI Build Week Challenge Rules & Requirements
-- React + TypeScript + Vite
 - tsconfig.json
 
 ## God Nodes (most connected - your core abstractions)
@@ -41,8 +38,8 @@
 6. `compilerOptions` - 18 edges
 7. `analyze()` - 18 edges
 8. `evidence_paths()` - 17 edges
-9. `RepoMind` - 17 edges
-10. `bounded_confidence()` - 16 edges
+9. `bounded_confidence()` - 16 edges
+10. `analyze()` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Job` --uses--> `AnalysisResult`  [INFERRED]
@@ -59,19 +56,19 @@
 ## Import Cycles
 - 1-file cycle: `workers/__init__.py -> workers/__init__.py`
 
-## Communities (17 total, 1 thin omitted)
+## Communities (14 total, 1 thin omitted)
 
 ### Community 0 - "api.ts"
-Cohesion: 0.10
-Nodes (50): apiBase, ApiError, array(), boolean(), createAnalysis(), endpoint(), extractArtifacts(), getAnalysis() (+42 more)
+Cohesion: 0.05
+Nodes (83): apiBase, ApiError, array(), boolean(), createAnalysis(), endpoint(), extractArtifacts(), fetchArtifact() (+75 more)
 
 ### Community 1 - "RepositorySnapshot"
-Cohesion: 0.05
-Nodes (87): Number of files retained in this bounded inventory., Whether any repository source was excluded or truncated by safety limits., Return the fixed source-evidence budgets used for this snapshot., RepositorySnapshot, RepositoryInfo, EvidenceLocation, Finding, A concrete source location supporting a finding. (+79 more)
+Cohesion: 0.06
+Nodes (77): Number of files retained in this bounded inventory., Whether any repository source was excluded or truncated by safety limits., Return the fixed source-evidence budgets used for this snapshot., RepositorySnapshot, RepositoryInfo, EvidenceLocation, Finding, A concrete source location supporting a finding. (+69 more)
 
 ### Community 2 - "main.py"
-Cohesion: 0.09
-Nodes (29): Exception, analysis_events(), _at_demo_capacity(), get_analysis_status(), get_artifact(), Job, _job_duration_ms(), publish() (+21 more)
+Cohesion: 0.08
+Nodes (35): Exception, FileResponse, analysis_events(), _at_demo_capacity(), _frontend_index(), get_analysis_status(), get_artifact(), Job (+27 more)
 
 ### Community 3 - "schemas.py"
 Cohesion: 0.06
@@ -79,11 +76,11 @@ Nodes (68): AnalysisMetrics, AnalysisScope, build_repository_map(), _finding_fil
 
 ### Community 4 - "devDependencies"
 Cohesion: 0.06
-Nodes (31): dependencies, react, react-dom, devDependencies, oxlint, @types/node, @types/react, @types/react-dom (+23 more)
+Nodes (35): @fontsource-variable/geist, @fontsource-variable/geist-mono, dependencies, @fontsource-variable/geist, @fontsource-variable/geist-mono, react, react-dom, devDependencies (+27 more)
 
 ### Community 5 - "repository.py"
-Cohesion: 0.08
-Nodes (51): _apply_extraction_metrics(), _bounded_text(), _cache_root(), cleanup_checkout(), clone_github_repository(), _collect_file_records(), count_manifest_files(), count_test_files() (+43 more)
+Cohesion: 0.06
+Nodes (69): MonkeyPatch, _apply_extraction_metrics(), _bounded_text(), _cache_root(), cleanup_checkout(), clone_github_repository(), _collect_file_records(), count_manifest_files() (+61 more)
 
 ### Community 6 - "compilerOptions"
 Cohesion: 0.08
@@ -94,35 +91,23 @@ Cohesion: 0.10
 Nodes (19): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib, module, moduleDetection, noEmit, noFallthroughCasesInSwitch (+11 more)
 
 ### Community 8 - "RepoMind"
-Cohesion: 0.06
-Nodes (33): Codex and GPT-5.6, Context before code, Description, How judges can test it, Project metadata, RepoMind — Devpost Submission Pack, Required before submission, Screenshot inventory (+25 more)
+Cohesion: 0.13
+Nodes (14): 1. Start the API, 2. Start the dashboard, Architecture, Codex and GPT-5.6 boundaries, From repository to usable context, License, Prerequisites, Quick start (+6 more)
 
 ### Community 9 - "test_repository.py"
-Cohesion: 0.11
-Nodes (28): MonkeyPatch, Return UI-ready, evidence-backed counts for this bounded snapshot., Validate a public GitHub URL and return a canonical clone URL., validate_github_url(), _cors_origins(), _d_drive_is_available(), _default_cache_dir(), _positive_int() (+20 more)
+Cohesion: 0.13
+Nodes (20): _cors_origins(), _d_drive_is_available(), _default_cache_dir(), _positive_int(), Path, Runtime configuration for RepoMind.  Configuration is deliberately small for the, Keep the established D: cache only on hosts where that drive exists., Choose the local D: cache when available, otherwise use a portable temp path. (+12 more)
 
 ### Community 10 - "plugins"
 Cohesion: 0.22
 Nodes (8): plugins, rules, react/only-export-components, react/rules-of-hooks, $schema, oxc, typescript, warn
 
-### Community 11 - "RepositorySnapshot"
-Cohesion: 0.10
-Nodes (28): fetchArtifact(), getArtifactUrl(), AgentActivity(), AGENTS, AgentsPreview(), AgentsSection, agentState(), CompletionSummary() (+20 more)
-
-### Community 12 - "RepoMind — Final Locked Spec"
-Cohesion: 0.25
-Nodes (7): 5-DAY BUILD PLAN, OpenAI Build Week — Developer Tools Track, PROBLEM STATEMENT, RepoMind — Final Locked Spec, SOLUTION PROVIDED, TECH STACK, WHY THIS SATISFIES JUDGING CRITERIA
-
 ### Community 13 - "OpenAI Build Week Challenge Rules & Requirements"
 Cohesion: 0.33
 Nodes (5): GPT-5.6 Features to Leverage, Judging Criteria (Equally Weighted), Key Information, OpenAI Build Week Challenge Rules & Requirements, Submission Checklist
 
-### Community 14 - "React + TypeScript + Vite"
-Cohesion: 0.50
-Nodes (3): Expanding the Oxlint configuration, React Compiler, React + TypeScript + Vite
-
 ## Knowledge Gaps
-- **109 isolated node(s):** `$schema`, `typescript`, `oxc`, `react/rules-of-hooks`, `warn` (+104 more)
+- **87 isolated node(s):** `$schema`, `typescript`, `oxc`, `react/rules-of-hooks`, `warn` (+82 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **1 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -130,16 +115,16 @@ Nodes (3): Expanding the Oxlint configuration, React Compiler, React + TypeScrip
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `RepositorySnapshot` connect `RepositorySnapshot` to `test_repository.py`, `schemas.py`, `repository.py`?**
-  _High betweenness centrality (0.096) - this node is a cross-community bridge._
-- **Why does `snapshot_repository()` connect `repository.py` to `RepositorySnapshot`, `main.py`, `test_repository.py`?**
+  _High betweenness centrality (0.103) - this node is a cross-community bridge._
+- **Why does `snapshot_repository()` connect `repository.py` to `RepositorySnapshot`, `main.py`?**
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `orchestrate_analysis()` connect `schemas.py` to `RepositorySnapshot`, `main.py`, `test_repository.py`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
-- **Why does `orchestrate_analysis()` connect `schemas.py` to `RepositorySnapshot`, `main.py`?**
-  _High betweenness centrality (0.021) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `RepositorySnapshot` (e.g. with `EvidenceLocation` and `RepositoryInfo`) actually correct?**
   _`RepositorySnapshot` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `typescript`, `oxc` to the rest of the system?**
-  _109 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _87 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `api.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.102322206095791 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05131578947368421 - nodes in this community are weakly interconnected._
 - **Should `RepositorySnapshot` be split into smaller, more focused modules?**
-  _Cohesion score 0.051589567865981345 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05934065934065934 - nodes in this community are weakly interconnected._

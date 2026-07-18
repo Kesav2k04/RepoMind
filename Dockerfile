@@ -30,7 +30,7 @@ RUN python -m pip install --no-cache-dir -r requirements.txt \
     && mkdir -p /tmp/repomind/repos \
     && chown -R repomind:repomind /tmp/repomind
 
-COPY --chown=repomind:repomind main.py master.py repository.py schemas.py settings.py worker.py artifacts.py ./
+COPY --chown=repomind:repomind artifacts.py main.py master.py native_agents.py preflight.py repository.py schemas.py settings.py worker.py ./
 COPY --chown=repomind:repomind workers/ ./workers/
 COPY --from=frontend-builder --chown=repomind:repomind /app/frontend/dist ./frontend/dist
 

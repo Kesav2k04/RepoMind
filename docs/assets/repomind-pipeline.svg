@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="620" viewBox="0 0 1600 620" role="img" aria-labelledby="title desc">
-  <title id="title">RepoMind evidence-first analysis pipeline</title>
-  <desc id="desc">A public GitHub repository becomes a bounded evidence pack, is reviewed by four specialists, reconciled by a Master, and produces AGENTS.md and a risk-annotated repository map.</desc>
+  <title id="title">RepoMind verified change-preflight pipeline</title>
+  <desc id="desc">A public GitHub repository and task become a bounded evidence pack, are reviewed by four specialists, pass a citation firewall, and produce an AGENTS.md task brief and risk-annotated repository map.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0a0f18"/>
@@ -28,21 +28,21 @@
   <rect width="1600" height="620" rx="28" fill="url(#bg)"/>
   <circle cx="1240" cy="65" r="260" fill="#83adff" opacity=".10"/>
   <circle cx="200" cy="560" r="310" fill="#b8f96a" opacity=".055"/>
-  <text x="72" y="76" class="micro">REPOSITORY INTELLIGENCE · EVIDENCE FIRST</text>
-  <text x="72" y="126" class="label" style="font-size:40px">How RepoMind turns unknown code into safe context</text>
+  <text x="72" y="76" class="micro">CHANGE PREFLIGHT &#183; CITATION FIRST</text>
+  <text x="72" y="126" class="label" style="font-size:40px">How RepoMind turns unknown code into verified context</text>
   <path d="M274 294 H424" stroke="#607898" stroke-width="3" marker-end="url(#arrow)"/>
   <path d="M630 294 H748" stroke="#607898" stroke-width="3" marker-end="url(#arrow)"/>
   <path d="M1140 294 H1260" stroke="#607898" stroke-width="3" marker-end="url(#arrow)"/>
   <rect x="72" y="222" width="202" height="146" rx="16" class="node"/>
   <text x="100" y="266" class="micro">INPUT</text>
   <text x="100" y="306" class="label">Repository</text>
-  <text x="100" y="336" class="detail">Public GitHub URL</text>
+  <text x="100" y="336" class="detail">URL + change task</text>
   <rect x="424" y="222" width="206" height="146" rx="16" class="node"/>
   <text x="452" y="266" class="micro">TRUST BOUNDARY</text>
   <text x="452" y="306" class="label">Evidence pack</text>
-  <text x="452" y="336" class="detail">Bounded files · tests · history</text>
+  <text x="452" y="336" class="detail">Bounded files &#183; tests &#183; history</text>
   <rect x="748" y="172" width="392" height="246" rx="16" class="node"/>
-  <text x="776" y="216" class="micro">4 PARALLEL SPECIALISTS</text>
+  <text x="776" y="216" class="micro">4 PARALLEL SOURCE SPECIALISTS</text>
   <g fill="#83adff" opacity=".94">
     <rect x="776" y="244" width="158" height="58" rx="9"/><rect x="954" y="244" width="158" height="58" rx="9"/>
     <rect x="776" y="322" width="158" height="58" rx="9"/><rect x="954" y="322" width="158" height="58" rx="9"/>
@@ -53,12 +53,13 @@
   </g>
   <rect x="1260" y="222" width="250" height="146" rx="16" class="node"/>
   <circle cx="1302" cy="294" r="21" fill="url(#accent)" filter="url(#glow)"/>
-  <text x="1340" y="286" class="label">Master</text>
-  <text x="1340" y="316" class="detail">Reconciliation</text>
+  <text x="1340" y="278" class="label">Firewall</text>
+  <text x="1340" y="309" class="label" style="font-size:21px">+ GPT Root</text>
+  <text x="1340" y="337" class="detail">Verify, then reconcile</text>
   <path d="M1385 368 V464" stroke="#607898" stroke-width="3" marker-end="url(#arrow)"/>
   <rect x="1025" y="474" width="340" height="104" rx="16" class="output"/>
   <text x="1054" y="514" class="micro" style="fill:#365d2b">AGENT-READY OUTPUT</text>
   <text x="1054" y="552" fill="#0a0f18" font-family="ui-sans-serif, system-ui, sans-serif" font-size="25" font-weight="700">AGENTS.md + Risk Map</text>
-  <text x="72" y="504" class="label" style="font-size:28px">Every recommendation carries its proof.</text>
-  <text x="72" y="540" class="detail">Severity, confidence, a path, a line when available, and an explicit scope boundary travel together.</text>
+  <text x="72" y="504" class="label" style="font-size:28px">Every published recommendation carries its proof.</text>
+  <text x="72" y="540" class="detail">Claims without a real path, line range, quote, and tool provenance are withheld.</text>
 </svg>

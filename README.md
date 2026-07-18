@@ -2,7 +2,7 @@
 
 <h1>RepoMind</h1>
 
-<p><strong>Context before code.</strong> Give every coding agent evidence-backed repository context before the first edit.</p>
+<p><strong>Before an AI edits unfamiliar code, give it the repository's rules.</strong> RepoMind is an evidence-backed change preflight for the next ticket.</p>
 
 <p>
   <a href="https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml"><img src="https://github.com/Kesav2k04/RepoMind/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
@@ -11,9 +11,9 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-1F8A70.svg" alt="MIT License" /></a>
 </p>
 
-<p><code>Developer tools</code> &nbsp;·&nbsp; <code>Evidence-first</code> &nbsp;·&nbsp; <code>Agent-ready context</code> &nbsp;·&nbsp; <code>OpenAI Build Week</code></p>
+<p><code>Change preflight</code> &nbsp;·&nbsp; <code>Evidence-first</code> &nbsp;·&nbsp; <code>IDE-complementary</code> &nbsp;·&nbsp; <code>OpenAI Build Week</code></p>
 
-<img src="docs/images/01-home.png" alt="RepoMind evidence-first repository intelligence dashboard" width="100%" />
+<img src="docs/images/01-home.png" alt="RepoMind evidence-first change-preflight dashboard" width="100%" />
 
 </div>
 
@@ -30,10 +30,20 @@
 
 The included screenshots are authentic **Evidence Mode · Deterministic** runs. They are not presented as proof of a hosted GPT run. Complete the marked external evidence before submission; [the handoff](docs/SUBMISSION_HANDOFF.md) records the exact fields and truthful wording.
 
-RepoMind replaces a blind first edit with a concise repository briefing. It inventories bounded source evidence, lets four specialist lenses inspect it in parallel, reconciles their signals, and delivers two handoff artifacts:
+RepoMind replaces a blind first edit with a concise repository briefing. Run it before you hand an unfamiliar codebase to a coding agent: it inventories bounded source evidence, lets four specialist lenses inspect it in parallel, reconciles their signals, and delivers two handoff artifacts:
 
 - **`AGENTS.md`** — architecture, important files, risk areas, testing guidance, conventions, and a verification checklist.
 - **Risk-annotated repository map** — an interactive view of paths that deserve attention, tied back to evidence.
+
+## The Monday-morning job
+
+You inherit a service and need to hand an agent a ticket such as “fix the auth race condition.” RepoMind does **not** write that fix and it does **not** replace Cursor, Codex, or a code review. It removes the orientation pass that happens before useful implementation:
+
+1. Run a read-only preflight on the repository.
+2. Download the generated `AGENTS.md`, review its evidence, and add it beside the code when it is useful.
+3. Give the actual ticket to your IDE agent with shared architecture, risk boundaries, test signals, conventions, and a verification checklist already available.
+
+The durable value is the handoff artifact, not another dashboard to revisit. Use RepoMind when a change starts in an unfamiliar, high-risk, or recently handed-off repository; do not present it as a daily codebase chat tool.
 
 ## Why developers and agents need it
 
@@ -42,6 +52,12 @@ RepoMind replaces a blind first edit with a concise repository briefing. It inve
 | A new contributor or agent rediscovers the repository while changing it. | The next editor starts with observed architecture, risks, test signals, and verification steps. |
 | Configuration, high-churn paths, and weak test signals can be missed. | Findings carry severity, confidence, a source location when available, a reason, and a recommendation. |
 | Every onboarding pass repeats the same orientation work. | A repository-specific `AGENTS.md` preserves the useful context for the next task. |
+
+## Why this is not static analysis or codebase chat
+
+- **Deterministic evidence handles the things software should handle.** File inventory, manifests, tests, bounded history, paths, lines, confidence, and canonical artifacts are calculated locally. RepoMind does not spend GPT tokens discovering that a repository uses React or counting files.
+- **The optional GPT-5.6 step has a deliberately narrow role.** It reconciles four independent specialist views into a presentation order for existing validated findings. It cannot create findings, locations, confidence values, or artifact text. If it is unavailable, the deterministic preflight still succeeds.
+- **The output leaves the dashboard.** IDE chat answers are local and ephemeral; RepoMind produces reviewable Markdown that a contributor can commit, inspect, and reuse across editors and coding agents. There is no IDE extension or local-path workflow in this MVP, so the handoff is intentionally explicit rather than implied.
 
 ## From repository to usable context
 

@@ -16,11 +16,13 @@ This file is the single source for final human-supplied Build Week submission fi
 
 **Project name:** RepoMind
 
-**Tagline:** Context before code.
+**Tagline:** Before an AI edits unfamiliar code, give it the repository's rules.
 
 **Category:** Developer Tools
 
-**Description:** RepoMind turns a public GitHub repository into evidence-backed operating context before the next human or coding agent edits a line. It creates one bounded evidence pack, lets Architecture, Risk, Testing, and History specialists examine that shared evidence in parallel, then produces a structured `AGENTS.md` and an interactive risk-annotated repository map. Every published finding carries a severity, evidence location, reason, recommendation, confidence, and explicit analysis scope.
+**Description:** RepoMind is a change preflight for the moment before a coding agent starts work in an unfamiliar repository. It turns a public GitHub repository into an evidence-backed operating brief: what to read first, where risk sits, what tests matter, and how to verify the change. It creates one bounded evidence pack, lets Architecture, Risk, Testing, and History specialists examine that shared evidence in parallel, then produces a structured `AGENTS.md` and an interactive risk-annotated repository map. Every published finding carries a severity, evidence location, reason, recommendation, confidence, and explicit analysis scope.
+
+RepoMind does not write the ticket fix or replace an IDE. A contributor reviews and can commit its Markdown handoff, then uses that shared repository context in Cursor, Codex, Copilot, or another coding workflow. That portable, evidence-backed handoff—not a standalone dashboard—is the product's durable value.
 
 RepoMind is deliberately conservative: deterministic repository evidence remains authoritative, and partial scans are marked as partial. When configured, GPT-5.6 performs a constrained Master priority pass over already validated finding IDs. It cannot introduce source claims or modify canonical artifacts; if unavailable, the product visibly completes in Evidence Mode.
 

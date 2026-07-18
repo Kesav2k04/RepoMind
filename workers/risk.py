@@ -298,7 +298,9 @@ def _is_test_or_fixture_path(path: str) -> bool:
         bool(parts.intersection(_TEST_DIRECTORY_NAMES))
         or name == "conftest.py"
         or name.startswith("test_")
-        or name.endswith(("_test.py", ".test.js", ".test.ts", ".test.tsx", ".spec.js", ".spec.ts", ".spec.tsx"))
+        or name.endswith(
+            ("_test.py", ".test.js", ".test.ts", ".test.tsx", ".spec.js", ".spec.ts", ".spec.tsx")
+        )
     )
 
 

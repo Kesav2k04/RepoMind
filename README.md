@@ -78,7 +78,7 @@ The tools are `list_files`, `read_file`, `grep`, `git_log`, and `git_blame`. The
 
 ### Evidence Mode
 
-Without an API key, after a provider error, or after the application deadline, RepoMind completes with its four deterministic evidence specialists. This is a useful, visibly labelled fallback - not proof that a native run occurred. The checked-in screenshots and Flask sample are **Evidence Mode** output.
+Without an API key, after a provider error, or after the application deadline, RepoMind completes with its four deterministic evidence specialists. It uses transparent lexical task matching over retained source and verified finding paths; it does not claim model-level task understanding. This is a useful, visibly labelled fallback - not proof that a native run occurred. The checked-in screenshots and Flask sample are **Evidence Mode** output.
 
 | Mode | What the user can truthfully infer |
 | --- | --- |

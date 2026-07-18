@@ -119,6 +119,35 @@ def test_risk_worker_does_not_promote_intentionally_unsafe_test_fixture(
     assert not any(finding.id == "risk-dynamic-code-execution" for finding in report.findings)
 
 
+def test_evidence_mode_task_brief_prioritizes_retained_task_matches(
+    monkeypatch, repository_snapshot: RepositorySnapshot
+) -> None:
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    task_snapshot = replace(
+        repository_snapshot,
+        files=[*repository_snapshot.files, "src/auth_session.py", "tests/test_auth_session.py"],
+        important_file_contents={
+            "src/auth_session.py": "def repair_auth_session_race():\n    return 'session'\n",
+        },
+        sampled_contents={
+            "src/auth_session.py": "def repair_auth_session_race():\n    return 'session'\n",
+            "tests/test_auth_session.py": "def test_auth_session_race():\n    assert True\n",
+        },
+    )
+
+    result = asyncio.run(
+        master.orchestrate_analysis(
+            task_snapshot,
+            _collect_progress,
+            "Fix the auth session race and add a focused regression.",
+        )
+    )
+
+    assert result.task_brief is not None
+    assert result.task_brief.review_paths[:2] == ["src/auth_session.py", "tests/test_auth_session.py"]
+    assert "retained-evidence paths" in result.agents_md
+
+
 def test_history_worker_tolerates_null_history_metadata(repository_snapshot: RepositorySnapshot) -> None:
     nullable_history = replace(
         repository_snapshot,

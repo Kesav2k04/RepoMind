@@ -104,7 +104,7 @@ def generate_agents_md(
         )
         if task_brief.review_paths:
             lines.append(
-                "- Review these evidence-backed paths before editing: "
+                "- Review these retained-evidence paths before editing: "
                 + ", ".join(f"`{path}`" for path in task_brief.review_paths)
                 + "."
             )

@@ -6,6 +6,7 @@ import asyncio
 import inspect
 import json
 import os
+import re
 from time import perf_counter
 from collections.abc import Awaitable, Callable
 
@@ -30,6 +31,32 @@ from worker import run_specialists
 ProgressCallback = Callable[..., Awaitable[None]]
 MAX_NATIVE_PRIORITY_FINDINGS = 12
 ROOT_OUTPUT_TOKENS = 700
+_TASK_STOP_WORDS = frozenset(
+    {
+        "about",
+        "add",
+        "after",
+        "agent",
+        "around",
+        "change",
+        "code",
+        "focused",
+        "from",
+        "into",
+        "make",
+        "next",
+        "repository",
+        "safe",
+        "test",
+        "tests",
+        "that",
+        "the",
+        "this",
+        "update",
+        "with",
+        "without",
+    }
+)
 
 ROOT_RECONCILIATION_SCHEMA: dict[str, object] = {
     "type": "json_schema",
@@ -211,7 +238,7 @@ async def _evidence_fallback(
     )
     raw_reports = await run_specialists(snapshot, progress)
     reports, rejected_claims = _evidence_backed_reports(snapshot, raw_reports)
-    priority_ids = _deterministic_priority_ids(reports)
+    priority_ids = _task_aware_priority_ids(reports, task_description)
     return _build_result(
         snapshot,
         reports,
@@ -403,8 +430,8 @@ def _build_task_brief(
     finding_by_id = {finding.id: finding for report in reports for finding in report.findings}
     selected_ids = [identifier for identifier in priority_ids if identifier in finding_by_id]
     if not selected_ids:
-        selected_ids = _deterministic_priority_ids(reports)[:6]
-    review_paths = list(
+        selected_ids = _task_aware_priority_ids(reports, task_description)[:6]
+    finding_paths = list(
         dict.fromkeys(
             evidence.path
             for identifier in selected_ids
@@ -412,12 +439,92 @@ def _build_task_brief(
             if evidence.path in snapshot.files
         )
     )
+    task_paths = _task_matched_paths(snapshot, _task_terms(task_description))
+    review_paths = list(dict.fromkeys([*task_paths, *finding_paths]))
     return TaskBrief(
         task_description=task_description,
         priority_finding_ids=selected_ids[:MAX_NATIVE_PRIORITY_FINDINGS],
         review_paths=review_paths[:12],
         verification_commands=list(snapshot.test_commands[:6]),
     )
+
+
+def _task_aware_priority_ids(reports: list[AgentReport], task_description: str | None) -> list[str]:
+    """Re-rank verified fallback findings with transparent task-term overlap.
+
+    Evidence Mode intentionally avoids pretending it has model-level semantic
+    understanding. It can still make a task useful by preferring retained
+    finding evidence that contains exact, normalized task terms. A tie keeps
+    the established deterministic severity/confidence order.
+    """
+    default_ids = _deterministic_priority_ids(reports)
+    terms = _task_terms(task_description)
+    if not terms:
+        return default_ids
+    positions = {identifier: position for position, identifier in enumerate(default_ids)}
+    findings = [finding for report in reports for finding in report.findings]
+    return [
+        finding.id
+        for finding in sorted(
+            findings,
+            key=lambda finding: (
+                -_finding_task_score(finding, terms),
+                positions.get(finding.id, len(default_ids)),
+            ),
+        )[:MAX_NATIVE_PRIORITY_FINDINGS]
+    ]
+
+
+def _task_matched_paths(snapshot: RepositorySnapshot, terms: list[str]) -> list[str]:
+    """Return only retained source paths with explicit lexical task support."""
+    if not terms:
+        return []
+    contents: dict[str, str] = {}
+    for source in (snapshot.sampled_contents, snapshot.important_file_contents):
+        for path, content in source.items():
+            if isinstance(path, str) and isinstance(content, str) and path in snapshot.files:
+                if len(content) >= len(contents.get(path, "")):
+                    contents[path] = content
+    scored_paths = [
+        (
+            _task_text_score(path, terms) * 4 + _task_text_score(content, terms),
+            path,
+        )
+        for path, content in contents.items()
+    ]
+    ordered_paths = sorted(scored_paths, key=lambda item: (-item[0], item[1]))
+    return [path for score, path in ordered_paths if score > 0][:8]
+
+
+def _finding_task_score(finding: Finding, terms: list[str]) -> int:
+    evidence_text = " ".join(
+        " ".join(
+            value
+            for value in (evidence.path, evidence.reason or "", evidence.excerpt or "")
+            if value
+        )
+        for evidence in finding.evidence
+    )
+    return _task_text_score(" ".join([finding.title, finding.detail, *finding.files, evidence_text]), terms)
+
+
+def _task_text_score(value: str, terms: list[str]) -> int:
+    normalized = value.lower()
+    return sum(
+        1
+        for term in terms
+        if re.search(rf"(?<![a-z0-9]){re.escape(term)}(?![a-z0-9])", normalized)
+    )
+
+
+def _task_terms(task_description: str | None) -> list[str]:
+    if not task_description:
+        return []
+    terms: list[str] = []
+    for candidate in re.findall(r"[a-z0-9]{3,}", task_description.lower()):
+        if candidate not in _TASK_STOP_WORDS and candidate not in terms:
+            terms.append(candidate)
+    return terms[:12]
 
 
 def _validate_task_brief(

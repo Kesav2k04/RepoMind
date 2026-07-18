@@ -34,6 +34,7 @@ RepoMind is a read-only change-preflight service for unfamiliar public GitHub re
 - A native claim may publish only when its path exists, its line range is valid, its quote is present in that range, and the same worker read that source through a tool call. Do not relax this provenance rule.
 - Model self-confidence is not evidence. Do not fabricate paths, lines, confidence, tool events, source excerpts, or completion states.
 - Missing keys, provider errors, malformed output, and deadlines must finish in visibly labelled deterministic Evidence Mode. Never silently present fallback output as GPT-native.
+- Evidence Mode task matching is explicit lexical overlap over retained source and verified findings, not a hidden semantic model. Keep that distinction visible in copy and behavior.
 - Keep `OPENAI_MODEL` configuration-driven. Never hardcode a model name into runtime behavior.
 - Security-pattern checks intentionally ignore conventional test and fixture paths for high-severity findings; fixtures often contain intentionally unsafe snippets. Do not broaden that exclusion to production paths.
 
